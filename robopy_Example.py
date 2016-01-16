@@ -6,8 +6,6 @@
 import wpilib
 from xbox import XboxController
 
-
-
 class MyRobot(wpilib.SampleRobot):
 
     def robotInit(self):
@@ -35,7 +33,9 @@ class MyRobot(wpilib.SampleRobot):
 
     def teleopPeriodic(self):
         """This function is called periodically during operator control."""
-        self.robot_drive.arcadeDrive(self.stick)
+        #self.robot_drive.arcadeDrive(self.stick)
+        print('Left:',self.controller1.left_y())
+        print('Right:'self.controller2.right_y())
 
     def testPeriodic(self):
         """This function is called periodically during test mode."""
