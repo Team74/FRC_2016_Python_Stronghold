@@ -1,0 +1,209 @@
+Package: ATLAS
+Version: 3.10.2
+Section: devel
+Architecture: cortexa9-vfpv3
+Maintainer: RobotPy Developers <robotpy@googlegroups.com>
+MD5Sum: fb6d313f66e92065a10ee02fcdf08213
+Size: 10145472
+Filename: ATLAS_3.10.2_cortexa9-vfpv3.ipk
+Description: Automatically Tuned Linear Algebra Software
+OE: ATLAS
+Homepage: http://www.vesperix.com/arm/atlas-arm/
+Depends: libgfortran3 (>= 4.8.2)
+Priority: optional
+
+
+Package: ATLAS-dev
+Version: 3.10.2
+Section: devel
+Architecture: cortexa9-vfpv3
+Maintainer: RobotPy Developers <robotpy@googlegroups.com>
+MD5Sum: 6561e9b0b248ea5e2859d393d2818805
+Size: 4037754
+Filename: ATLAS-dev_3.10.2_cortexa9-vfpv3.ipk
+Description: Automatically Tuned Linear Algebra Software
+OE: ATLAS
+Homepage: http://www.vesperix.com/arm/atlas-arm/
+Depends: ATLAS (= 3.10.2)
+Priority: optional
+
+
+Package: libgfortran3
+Version: 4.8.2
+Section: devel
+Architecture: cortexa9-vfpv3
+Maintainer: RobotPy Developers <robotpy@googlegroups.com>
+MD5Sum: 79c9168147b241fb6ea6583bb7790b5c
+Size: 227650
+Filename: libgfortran3_4.8.2_cortexa9-vfpv3.ipk
+Description: Fortran runtime
+OE: libgfortran
+Homepage: http://gcc.gnu.org
+Priority: optional
+
+
+Package: opencv3
+Version: 3.1.0
+Section: devel
+Architecture: cortexa9-vfpv3
+Maintainer: RobotPy Developers <robotpy@googlegroups.com>
+MD5Sum: 0bc4ff07c5ce633e8d72273da157ce1f
+Size: 7021954
+Filename: opencv3_3.1.0_cortexa9-vfpv3.ipk
+Description: Open Source Computer Vision Library
+OE: unknown
+Homepage: http://opencv.org/
+Depends: libc6 libstdc++6
+Priority: optional
+
+
+Package: opencv3-dev
+Version: 3.1.0
+Section: devel
+Architecture: cortexa9-vfpv3
+Maintainer: RobotPy Developers <robotpy@googlegroups.com>
+MD5Sum: e2db6b42384dd39bd7a6faf7f670ac11
+Size: 688692
+Filename: opencv3-dev_3.1.0_cortexa9-vfpv3.ipk
+Description: Open Source Computer Vision Library (development files)
+OE: unknown
+Homepage: http://opencv.org/
+Depends: opencv3 (= 3.1.0)
+Priority: optional
+
+
+Package: opencv3-java
+Version: 3.1.0
+Section: devel
+Architecture: cortexa9-vfpv3
+Maintainer: RobotPy Developers <robotpy@googlegroups.com>
+MD5Sum: 29ee5bfba28b745aa256bc2ec8bd48a6
+Size: 514628
+Filename: opencv3-java_3.1.0_cortexa9-vfpv3.ipk
+Description: Open Source Computer Vision Library (Java bindings)
+OE: unknown
+Homepage: http://opencv.org/
+Depends: opencv3 (= 3.1.0)
+Priority: optional
+
+
+Package: python2
+Version: 2.7.11
+Section: devel
+Architecture: cortexa9-vfpv3
+Maintainer: RobotPy Developers <robotpy@googlegroups.com>
+MD5Sum: acb32f4176c8f9d0f430f50321ed60eb
+Size: 19655086
+Filename: python2_2.7.11_cortexa9-vfpv3.ipk
+Description: Python programming language
+OE: python
+Homepage: http://www.python.org
+Depends: libc6
+Priority: optional
+
+
+Package: python2-dev
+Version: 2.7.11
+Section: devel
+Architecture: cortexa9-vfpv3
+Maintainer: RobotPy Developers <robotpy@googlegroups.com>
+MD5Sum: 6901e4eebef414a7289509a21335529c
+Size: 3345700
+Filename: python2-dev_2.7.11_cortexa9-vfpv3.ipk
+Description: Python programming language development files
+OE: python3
+Homepage: http://www.python.org
+Depends: python2 (= 2.7.11)
+Priority: optional
+
+
+Package: python27-numpy
+Version: 1.10.2
+Section: devel
+Architecture: cortexa9-vfpv3
+Maintainer: RobotPy Developers <robotpy@googlegroups.com>
+MD5Sum: 3bb6d2a407024a2c68d6332e0f9fdf52
+Size: 6226224
+Filename: python27-numpy_1.10.2_cortexa9-vfpv3.ipk
+Description: array processing for numbers, strings, records, and objects
+OE: numpy
+Homepage: http://www.numpy.org
+Depends: ATLAS (>= 3.10.2), python (>= 2.7.0)
+Priority: optional
+
+
+Package: python27-opencv3
+Version: 3.1.0
+Section: devel
+Architecture: cortexa9-vfpv3
+Maintainer: RobotPy Developers <robotpy@googlegroups.com>
+MD5Sum: bb6f1ca261aa37352447743bb1e69937
+Size: 432198
+Filename: python27-opencv3_3.1.0_cortexa9-vfpv3.ipk
+Description: Open Source Computer Vision Library (Python 2.7 bindings)
+OE: unknown
+Homepage: http://opencv.org/
+Depends: opencv3 (= 3.1.0), python27-numpy (>= 1.10.2)
+Priority: optional
+
+
+Package: python3
+Version: 3.5.1
+Section: devel
+Architecture: cortexa9-vfpv3
+Maintainer: RobotPy Developers <robotpy@googlegroups.com>
+MD5Sum: 2fd3dd4e1d5decfbc5ce735cf1043fc5
+Size: 9530442
+Filename: python3_3.5.1_cortexa9-vfpv3.ipk
+Description: Python programming language
+OE: python3
+Homepage: http://www.python.org
+Depends: libc6
+Priority: optional
+
+
+Package: python3-dev
+Version: 3.5.1
+Section: devel
+Architecture: cortexa9-vfpv3
+Maintainer: RobotPy Developers <robotpy@googlegroups.com>
+MD5Sum: 5a6e0094659700c89eb12432b20e7646
+Size: 4797114
+Filename: python3-dev_3.5.1_cortexa9-vfpv3.ipk
+Description: Python programming language development files
+OE: python3
+Homepage: http://www.python.org
+Depends: python3 (= 3.5.1)
+Priority: optional
+
+
+Package: python35-numpy
+Version: 1.10.2
+Section: devel
+Architecture: cortexa9-vfpv3
+Maintainer: RobotPy Developers <robotpy@googlegroups.com>
+MD5Sum: 07ab05e6e1cb7345ac6ac2a6ba383a56
+Size: 6544298
+Filename: python35-numpy_1.10.2_cortexa9-vfpv3.ipk
+Description: array processing for numbers, strings, records, and objects
+OE: numpy
+Homepage: http://www.numpy.org
+Depends: ATLAS (>= 3.10.2), python3 (>= 3.5.0)
+Priority: optional
+
+
+Package: python35-opencv3
+Version: 3.1.0
+Section: devel
+Architecture: cortexa9-vfpv3
+Maintainer: RobotPy Developers <robotpy@googlegroups.com>
+MD5Sum: a54f5072a30d76f1052b514205fe70f1
+Size: 431852
+Filename: python35-opencv3_3.1.0_cortexa9-vfpv3.ipk
+Description: Open Source Computer Vision Library (Python 3.5 bindings)
+OE: unknown
+Homepage: http://opencv.org/
+Depends: opencv3 (= 3.1.0), python35-numpy (>= 1.10.2)
+Priority: optional
+
+
