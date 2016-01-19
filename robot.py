@@ -14,7 +14,7 @@ class MyRobot(wpilib.SampleRobot):
         should be used for any initialization code.
         """
         #self.robot_drive = wpilib.RobotDrive(0,1)
-        self.controller1 = XboxController
+        self.controller1 = XboxController(0)
         #self.controller2 = XboxController(1)
 
     def autonomousInit(self):
