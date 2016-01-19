@@ -4,7 +4,8 @@
 """
 
 import wpilib
-from xbox import XboxController
+from wpilib import Joystick
+from Xbox import XboxController
 
 class MyRobot(wpilib.SampleRobot):
 
@@ -13,10 +14,7 @@ class MyRobot(wpilib.SampleRobot):
         This function is called upon program startup and
         should be used for any initialization code.
         """
-        #self.robot_drive = wpilib.RobotDrive(0,1)
-        self.controller1 = XboxController
-        #self.controller2 = XboxController(1)
-
+        controller = Joystick(2, numAxisTypes = 1, numButtonTypes=None)
     def autonomousInit(self):
         """This function is run once each time the robot enters autonomous mode."""
         self.auto_loop_counter = 0
@@ -33,9 +31,16 @@ class MyRobot(wpilib.SampleRobot):
 
     def teleopPeriodic(self):
         """This function is called periodically during operator control."""
-        #self.robot_drive.arcadeDrive(self.stick)
-        #print('Left:',self.controller1.left_y())
-        #print('Right:'self.controller2.right_y())
+        print(controller.getAxis(1))
+         #self.robot_drive.tankDrive(self.leftStick, self.rightStick)
+    #    if (controller.left_y(self) < 0)
+    #        return ("lReverse", "\n")
+    #            elif(controller.left_y(self) > 0)
+    #                return ("lForward", "\n")
+    #    if (controller.right_y(self) < 0)
+    #        return ("rReverse", "\n")
+    #            elif(controller.right_y(self) > 0)
+    #                return ("rForward", "\n ")
 
     def testPeriodic(self):
         """This function is called periodically during test mode."""
