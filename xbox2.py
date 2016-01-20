@@ -1,20 +1,25 @@
-from wpilib import Joystick, Timer
+import hal
+import wpilib
 
-class XboxController(object):
-    """
+class XboxController:
+    '''
         Allows usage of an Xbox controller, with sensible names for xbox
         specific buttons and axes.
 
-    """
+        Mapping based on http://www.team358.org/files/programming/ControlSystem2015-2019/images/XBoxControlMapping.jpg
+    '''
 
     def __init__(self, port):
-        """
+        '''
         :param port: The port on the driver station that the controller is
             plugged into.
         :type  port: int
-        """
-        self.joy = Joystick(port)
-        self.debounce = DpadDebouncer()
+        '''
+
+        self.ds = wpilib.DriverStation.getInstance()
+        self.port = port
+
+        hal.HALReport(hal.HALUsageReporting.kResourceType_Joystick, port)
 
     def getLeftX(self):
         """Get the left stick X axis
@@ -22,18 +27,20 @@ class XboxController(object):
         :returns: -1 to 1
         :rtype: float
         """
-        return self.joy.getRawAxis(0)
+        return self.ds.getStickAxis(self.port, 0)
 
     def getLeftY(self):
+
         """Get the left stick Y axis
 
         :returns: -1 to 1
         :rtype: float
         """
-        return self.joy.getRawAxis(1)
+        return self.ds.getStickAxis(self.port, 1)
 
-    #getX = self.getLeftX()
-    #getY = self.getLeftY()
+    getX = getLeftX
+
+    getY = getLeftY
 
     def getLeftPressed(self):
         """Determines if the left stick is pressed
@@ -41,146 +48,133 @@ class XboxController(object):
         :returns: True if pressed, False otherwise
         :rtype: bool
         """
-        return self.joy.getRawButton(9)
+        return self.ds.getStickButton(self.port, 8)
 
     def getPOV(self):
-        """Get the state of the D-Pad
-        :returns: The angle of the D-Pad in degrees, or -1 if the D-Pad is not pressed.
+
+        """Get the state of a POV on the joystick.
+
+        :param pov: which POV (default is 0)
+        :type  pov: int
+        :returns: The angle of the POV in degrees, or -1 if the POV is not
+                  pressed.
         :rtype: float
         """
-
-        return self.debounce.get(self.joy.getPOV())
+        return self.ds.getStickPOV(self.port, 0)
 
     def getRightX(self):
+
         """Get the right stick X axis
 
         :returns: -1 to 1
         :rtype: float
         """
-        return self.joy.getRawAxis(4)
+        return self.ds.getStickAxis(self.port, 4)
 
     def getRightY(self):
+
         """Get the right stick Y axis
 
         :returns: -1 to 1
         :rtype: float
         """
-        return self.joy.getRawAxis(5)
+        return self.ds.getStickAxis(self.port, 5)
 
     def getRightPressed(self):
+
         """Determines if the right stick is pressed
 
         :returns: True if pressed, False otherwise
         :rtype: bool
         """
-        return self.joy.getRawButton(10)
+        return self.ds.getStickButton(self.port, 9)
 
     def getButtonA(self):
+
         """Gets whether the A button is pressed
 
         :returns: True if pressed, False otherwise
         :rtype: bool
         """
-        return self.joy.getRawButton(1)
+        return self.ds.getStickButton(self.port, 0)
 
     def getButtonB(self):
+
         """Gets whether the B button is pressed
 
         :returns: True if pressed, False otherwise
         :rtype: bool
         """
-        return self.joy.getRawButton(2)
+        return self.ds.getStickButton(self.port, 1)
 
     def getButtonX(self):
+
         """Gets whether the X button is pressed
 
         :returns: True if pressed, False otherwise
         :rtype: bool
         """
-        return self.joy.getRawButton(3)
+        return self.ds.getStickButton(self.port, 2)
 
     def getButtonY(self):
+
         """Gets whether the X button is pressed
 
         :returns: True if pressed, False otherwise
         :rtype: bool
         """
-        return self.joy.getRawButton(4)
+        return self.ds.getStickButton(self.port, 3)
 
     def getStart(self):
+
         """Gets whether the Start button is pressed
 
         :returns: True if pressed, False otherwise
         :rtype: bool
         """
-        return self.joy.getRawButton(8)
+        return self.ds.getStickButton(self.port, 7)
 
     def getBack(self):
+
         """Gets whether the Back button is pressed
 
         :returns: True if pressed, False otherwise
         :rtype: bool
         """
-        return self.joy.getRawButton(7)
+        return self.ds.getStickButton(self.port, 6)
 
     def getLeftBumper(self):
+
         """Gets whether the left bumper is pressed
 
         :returns: True if pressed, False otherwise
         :rtype: bool
         """
-        return self.joy.getRawButton(5)
+        return self.ds.getStickButton(self.port, 4)
 
     def getRightBumper(self):
+
         """Gets whether the right bumper is pressed
 
         :returns: True if pressed, False otherwise
         :rtype: bool
         """
-        return self.joy.getRawButton(6)
+        return self.ds.getStickButton(self.port, 5)
 
     def getLeftTrigger(self):
+
         """Gets whether the left trigger is pressed
 
         :returns: True if pressed, False otherwise
         :rtype: bool
         """
-        return self.joy.getRawAxis(2) > 0
+        return self.ds.getStickAxis(self.port, 2) > 0
 
     def getRightTrigger(self):
+
         """Gets whether the right trigger is pressed
 
         :returns: True if pressed, False otherwise
         :rtype: bool
         """
-        return self.joy.getRawAxis(3) > 0
-
-    def rumble(self, left=None, right=None):
-        """Sets the rumble amount on one/both side(s) of the controller"""
-        if left is not None:
-            self.joy.setRumble(Joystick.RumbleType.kLeftRumble_val, left)
-        if right is not None:
-            self.joy.setRumble(Joystick.RumbleType.kRightRumble_val, right)
-
-
-class DpadDebouncer(object):
-    def __init__(self):
-        self.debounce_period = 0.5
-        self.last_input = -1
-        self.last_timestamp = Timer.getFPGATimestamp()
-
-    def set_debounce_period(self, time):
-        self.debounce_period = time
-
-    def get(self, input):
-        if input == self.last_input:
-            time = Timer.getFPGATimestamp()
-            if time - self.last_timestamp <= self.debounce_period:
-                return -1
-            else:
-                self.last_timestamp = time
-                return input
-        else:
-            self.last_input = input
-            self.last_timestamp = Timer.getFPGATimestamp()
-            return input
+        return self.ds.getStickAxis(self.port, 3) > 0
