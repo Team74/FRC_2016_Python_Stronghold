@@ -5,40 +5,62 @@
 
 import wpilib
 from xbox import XboxController
+#from pyfrc.sim.pygame_joysticks import UsbJoysticks
+#import pygame
+#from xbox2 import XboxController
+
+# to stay in sync with our driver station
+CONTROL_LOOP_WAIT_TIME = 0.01#0.025
 
 class MyRobot(wpilib.SampleRobot):
 
     def robotInit(self):
-        """
-        This function is called upon program startup and
-        should be used for any initialization code.
-        """
         #self.robot_drive = wpilib.RobotDrive(0,1)
-        self.controller1 = XboxController(0)
-        #self.controller2 = XboxController(1)
+        #self.controller1 = XboxController(0)
+        self.stick = wpilib.Joystick(0)
 
-    def autonomousInit(self):
-        """This function is run once each time the robot enters autonomous mode."""
-        self.auto_loop_counter = 0
+        self.lmotor = wpilib.Talon(0)
+        self.rmotor = wpilib.Talon(1)
 
-    def autonomousPeriodic(self):
-        """This function is called periodically during autonomous."""
+        self.dashTimer = wpilib.Timer()     # Timer for SmartDashboard updating
+        self.dashTimer.start()
 
-        # Check if we've completed 100 loops (approximately 2 seconds)
-        if self.auto_loop_counter < 100:
-            self.robot_drive.drive(-0.5, 0) # Drive forwards at half speed
-            self.auto_loop_counter += 1
-        else:
-            self.robot_drive.drive(0, 0)    #Stop robot
+        # Initialize the joysticks
+        #pygame.joystick.init()
 
-    def teleopPeriodic(self):
-        """This function is called periodically during operator control."""
-        #self.robot_drive.arcadeDrive(self.stick)
-        #print('Left:',self.controller1.left_y())
-        #print('Right:'self.controller2.right_y())
+        #self.joys = pygame.joystick.Joystick(0)
+        #self.joys.init()
+        #self.axes = self.joys.get_numaxes()
 
-    def testPeriodic(self):
-        """This function is called periodically during test mode."""
+        #joys = UsbJoysticks(1)
+        #for x in joys.getUsbJoystickList():
+        #    print(x.get_name())
+
+    def disabled(self):
+        while self.isDisabled():
+            wpilib.Timer.delay(0.01)              # Wait for 0.01 seconds
+
+    def autonomous(self):
+        while self.isAutonomous() and self.isEnabled():
+            wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)              # Wait for 0.01 seconds
+
+    def operatorControl(self):
+        #self.robot_drive.TankDrive(self.controller1.)
+        wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
+
+        while self.isOperatorControl() and self.isEnabled():
+
+            #for i in range( self.axes ):
+            #    axis = self.joys.get_axis( i )
+                #print(axis)
+
+            #self.lmotor.set(self.controller1.getLeftY())
+            #self.rmotor.set(self.controller1.getRightY())
+
+            self.lmotor.set(self.stick.getRawAxis(1))
+            self.rmotor.set(self.stick.getTwist())      # Forks for right stick x axis
+
+    def test(self):
         wpilib.LiveWindow.run()
 
 if __name__ == "__main__":
