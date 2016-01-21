@@ -58,7 +58,7 @@ class MyRobot(wpilib.SampleRobot):
             #self.rmotor.set(self.controller1.getRightY())
 
             self.lmotor.set(self.stick.getRawAxis(1))
-            self.rmotor.set(self.stick.getTwist())      # Forks for right stick x axis
+            self.rmotor.set(self.stick.getRawAxis(5))      # Forks for right stick x axis
 
     def test(self):
         wpilib.LiveWindow.run()
