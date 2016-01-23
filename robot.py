@@ -5,12 +5,13 @@
 
 import wpilib
 from xbox import XboxController
+from robotpy_ext.autonomous import AutonomousModeSelector
 #from pyfrc.sim.pygame_joysticks import UsbJoysticks
 #import pygame
 #from xbox2 import XboxController
 
 # to stay in sync with our driver station
-CONTROL_LOOP_WAIT_TIME = 0.01#0.025
+CONTROL_LOOP_WAIT_TIME = 0.025
 
 class MyRobot(wpilib.SampleRobot):
 
@@ -25,6 +26,7 @@ class MyRobot(wpilib.SampleRobot):
         self.dashTimer = wpilib.Timer()     # Timer for SmartDashboard updating
         self.dashTimer.start()
 
+        self.autonomous_modes = AutonomousModeSelector('autonomous')
         # Initialize the joysticks
         #pygame.joystick.init()
 
@@ -41,8 +43,8 @@ class MyRobot(wpilib.SampleRobot):
             wpilib.Timer.delay(0.01)              # Wait for 0.01 seconds
 
     def autonomous(self):
-        while self.isAutonomous() and self.isEnabled():
-            wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)              # Wait for 0.01 seconds
+        self.autonomous_modes.run()
+        Timer.delay(CONTROL_LOOP_WAIT_TIME)
 
     def operatorControl(self):
         #self.robot_drive.TankDrive(self.controller1.)
