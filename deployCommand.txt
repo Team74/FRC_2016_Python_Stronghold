@@ -1,3 +1,3 @@
 py robot.py deploy --skip-tests
 
-robot IP address = 192.168.1.139
+robot IP address = 10.0.74.99
