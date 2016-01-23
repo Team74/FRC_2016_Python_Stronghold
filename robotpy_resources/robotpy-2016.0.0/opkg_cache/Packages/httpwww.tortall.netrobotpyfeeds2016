@@ -42,6 +42,36 @@ Homepage: http://gcc.gnu.org
 Priority: optional
 
 
+Package: mjpg-streamer
+Version: 2016.1.1
+Section: devel
+Architecture: cortexa9-vfpv3
+Maintainer: RobotPy Developers <robotpy@googlegroups.com>
+MD5Sum: d215c41379184bd61df41dd1df6f9970
+Size: 187330
+Filename: mjpg-streamer_2016.1.1_cortexa9-vfpv3.ipk
+Description: Sends video via MJPG stream
+OE: unknown
+Homepage: http://www.python.org
+Depends: libc6, libjpeg8
+Priority: optional
+
+
+Package: mjpg-streamer
+Version: 2016.1.2
+Section: devel
+Architecture: cortexa9-vfpv3
+Maintainer: RobotPy Developers <robotpy@googlegroups.com>
+MD5Sum: ea3701af7fbc2103b3e65e4507794f4c
+Size: 187314
+Filename: mjpg-streamer_2016.1.2_cortexa9-vfpv3.ipk
+Description: Sends video via MJPG stream
+OE: unknown
+Homepage: http://www.python.org
+Depends: libc6, libjpeg8
+Priority: optional
+
+
 Package: opencv3
 Version: 3.1.0
 Section: devel
