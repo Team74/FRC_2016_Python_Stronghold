@@ -17,11 +17,11 @@ class MyRobot(wpilib.SampleRobot):
 
     def robotInit(self):
         #self.robot_drive = wpilib.RobotDrive(0,1)
-        #self.controller1 = XboxController(0)
-        self.stick = wpilib.Joystick(0)
+        self.controller = XboxController(0)
+        #self.stick = wpilib.Joystick(0)
 
-        self.lmotor = wpilib.Talon(0)
-        self.rmotor = wpilib.Talon(1)
+        self.lmotor = wpilib.CANTalon(0)
+        self.rmotor = wpilib.CANTalon(1)
 
         self.dashTimer = wpilib.Timer()     # Timer for SmartDashboard updating
         self.dashTimer.start()
@@ -59,13 +59,8 @@ class MyRobot(wpilib.SampleRobot):
             #self.lmotor.set(self.controller1.getLeftY())
             #self.rmotor.set(self.controller1.getRightY())
 
-            self.lmotor.set(self.stick.getRawAxis(1))
-<<<<<<< HEAD
-            self.rmotor.set(self.stick.getRawAxis(5))      # Forks for right stick x axis
-=======
-            self.rmotor.set(self.stick.getRawAxis(5))    # might be axis 4
-           # self.rmotor.set(self.stick.getTwist())      # Works for right stick x axis
->>>>>>> refs/remotes/origin/master
+            self.lmotor.set(self.controller.getLeftY())
+            self.rmotor.set(self.controller.getRightY())
 
     def test(self):
         wpilib.LiveWindow.run()
