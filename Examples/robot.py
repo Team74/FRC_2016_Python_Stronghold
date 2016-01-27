@@ -2,6 +2,8 @@
 import wpilib
 from xbox import XboxController
 from robotpy_ext.autonomous import AutonomousModeSelector
+from wpilib.smartdashboard import SmartDashboard
+import random
 #from pyfrc.sim.pygame_joysticks import UsbJoysticks
 #import pygame
 
@@ -25,6 +27,9 @@ class MyRobot(wpilib.SampleRobot):
         self.sd = SmartDashboard()
         self.sd.putNumber("Random", 0)          # Send initialization packet
 
+    def sendRandomData(self, upper, lower, step):
+        self.sd.putNumber("Random", random.randrange(upper, lower, step))
+
     def disabled(self):
         while self.isDisabled():
             wpilib.Timer.delay(0.01)              # Wait for 0.01 seconds
@@ -40,6 +45,8 @@ class MyRobot(wpilib.SampleRobot):
 
             self.lmotor.set(self.controller.getLeftY())
             self.rmotor.set(self.controller.getRightY())
+
+            self.sendRandomData(-10,10,1)
 
     def test(self):
         wpilib.LiveWindow.run()
