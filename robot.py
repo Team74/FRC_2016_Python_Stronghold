@@ -21,10 +21,6 @@ class MyRobot(wpilib.SampleRobot):
 
         #self.autonomous_modes = AutonomousModeSelector('autonomous')
 
-        # Initialize the smart dashboard display elements
-        self.sd = SmartDashboard()
-        self.sd.putNumber("Random", 0)          # Send initialization packet
-
     def disabled(self):
         while self.isDisabled():
             wpilib.Timer.delay(0.01)              # Wait for 0.01 seconds
