@@ -1,0 +1,25 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="Left Encoder Rate" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="3" y="2"/>
+		<width>639</width>
+		<property name="Buffer Size (samples)" value="150"/>
+	</widget>
+	<widget field="Right Encoder Rate" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="634" y="1"/>
+		<width>624</width>
+		<property name="Buffer Size (samples)" value="150"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="30" y="437"/>
+	</static-widget>
+	<widget field="Right Encoder Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="134" y="414"/>
+	</widget>
+	<widget field="Left Encoder Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="140" y="438"/>
+	</widget>
+</dashboard>
+<live-window>
+</live-window>
+</xml>
