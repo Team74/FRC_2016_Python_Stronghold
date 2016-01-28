@@ -33,9 +33,17 @@ class MyRobot(wpilib.SampleRobot):
         wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
 
         while self.isOperatorControl() and self.isEnabled():
+            leftValue = self.controller.getLeftY()
+            rightValue = self.controller.getRightY()
 
-            self.lmotor.set(self.controller.getLeftY())
-            self.rmotor.set(self.controller.getRightY())
+            if self.controller.getLeftBumper(): # Slow button
+                leftValue = leftValue/2
+                rightValue = rightValue/2
+            if self.controller.getRightBumper(): #Straight Button
+                rightValue = leftValue
+
+            self.lmotor.set(leftValue*(-1))
+            self.rmotor.set(rightValue)
 
     def test(self):
         wpilib.LiveWindow.run()
