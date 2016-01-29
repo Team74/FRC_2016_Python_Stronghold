@@ -26,8 +26,10 @@ class MyRobot(wpilib.SampleRobot):
         self.dashTimer.start()
 
         self.lencoder = wpilib.Encoder(0, 1) #Creates an object of type Encoder, called lencoder. It counts
+        #self.lencoder.setReverseDirection(True)
         self.rencoder = wpilib.Encoder(2, 3) #the amount that a motor has rotated, and returns it in Direction and Distance variables
-        self.lencoder.setDistancePerPulse(self.WHEEL_DIAMETER*self.PI/self.ENCODER_TICK_COUNT)
+        self.lencoder.setDistancePerPulse(self.WHEEL_DIAMETER*self.PI/self.ENCODER_TICK_COUNT*(-1))
+        self.rencoder.setDistancePerPulse(self.WHEEL_DIAMETER*self.PI/self.ENCODER_TICK_COUNT)
 
         # Initialize Smart Dashboard
         self.dash = SmartDashboard()
