@@ -26,8 +26,10 @@ class MyRobot(wpilib.SampleRobot):
         self.dashTimer.start()
 
         self.lencoder = wpilib.Encoder(0, 1) #Creates an object of type Encoder, called lencoder. It counts
+        #self.lencoder.setReverseDirection(True)
         self.rencoder = wpilib.Encoder(2, 3) #the amount that a motor has rotated, and returns it in Direction and Distance variables
-        self.lencoder.setDistancePerPulse(self.WHEEL_DIAMETER*self.PI/self.ENCODER_TICK_COUNT)
+        self.lencoder.setDistancePerPulse(self.WHEEL_DIAMETER*self.PI/self.ENCODER_TICK_COUNT*(-1))
+        self.rencoder.setDistancePerPulse(self.WHEEL_DIAMETER*self.PI/self.ENCODER_TICK_COUNT)
 
         # Initialize Smart Dashboard
         self.dash = SmartDashboard()
@@ -42,8 +44,44 @@ class MyRobot(wpilib.SampleRobot):
             wpilib.Timer.delay(0.01)              # Wait for 0.01 seconds
 
     def autonomous(self):
-        self.autonomous_modes.run()
-        Timer.delay(CONTROL_LOOP_WAIT_TIME)
+        #self.autonomous_modes.run()
+        wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
+        self.lencoder.reset() #sets the encoder values to 0 at the start of each call
+        self.rencoder.reset()
+        ###############################################################################
+        currentSpeed = 0.1 #Set this to the desired speed
+        ###############################################################################
+
+
+        while self.isAutonomous() and self.isEnabled(): #Here just in case I have put the While loop in the wrong place(Hescott)             # remove the need to multiply by -1
+
+            self.lmotor.set(currentSpeed)           #it is multiplied by -1 because of the motor polarity, switiching the wires would
+            self.rmotor.set(currentSpeed*(-1))
+
+            if currentSpeed == 0 or self.rencoder.getDistance() == 0 or self.lencoder.getDistance() == 0:
+                LToRRatio = 1
+                RToLRatio = 1
+            else:
+                LToRRatio = self.lencoder.getDistance() / self.rencoder.getDistance()
+                RToLRatio = self.rencoder.getDistance() / self.lencoder.getDistance()     #Sets up ratios of left/right motor distance moved
+# TODO Implement ratio tolerance
+            if LToRRatio != 1:                 #Checks for inconsistency. If it exists,
+                speedError = (self.rencoder.getRate()*-1) - self.lencoder.getRate()
+                self.lmotor.set(currentSpeed+speedError/2)
+                self.rmotor.set((currentSpeed-speedError/2)*-1)
+            elif RToLRatio != 1:               #Same as above, but for the opposite motor
+                speedError = self.lencoder.getRate() - (self.rencoder.getRate()*-1)
+                self.lmotor.set(currentSpeed-speedError/2)
+                self.rmotor.set((currentSpeed+speedError/2)*-1)
+            elif (LToRRatio == 1) and (RToLRatio == 1):  #If they both work, continue to transmit the same speed
+                self.rmotor.set(currentSpeed*(-1))
+                self.lmotor.set(currentSpeed)
+
+        #    if currentSpeed < 1:
+        #        currentSpeed += 0.002
+            #print(self.rencoder.getDistance())
+            #print(self.lencoder.getDistance())
+        #    wpilib.Timer.delay(0.05)
 
     def operatorControl(self):
         wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
