@@ -1,5 +1,8 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Autonomous Mode" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="0" y="303"/>
+	</widget>
 	<widget field="Left Encoder Rate" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
 		<location x="3" y="2"/>
 		<width>639</width>

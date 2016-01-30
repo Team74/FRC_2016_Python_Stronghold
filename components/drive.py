@@ -3,9 +3,12 @@ File Author: Will Lowry
 File Creation Date: 1/28/2015
 File Purpose: To create our drive functions
 """
-from wpilib import CANTalon, Gyro, Encoder, Timer
+from wpilib import CANTalon, Encoder, Timer
+from wpilib.interfaces import Gyro
+from xbox import XboxController
+from . import Component
 
-class driveTrain() :
+class driveTrain(Component) :
 
     # Constants
     WHEEL_DIAMETER = 6
@@ -14,19 +17,19 @@ class driveTrain() :
     ENCODER_GOAL = 0 # default
     ENCODER_TOLERANCE = 1 # inch
 
-    self.lencoder = wpilib.Encoder(0, 1) #Creates an object of type Encoder, called lencoder. It counts
-    self.rencoder = wpilib.Encoder(2, 3) #the amount that a motor has rotated, and returns it in Direction and Distance variables
-    self.lencoder.setDistancePerPulse(self.WHEEL_DIAMETER*self.PI/self.ENCODER_TICK_COUNT)
+    lencoder = Encoder(0, 1) #Creates an object of type Encoder, called lencoder. It counts
+    rencoder = Encoder(2, 3) #the amount that a motor has rotated, and returns it in Direction and Distance variables
+    lencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT)
+    rencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT)
 
+    controller = XboxController(0)
 
-    self.controller = XboxController(0)
+    lmotor = CANTalon(0)
+    rmotor = CANTalon(1)
+    autonomousSpeed = 0.2
 
-    self.lmotor = wpilib.CANTalon(0)
-    self.rmotor = wpilib.CANTalon(1)
-    self.autonomousSpeed = 0.2
-
-    self.dashTimer = wpilib.Timer()     # Timer for SmartDashboard updating
-    self.dashTimer.start()
+    dashTimer = Timer()     # Timer for SmartDashboard updating
+    dashTimer.start()
 
 # drive forward function
     def drive_forward(self, speed) :
@@ -53,6 +56,7 @@ class driveTrain() :
 
 # fucntion to reset the gyro
     def reset(self):
-
+        print("Reset")
 # function to turn a certain number of degrees
-    def turn_angle(self) :
+    def turn_angle(self):
+        print('Turn Angle')
