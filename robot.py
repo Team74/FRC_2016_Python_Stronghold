@@ -62,9 +62,10 @@ class MyRobot(wpilib.SampleRobot):
 
 
         while self.isAutonomous() and self.isEnabled(): #Here just in case I have put the While loop in the wrong place(Hescott)             # remove the need to multiply by -1
-
-            self.lmotor.set(currentSpeed)           #it is multiplied by -1 because of the motor polarity, switiching the wires would
-            self.rmotor.set(currentSpeed*(-1))
+            self.autonomous_modes.run()
+            
+            #self.lmotor.set(currentSpeed)           #it is multiplied by -1 because of the motor polarity, switiching the wires would
+            #self.rmotor.set(currentSpeed*(-1))
 
             '''
             if currentSpeed == 0 or self.rencoder.getDistance() == 0 or self.lencoder.getDistance() == 0:

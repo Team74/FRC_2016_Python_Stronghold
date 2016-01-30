@@ -1,26 +1,45 @@
 <xml version="1.0">
 <dashboard>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
+		<location x="158" y="215"/>
+		<property name="Text" value="Encoder Outputs"/>
+	</static-widget>
+	<widget field="Cross the low bar and score in the high goal\drive_stop_duration" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="-128" y="91"/>
+		<property name="Background" value="153.255.255.255"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
+		<location x="182" y="11"/>
+		<property name="Text" value="===="/>
+	</static-widget>
+	<widget field="Spin in a circle\drive_stop_duration" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="42" y="65"/>
+		<property name="Background" value="102.255.255.255"/>
+	</widget>
+	<widget field="Drive forward\drive_stop_duration" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="47" y="39"/>
+		<property name="Background" value="102.255.255.255"/>
+	</widget>
 	<widget field="Autonomous Mode" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
 		<location x="0" y="303"/>
 	</widget>
 	<widget field="Left Encoder Rate" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="3" y="2"/>
+		<location x="399" y="308"/>
 		<width>639</width>
 		<property name="Buffer Size (samples)" value="150"/>
 	</widget>
 	<widget field="Right Encoder Rate" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="634" y="1"/>
+		<location x="400" y="4"/>
 		<width>624</width>
 		<property name="Buffer Size (samples)" value="150"/>
 	</widget>
-	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
-		<location x="30" y="437"/>
-	</static-widget>
 	<widget field="Right Encoder Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="134" y="414"/>
+		<location x="112" y="245"/>
+		<property name="Background" value="204.204.204.255"/>
 	</widget>
 	<widget field="Left Encoder Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="140" y="438"/>
+		<location x="120" y="271"/>
+		<property name="Background" value="204.204.204.255"/>
 	</widget>
 </dashboard>
 <live-window>

@@ -11,7 +11,7 @@ from wpilib import SendableChooser
 class simpleAutonomous(StatefulAutonomous):
 
     MODE_NAME = 'Cross the low bar and score in the high goal'
-    DEFAULT = True
+    DEFAULT = False
 
     spin_direction = -1
     at_goal_state = ''
