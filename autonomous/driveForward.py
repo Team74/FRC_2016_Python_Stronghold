@@ -6,7 +6,7 @@ from components.drive import driveTrain
 class driveForwardAutonomous(StatefulAutonomous):
 
     MODE_NAME = 'Drive forward'
-    DEFAULT = True
+    DEFAULT = False
 
     spin_direction = -1
     at_goal_state = ''
