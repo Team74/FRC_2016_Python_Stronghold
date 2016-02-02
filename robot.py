@@ -33,6 +33,11 @@ class MyRobot(wpilib.SampleRobot):
                             'drive' : self.drive
                             }
 
+        # Setup PID
+        self.pid = wpilib.PIDController(4, 0, 0,
+                                        lambda: self.drive.getDistance(),
+                                        lambda d: self.drive.driveManual(d, d))
+
         # Initialize Smart Dashboard
         self.dash = SmartDashboard()
         self.dash.putNumber('Left Encoder Rate', 0)
@@ -40,6 +45,12 @@ class MyRobot(wpilib.SampleRobot):
         self.dash.putNumber('Left Encoder Distance', 0)
         self.dash.putNumber('Right Encoder Distance', 0)
         self.autonomous_modes = AutonomousModeSelector('autonomous', self.components)
+
+
+        # Reset all the things
+        self.drive.reset()
+        self.pid.reset()
+        self.pid.enable()
 
     def disabled(self):
         while self.isDisabled():

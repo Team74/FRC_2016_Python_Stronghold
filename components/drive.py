@@ -93,3 +93,7 @@ class driveTrain(Component) :
 # function to turn a certain number of degrees
     def turn_angle(self):
         print('Turn Angle')
+
+
+    def getDistance(self):
+        return (self.lencoder.getDistance() + self.rencoder.getDistance())/2.0
