@@ -4,6 +4,7 @@ File Creation Date: 1/28/2015
 File Purpose: To create our drive functions
 """
 import wpilib
+import math
 from wpilib import CANTalon, Encoder, Timer, RobotDrive
 from wpilib.interfaces import Gyro
 from xbox import XboxController
@@ -12,7 +13,7 @@ from . import Component
 class driveTrain(Component) :
 
     def __init__(self, robot):
-        super().__init__()
+
         self.robot = robot
 
         # Constants
@@ -25,14 +26,36 @@ class driveTrain(Component) :
         self.lmotor = CANTalon(0)
         self.rmotor = CANTalon(1)
 
+        # Set to correct control mode
+        #self.lmotor.changeControlMode(self.lmotor.ControlMode.Speed)
+        #self.rmotor.changeControlMode(self.rmotor.ControlMode.Speed)
+
         self.drive = RobotDrive(self.lmotor, self.rmotor)
+        self.drive.setSafetyEnabled(True)
+        self.drive.setExpiration(0.1)
+        self.drive.setSensitivity(0.5)
+        self.drive.setMaxOutput(1.0)
+        #self.drive.setInvertedMotor(wpilib.RobotDrive.MotorType.kFrontLeft, True)
+        #self.drive.setInvertedMotor(wpilib.RobotDrive.MotorType.kFrontRight, True)
+        #self.drive.setInvertedMotor(wpilib.RobotDrive.MotorType.kRearLeft, True)
+        #self.drive.setInvertedMotor(wpilib.RobotDrive.MotorType.kRearRight, True)
 
         self.lencoder = Encoder(0, 1) #Creates an object of type Encoder, called lencoder. It counts
         self.rencoder = Encoder(2, 3) #the amount that a motor has rotated, and returns it in Direction and Distance variables
 
+        self.lencoder.setPIDSourceType(wpilib.Encoder.PIDSourceType.kRate)
+        self.rencoder.setPIDSourceType(wpilib.Encoder.PIDSourceType.kRate)
+
+
         # Set the distance per encoder tick
-        self.lencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT)
-        self.rencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT)
+        self.lencoder.setDistancePerPulse(WHEEL_DIAMETER*math.pi/ENCODER_TICK_COUNT)
+        self.rencoder.setDistancePerPulse(WHEEL_DIAMETER*math.pi/ENCODER_TICK_COUNT)
+
+
+        # Setup motor feedback sensors
+        #self.lmotor.setFeedbackDevice(self.lencoder.getRaw())
+        #self.rmotor.setFeedbackDevice(self.rencoder.getRaw())
+
 
         self.controller = XboxController(0)
 
@@ -47,7 +70,7 @@ class driveTrain(Component) :
         #wpilib.LiveWindow.addActuator("Drive Train", "Back Right Motor", self.back_right_motor)
         wpilib.LiveWindow.addSensor("Drive Train", "Left Encoder", self.lencoder)
         wpilib.LiveWindow.addSensor("Drive Train", "Right Encoder", self.rencoder)
-
+        super().__init__()
 
 
     def log(self):
@@ -62,6 +85,12 @@ class driveTrain(Component) :
     def driveManual(self, left, right):
         self.drive.tankDrive(left, right)
 
+    def driveLeftSide(self, speed):
+        self.lmotor.set(speed)
+
+    def driveRightSide(self, speed):
+        self.rmotor.set(speed)
+
 # drive forward function
     def drive_forward(self, speed) :
         self.lmotor.set(speed)
@@ -74,8 +103,8 @@ class driveTrain(Component) :
 
 # function to tell us whether or not the goal distance has been reached
     def at_distance_goal(self):
-        l_error = self.encoder_goal - self.l_encoder.getDistance()
-        r_error = self.encoder_goal - self.r_encoder.getDistance()
+        l_error = self.encoder_goal - self.lencoder.getDistance()
+        r_error = self.encoder_goal - self.rencoder.getDistance()
         return abs(l_error) < self.encoder_tolerance and abs(r_error) < self.encoder_tolerance
 
 # function to continue driving if not at goal distance
@@ -97,3 +126,21 @@ class driveTrain(Component) :
 
     def getDistance(self):
         return (self.lencoder.getDistance() + self.rencoder.getDistance())/2.0
+
+    def getLeftRate(self):
+        return self.lencoder.getRate()
+
+    def getRightRate(self):
+        return self.rencoder.getRate()
+
+    def getRightEnc(self):
+        return self.rencoder
+
+    def getLeftEnc(self):
+        return self.lencoder
+
+    def getRightMotor(self):
+        return self.rmotor
+
+    def getLeftMotor(self):
+        return self.lmotor
