@@ -2,7 +2,7 @@
 import wpilib
 from xbox import XboxController
 from wpilib.smartdashboard import SmartDashboard
-from components import drive
+from components.drive import driveTrain
 from robotpy_ext.autonomous.selector import AutonomousModeSelector
 #from pyfrc.sim.pygame_joysticks import UsbJoysticks
 #import pygame
@@ -20,24 +20,23 @@ class MyRobot(wpilib.SampleRobot):
     def robotInit(self):
         self.controller = XboxController(0)
 
-        self.lmotor = wpilib.CANTalon(1)
-        self.rmotor = wpilib.CANTalon(0)
+        #self.lmotor = wpilib.CANTalon(1)
+        #self.rmotor = wpilib.CANTalon(0)
 
-        self.drive = drive.driveTrain()
+        self.drive = driveTrain(self)
 
         self.dashTimer = wpilib.Timer()     # Timer for SmartDashboard updating
         self.dashTimer.start()
-
-        #self.lencoder = wpilib.Encoder(0, 1) #Creates an object of type Encoder, called lencoder. It counts
-        #self.lencoder.setReverseDirection(True)
-        #self.rencoder = wpilib.Encoder(2, 3) #the amount that a motor has rotated, and returns it in Direction and Distance variables
-        #self.lencoder.setDistancePerPulse(self.WHEEL_DIAMETER*self.PI/self.ENCODER_TICK_COUNT*(-1))
-        #self.rencoder.setDistancePerPulse(self.WHEEL_DIAMETER*self.PI/self.ENCODER_TICK_COUNT)
 
         # Initialize Components functions
         self.components = {
                             'drive' : self.drive
                             }
+
+        # Setup PID
+        self.pid = wpilib.PIDController(4, 0, 0,
+                                        lambda: self.drive.getDistance(),
+                                        lambda d: self.drive.driveManual(d, d))
 
         # Initialize Smart Dashboard
         self.dash = SmartDashboard()
@@ -46,6 +45,12 @@ class MyRobot(wpilib.SampleRobot):
         self.dash.putNumber('Left Encoder Distance', 0)
         self.dash.putNumber('Right Encoder Distance', 0)
         self.autonomous_modes = AutonomousModeSelector('autonomous', self.components)
+
+
+        # Reset all the things
+        self.drive.reset()
+        self.pid.reset()
+        self.pid.enable()
 
     def disabled(self):
         while self.isDisabled():
@@ -63,7 +68,7 @@ class MyRobot(wpilib.SampleRobot):
 
         while self.isAutonomous() and self.isEnabled(): #Here just in case I have put the While loop in the wrong place(Hescott)             # remove the need to multiply by -1
             self.autonomous_modes.run()
-            
+
             #self.lmotor.set(currentSpeed)           #it is multiplied by -1 because of the motor polarity, switiching the wires would
             #self.rmotor.set(currentSpeed*(-1))
 
@@ -97,10 +102,12 @@ class MyRobot(wpilib.SampleRobot):
         wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
 
         # Resetting encoders
-#        self.lencoder.reset()
-#        self.rencoder.reset()
 
         while self.isOperatorControl() and self.isEnabled():
+            self.drive.driveManual(self.controller.getLeftY(), self.controller.getRightY())
+
+            '''
+
             leftValue = self.controller.getLeftY()
             rightValue = self.controller.getRightY()
 
@@ -113,6 +120,7 @@ class MyRobot(wpilib.SampleRobot):
             # Set motor speeds
             self.lmotor.set(leftValue*(-1))
             self.rmotor.set(rightValue)
+            '''
 
             # Send encoder data to the smart dashboard
 #            self.dash.putNumber('Left Encoder Rate', self.lencoder.getRate())

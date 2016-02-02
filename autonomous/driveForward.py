@@ -15,7 +15,7 @@ class driveForwardAutonomous(StatefulAutonomous):
     chooser = SendableChooser()
     default_modes = []
 
-    dt = driveTrain()
+    #dt = driveTrain()
 
     def Initialize(self):
         pass
@@ -33,12 +33,12 @@ class driveForwardAutonomous(StatefulAutonomous):
 # initially stopping the bot using a timed state
     @timed_state(first=True, duration=0.5, next_state='drive_distance')
     def drive_stop(self) :
-        self.dt.drive_stop()
+        self.drive.drive_stop()
 
 # drive forward
     @state()
     def drive_distance(self):
-        self.dt.drive_forward(0.4)
+        self.drive.drive_forward(0.4)
         #self.lmotor.set(.4)
         #self.rmotor.set(.4)
         #self.next_state(self.done)
