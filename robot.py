@@ -33,11 +33,6 @@ class MyRobot(wpilib.SampleRobot):
                             'drive' : self.drive
                             }
 
-        # Setup PID
-        self.pid = wpilib.PIDController(4, 0, 0,
-                                        lambda: self.drive.getDistance(),
-                                        lambda d: self.drive.driveManual(d, d))
-
         # Initialize Smart Dashboard
         self.dash = SmartDashboard()
         self.dash.putNumber('Left Encoder Rate', 0)
@@ -48,9 +43,9 @@ class MyRobot(wpilib.SampleRobot):
 
 
         # Reset all the things
-        self.drive.reset()
-        self.pid.reset()
-        self.pid.enable()
+#        self.drive.reset()
+#        self.pid.reset()
+#        self.pid.enable()
 
     def disabled(self):
         while self.isDisabled():
@@ -72,55 +67,13 @@ class MyRobot(wpilib.SampleRobot):
             #self.lmotor.set(currentSpeed)           #it is multiplied by -1 because of the motor polarity, switiching the wires would
             #self.rmotor.set(currentSpeed*(-1))
 
-            '''
-            if currentSpeed == 0 or self.rencoder.getDistance() == 0 or self.lencoder.getDistance() == 0:
-                LToRRatio = 1
-                RToLRatio = 1
-            else:
-                LToRRatio = self.lencoder.getDistance() / self.rencoder.getDistance()
-                RToLRatio = self.rencoder.getDistance() / self.lencoder.getDistance()     #Sets up ratios of left/right motor distance moved
-                    # TODO Implement ratio tolerance
-            if LToRRatio != 1:                 #Checks for inconsistency. If it exists,
-                speedError = (self.rencoder.getRate()*-1) - self.lencoder.getRate()
-                self.lmotor.set(currentSpeed+speedError/2)
-                self.rmotor.set((currentSpeed-speedError/2)*-1)
-            elif RToLRatio != 1:               #Same as above, but for the opposite motor
-                speedError = self.lencoder.getRate() - (self.rencoder.getRate()*-1)
-                self.lmotor.set(currentSpeed-speedError/2)
-                self.rmotor.set((currentSpeed+speedError/2)*-1)
-            elif (LToRRatio == 1) and (RToLRatio == 1):  #If they both work, continue to transmit the same speed
-                self.rmotor.set(currentSpeed*(-1))
-                self.lmotor.set(currentSpeed)
-
-        #    if currentSpeed < 1:
-        #        currentSpeed += 0.002
-            #print(self.rencoder.getDistance())
-            #print(self.lencoder.getDistance())
-        #    wpilib.Timer.delay(0.05)
-        '''
     def operatorControl(self):
         wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
 
         # Resetting encoders
 
         while self.isOperatorControl() and self.isEnabled():
-            self.drive.driveManual(self.controller.getLeftY(), self.controller.getRightY())
-
-            '''
-
-            leftValue = self.controller.getLeftY()
-            rightValue = self.controller.getRightY()
-
-            if self.controller.getLeftBumper(): # Slow button
-                leftValue = leftValue/2
-                rightValue = rightValue/2
-            if self.controller.getRightBumper(): #Straight Button
-                rightValue = leftValue
-
-            # Set motor speeds
-            self.lmotor.set(leftValue*(-1))
-            self.rmotor.set(rightValue)
-            '''
+            self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY())
 
             # Send encoder data to the smart dashboard
 #            self.dash.putNumber('Left Encoder Rate', self.lencoder.getRate())
@@ -130,6 +83,9 @@ class MyRobot(wpilib.SampleRobot):
 
     def test(self):
         wpilib.LiveWindow.run()
+
+        while self.isTest() and self.isEnabled():
+            self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY())
 
 if __name__ == "__main__":
     wpilib.run(MyRobot)
