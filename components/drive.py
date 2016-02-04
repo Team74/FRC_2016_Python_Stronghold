@@ -21,10 +21,16 @@ class driveTrain(Component) :
         ENCODER_TICK_COUNT = 250
         ENCODER_GOAL = 0 # default
         ENCODER_TOLERANCE = 1 # inch
-        self.CONTROL_TYPE = 1 # 0 = disable PID components and encoder components
+        self.CONTROL_TYPE = 0 # 0 = disable PID components and encoder components
+        self.MOTOR_MODE = 1 # 0 = disable the second set of motors
 
-        self.lmotor = CANTalon(0)
-        self.rmotor = CANTalon(1)
+        self.rfmotor = CANTalon(0)
+        self.rbmotor = CANTalon(1)
+        self.lfmotor = CANTalon(2)
+        self.lbmotor = CANTalon(3)
+        self.lfmotor.setInverted(True)
+        self.lbmotor.setInverted(True)
+
 
         self.drive = RobotDrive(self.lmotor, self.rmotor)
 
@@ -62,10 +68,10 @@ class driveTrain(Component) :
         self.dashTimer.start()
 
         # Adding components to the LiveWindow (testing)
-        wpilib.LiveWindow.addActuator("Drive Train", "Front Left Motor", self.lmotor)
-        #wpilib.LiveWindow.addActuator("Drive Train", "Back Left Motor", self.back_left_motor)
-        wpilib.LiveWindow.addActuator("Drive Train", "Front Right Motor", self.rmotor)
-        #wpilib.LiveWindow.addActuator("Drive Train", "Back Right Motor", self.back_right_motor)
+        wpilib.LiveWindow.addActuator("Drive Train", "Left Front Motor", self.lfmotor)
+        wpilib.LiveWindow.addActuator("Drive Train", "Right Front Motor", self.rfmotor)
+        wpilib.LiveWindow.addActuator("Drive Train", "Left Back Motor", self.lbmotor)
+        wpilib.LiveWindow.addActuator("Drive Train", "Right Back Motor", self.rbmotor)
 
 
     def log(self):
@@ -79,19 +85,26 @@ class driveTrain(Component) :
 
 # drive forward function
     def drive_forward(self, speed) :
-        self.lmotor.set(speed)
-        self.rmotor.set(speed)
+        self.rfmotor.set(speed)
+        self.rbmotor.set(speed)
+        self.lfmotor.set(speed)
+        self.lbmotor.set(speed)
 
 # manual drive function for Tank Drive
     def xboxTankDrive(self, leftSpeed, rightSpeed):
-        self.lmotor.set(leftSpeed)
-        self.rmotor.set(rightSpeed)
+        self.lfmotor.set(leftSpeed)
+        self.rfmotor.set(rightSpeed)
+        self.lbmotor.set(leftSpeed)
+        self.rbmotor.set(rightSpeed)
 
 # stop function
     def drive_stop(self) :
-        self.lmotor.set(0)
-        self.rmotor.set(0)
-
+        self.lfmotor.set(0)
+        self.rfmotor.set(0)
+        self.lbmotor.set(0)
+        self.rbmotor.set(0)
+        
+'''
 # function to tell us whether or not the goal distance has been reached
     def at_distance_goal(self):
         l_error = self.encoder_goal - self.l_encoder.getDistance()
@@ -104,7 +117,7 @@ class driveTrain(Component) :
             self.drive_forward(self.autonomousSpeed)
 
         self.drive_stop()
-
+'''
 # fucntion to reset the gyro
     def reset(self):
         if self.CONTROL_TYPE:
