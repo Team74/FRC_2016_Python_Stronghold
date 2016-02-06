@@ -27,6 +27,8 @@ class driveTrain(Component) :
         self.rbmotor = CANTalon(1)
         self.lfmotor = CANTalon(2)
         self.lbmotor = CANTalon(3)
+
+        # Invert the correct motors
         self.lfmotor.setInverted(True)
         self.lbmotor.setInverted(True)
 
@@ -119,9 +121,9 @@ class driveTrain(Component) :
 # manual drive function for Tank Drive
     def xboxTankDrive(self, leftSpeed, rightSpeed):
 
-        if (controller.leftBumperPressed == True): #Straight Button
+        if (self.controller.getLeftBumper() == True): #Straight Button
             rightSpeed = leftSpeed
-        if (controller.rightBumperPressed == True): #Slow Button
+        if (self.controller.getRightBumper() == True): #Slow Button
             rightSpeed = rightSpeed/2
             leftSpeed = leftSpeed/2
 

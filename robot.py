@@ -3,6 +3,7 @@ import wpilib
 from xbox import XboxController
 from wpilib.smartdashboard import SmartDashboard
 from components.drive import driveTrain
+from components.armControl import arm
 from robotpy_ext.autonomous.selector import AutonomousModeSelector
 #from pyfrc.sim.pygame_joysticks import UsbJoysticks
 #import pygame
@@ -24,13 +25,15 @@ class MyRobot(wpilib.SampleRobot):
         #self.rmotor = wpilib.CANTalon(0)
 
         self.drive = driveTrain(self)
+        self.robotArm = arm(self)
 
         self.dashTimer = wpilib.Timer()     # Timer for SmartDashboard updating
         self.dashTimer.start()
 
         # Initialize Components functions
         self.components = {
-                            'drive' : self.drive
+                            'drive' : self.drive,
+                            'arm' : self.robotArm
                             }
 
         # Initialize Smart Dashboard
@@ -74,6 +77,7 @@ class MyRobot(wpilib.SampleRobot):
 
         while self.isOperatorControl() and self.isEnabled():
             self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY())
+            self.robotArm.armUpDown(self.controller.getTriggers(), rate=0.3)
 
             # Send encoder data to the smart dashboard
 #            self.dash.putNumber('Left Encoder Rate', self.lencoder.getRate())

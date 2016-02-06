@@ -155,6 +155,10 @@ class XboxController(object):
         """
         return self.joy.getRawAxis(3) > 0
 
+    def getTriggers(self):
+        return self.joy.getRawAxis(2)
+
+
     def rumble(self, left=None, right=None):
         """Sets the rumble amount on one/both side(s) of the controller"""
         if left is not None:
