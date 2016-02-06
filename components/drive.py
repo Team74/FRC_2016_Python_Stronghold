@@ -21,7 +21,7 @@ class driveTrain(Component) :
         ENCODER_TICK_COUNT = 250
         ENCODER_GOAL = 0 # default
         ENCODER_TOLERANCE = 1 # inch0
-        self.CONTROL_TYPE = 1 # 0 = disable PID components
+        self.CONTROL_TYPE = 0 # 0 = disable PID components
 
         self.rfmotor = CANTalon(0)
         self.rbmotor = CANTalon(1)
@@ -31,6 +31,7 @@ class driveTrain(Component) :
         # Invert the correct motors
         self.lfmotor.setInverted(True)
         self.lbmotor.setInverted(True)
+        self.rbmotor.setInverted(True)
 
         # Initializing the encoders
         self.lfencoder = Encoder(0, 1, False)#, Encoder.EncodingType.k4X) #Creates an object of type Encoder, called lencoder. It counts

@@ -77,8 +77,8 @@ class MyRobot(wpilib.SampleRobot):
 
         while self.isOperatorControl() and self.isEnabled():
             self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY())
-            self.robotArm.armUpDown(self.controller.getTriggers(), rate=0.3)
-
+            #self.robotArm.armUpDown(self.controller.getTriggers(), rate=0.3)
+            self.robotArm.armUpDown2(self.controller.getLeftTriggerRaw(), self.controller.getRightTriggerRaw())
             # Send encoder data to the smart dashboard
 #            self.dash.putNumber('Left Encoder Rate', self.lencoder.getRate())
 #            self.dash.putNumber('Right Encoder Rate', self.rencoder.getRate())
