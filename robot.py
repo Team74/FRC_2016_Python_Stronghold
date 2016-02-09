@@ -4,6 +4,7 @@ from xbox import XboxController
 from wpilib.smartdashboard import SmartDashboard
 from components.drive import driveTrain
 from components.armControl import arm
+from components.climberControl import lift
 from robotpy_ext.autonomous.selector import AutonomousModeSelector
 #from pyfrc.sim.pygame_joysticks import UsbJoysticks
 #import pygame
@@ -20,12 +21,14 @@ class MyRobot(wpilib.SampleRobot):
 
     def robotInit(self):
         self.controller = XboxController(0)
+        self.controller2 = XboxController(1)
 
         #self.lmotor = wpilib.CANTalon(1)
         #self.rmotor = wpilib.CANTalon(0)
 
         self.drive = driveTrain(self)
         self.robotArm = arm(self)
+        self.climber = lift(self)
 
         self.dashTimer = wpilib.Timer()     # Timer for SmartDashboard updating
         self.dashTimer.start()
@@ -33,7 +36,8 @@ class MyRobot(wpilib.SampleRobot):
         # Initialize Components functions
         self.components = {
                             'drive' : self.drive,
-                            'arm' : self.robotArm
+                            'arm' : self.robotArm,
+                            'lift' : self.climber
                             }
 
         # Initialize Smart Dashboard
@@ -78,7 +82,8 @@ class MyRobot(wpilib.SampleRobot):
         while self.isOperatorControl() and self.isEnabled():
             self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY())
             #self.robotArm.armUpDown(self.controller.getTriggers(), rate=0.3)
-            self.robotArm.armUpDown2(self.controller.getLeftTriggerRaw(), self.controller.getRightTriggerRaw())
+            self.robotArm.armUpDown(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw())
+            self.climber.climbUpDown(self.controller2.getLeftBumper(), self.controller2.getRightBumper())
             # Send encoder data to the smart dashboard
 #            self.dash.putNumber('Left Encoder Rate', self.lencoder.getRate())
 #            self.dash.putNumber('Right Encoder Rate', self.rencoder.getRate())
