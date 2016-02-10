@@ -13,6 +13,8 @@ class arm(Component):
         super().__init__()
         self.robot = robot
         self.armMotor = CANTalon(4)
+        while self.armMotor.isSafetyEnabled():
+            self.armMotor.setSafetyEnabled(False)
 
     def armUpDown(self, zval, rate=0.3):
         self.armMotor.set(zval)
