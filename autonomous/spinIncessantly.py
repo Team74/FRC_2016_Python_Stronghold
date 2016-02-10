@@ -39,8 +39,10 @@ class spinIncessantlyAutonomous(StatefulAutonomous):
     @state()
     def drive_distance(self):
 #        self.drive.drive_forward(0.4)
-        self.drive.lmotor.set(.4)
-        self.drive.rmotor.set(-.4)
+        self.drive.lfmotor.set(0.4)
+        self.drive.rfmotor.set(-0.4)
+        self.drive.lbmotor.set(0.4)
+        self.drive.rbmotor.set(-0.4)
         #self.next_state(self.done)
 
     def done(self) :

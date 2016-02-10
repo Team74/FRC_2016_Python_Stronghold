@@ -41,7 +41,7 @@ class driveTrain(Component) :
             self.rfmotor.setSafetyEnabled(False)
         while self.lbmotor.isSafetyEnabled():
             self.lbmotor.setSafetyEnabled(False)
-        while self.rbmotor.isSafetyEnabled():    
+        while self.rbmotor.isSafetyEnabled():
             self.rbmotor.setSafetyEnabled(False)
 
         # Invert the correct motors
