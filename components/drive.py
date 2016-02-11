@@ -69,7 +69,7 @@ class driveTrain(Component) :
         wpilib.LiveWindow.addSensor("Drive Train", "Right Back Encoder", self.rbencoder)
 
 
-        self.drive = RobotDrive(self.lfmotor, self.rfmotor, self.lbmotor, self.rbmotor)
+        self.drive = RobotDrive(self.lfmotor, self.lbmotor, self.rfmotor, self.rbmotor)
 
         if self.CONTROL_TYPE:
 
@@ -129,26 +129,18 @@ class driveTrain(Component) :
         wpilib.SmartDashboard.putNumber("Right Back Speed", self.rbencoder.getRate())
         #wpilib.SmartDashboard.putNumber("Gyro", self.gyro.getAngle())
 
-# drive forward function
+    # drive forward function
     def drive_forward(self, speed) :
-        # feeding the motors
-        #self.lfmotor.feed()
-        #self.rfmotor.feed()
-        #self.lbmotor.feed()
-        #self.rbmotor.feed()
-
+        '''
         self.rfmotor.set(speed)
         self.rbmotor.set(speed)
         self.lfmotor.set(speed)
         self.lbmotor.set(speed)
+        '''
+        self.drive.tankDrive(speed, speed, True)
 
-# manual drive function for Tank Drive
+    # manual drive function for Tank Drive
     def xboxTankDrive(self, leftSpeed, rightSpeed):
-        # feeding the motors
-        #self.lfmotor.feed()
-        #self.rfmotor.feed()
-        #self.lbmotor.feed()
-        #self.rbmotor.feed()
 
         if (self.controller.getLeftBumper() == True): #Straight Button
             rightSpeed = leftSpeed
@@ -156,24 +148,25 @@ class driveTrain(Component) :
             rightSpeed = rightSpeed/2
             leftSpeed = leftSpeed/2
 
+        '''
         self.lfmotor.set(leftSpeed)
         self.rfmotor.set(rightSpeed)
         self.lbmotor.set(leftSpeed)
         self.rbmotor.set(rightSpeed)
+        '''
 
-# stop function
+        self.drive.tankDrive(leftSpeed, rightSpeed, True)
+
+    # stop function
     def drive_stop(self) :
-        #feeding the motors
-        #self.lfmotor.feed()
-        #self.rfmotor.feed()
-        #self.lbmotor.feed()
-        #self.rbmotor.feed()
+        self.drive(0,0)
 
+        '''
         self.lfmotor.set(0)
         self.rfmotor.set(0)
         self.lbmotor.set(0)
         self.rbmotor.set(0)
-
+        '''
         '''
 # function to tell us whether or not the goal distance has been reached
     def at_distance_goal(self):
