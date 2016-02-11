@@ -82,7 +82,8 @@ class MyRobot(wpilib.SampleRobot):
         while self.isOperatorControl() and self.isEnabled():
             self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY())
             #self.robotArm.armUpDown(self.controller.getTriggers(), rate=0.3)
-            self.robotArm.armUpDown(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw())
+            self.robotArm.armUpDown2(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw())
+            self.robotArm.wheelSpin(self.controller2.getLeftY())
             self.climber.climbUpDown(self.controller2.getLeftBumper(), self.controller2.getRightBumper())
             # Send encoder data to the smart dashboard
 #            self.dash.putNumber('Left Encoder Rate', self.lencoder.getRate())
