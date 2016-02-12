@@ -21,6 +21,7 @@ class driveTrain(Component) :
         ENCODER_TICK_COUNT = 250
         ENCODER_GOAL = 0 # default
         ENCODER_TOLERANCE = 1 # inch0
+        INCHES_PER_DEGREE = 24 * 3.14159265359 / 360
         self.CONTROL_TYPE = 0 # 0 = disable PID components
 
         self.rfmotor = CANTalon(0)
@@ -188,8 +189,15 @@ class driveTrain(Component) :
             self.rencoder.reset()
 
 # function to turn a certain number of degrees
-    def turn_angle(self):
-        print('Turn Angle')
+    def turn_angle(self, degrees):
+        desired_inches = INCHES_PER_DEGREE * degrees
+        if degrees < 0:
+            while (abs(self.lfencoder.getDistance()) + abs(self.rfencoder.getDistance())) <= desired_inches:
+                self.drive.xboxTankDrive(0.2, -0.2)
+        elif degrees > 0:
+            while (abs(self.lfencoder.getDistance()) + abs(self.rfencoder.getDistance())) <= desired_inches:
+            self.drive.xboxTankDrive(-0.2, 0.2)
+        #while self.lfencoder.getDistance() + self.rfmotor.getDistance() + self.lbencoder.getDistance() + self.rbencoder.getDistance()
 
 
     def getDistance(self):
