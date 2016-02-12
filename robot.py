@@ -82,6 +82,7 @@ class MyRobot(wpilib.SampleRobot):
             self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY())
             #self.robotArm.armUpDown(self.controller.getTriggers(), rate=0.3)
             self.robotArm.armUpDown(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw())
+            self.robotArm.wheelSpin(self.controller.getLeftY())
             self.climber.climbUpDown(self.controller2.getLeftBumper(), self.controller2.getRightBumper())
             wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
             # Send encoder data to the smart dashboard

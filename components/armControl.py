@@ -13,6 +13,7 @@ class arm(Component):
         super().__init__()
         self.robot = robot
         self.armMotor = CANTalon(4)
+        self.wheelMotor = CANTalon(5)
         while self.armMotor.isSafetyEnabled():
             self.armMotor.setSafetyEnabled(False)
 
@@ -27,3 +28,6 @@ class arm(Component):
 
     def armUpDown2(self, left, right, rate=0.3):
         self.armMotor.set((left - right))
+
+    def wheelSpin(self, value):
+        self.wheelMotor.set(value)
