@@ -47,7 +47,7 @@ class MyRobot(wpilib.SampleRobot):
         self.dash.putNumber('Left Encoder Distance', 0)
         self.dash.putNumber('Right Encoder Distance', 0)
         self.autonomous_modes = AutonomousModeSelector('autonomous', self.components)
-
+        self.dash.putNumber('Arm Potentiometer', 0)
 
         # Reset all the things
 #        self.drive.reset()
@@ -86,6 +86,7 @@ class MyRobot(wpilib.SampleRobot):
             self.climber.climbUpDown(self.controller2.getLeftBumper(), self.controller2.getRightBumper())
             wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
             # Send encoder data to the smart dashboard
+            self.dash.putNumber('Arm Potentiometer', self.robotArm.sendPOT())
 #            self.dash.putNumber('Left Encoder Rate', self.lencoder.getRate())
 #            self.dash.putNumber('Right Encoder Rate', self.rencoder.getRate())
 #            self.dash.putNumber('Left Encoder Distance', self.lencoder.getDistance())

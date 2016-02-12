@@ -4,7 +4,7 @@ File Creation Date: 1/28/2015
 File Purpose: To control an arm
 """
 import wpilib
-from wpilib import CANTalon, Timer
+from wpilib import CANTalon, Timer, AnalogPotentiometer
 from . import Component
 
 class arm(Component):
@@ -14,6 +14,7 @@ class arm(Component):
         self.robot = robot
         self.armMotor = CANTalon(4)
         self.wheelMotor = CANTalon(5)
+        self.potentiometer = AnalogPotentiometer(0, 90, 0)
         while self.armMotor.isSafetyEnabled():
             self.armMotor.setSafetyEnabled(False)
 
@@ -27,7 +28,16 @@ class arm(Component):
         '''
 
     def armUpDown2(self, left, right, rate=0.3):
-        self.armMotor.set((left - right))
+        motorValue = left - right
+#        if(self.potentiometer.get() == 85 or self.potentiometer == 5):
+#            if(motorValue < 0):
+#                motorValue = -0.1
+#            if(motorValue > 0):
+#                motorValue = 0.1
+        self.armMotor.set(motorValue)
 
     def wheelSpin(self, value):
         self.wheelMotor.set(value)
+
+    def sendPOT(self):
+        return self.potentiometer.get()
