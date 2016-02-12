@@ -67,24 +67,29 @@ class MyRobot(wpilib.SampleRobot):
         currentSpeed = 0.1 #Set this to the desired speed
         ###############################################################################
 
-
         while self.isAutonomous() and self.isEnabled(): #Here just in case I have put the While loop in the wrong place(Hescott)             # remove the need to multiply by -1
+
+            # Run the actual autonomous mode
             self.autonomous_modes.run()
 
             #self.lmotor.set(currentSpeed)           #it is multiplied by -1 because of the motor polarity, switiching the wires would
             #self.rmotor.set(currentSpeed*(-1))
 
     def operatorControl(self):
-        wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
-
         # Resetting encoders
 
         while self.isOperatorControl() and self.isEnabled():
             self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY())
             #self.robotArm.armUpDown(self.controller.getTriggers(), rate=0.3)
+<<<<<<< HEAD
             self.robotArm.armUpDown2(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw())
             self.robotArm.wheelSpin(self.controller2.getLeftY())
+=======
+            self.robotArm.armUpDown(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw())
+            self.robotArm.wheelSpin(self.controller.getLeftY())
+>>>>>>> master
             self.climber.climbUpDown(self.controller2.getLeftBumper(), self.controller2.getRightBumper())
+            wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
             # Send encoder data to the smart dashboard
 #            self.dash.putNumber('Left Encoder Rate', self.lencoder.getRate())
 #            self.dash.putNumber('Right Encoder Rate', self.rencoder.getRate())
