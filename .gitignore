@@ -1,2 +1,6 @@
 __pycache__/
 components/__pycache__/
+autonomous/__pycache__/
+docs/__pycache__/
+Examples/__pycache__/
+tests/__pycache__/
