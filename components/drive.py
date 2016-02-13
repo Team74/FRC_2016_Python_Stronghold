@@ -18,10 +18,11 @@ class driveTrain(Component) :
         # Constants
         WHEEL_DIAMETER = 8
         PI = 3.1415
-        ENCODER_TICK_COUNT = 250
+        ENCODER_TICK_COUNT_250 = 250
+        ENCODER_TICK_COUNT_360 = 360
         ENCODER_GOAL = 0 # default
         ENCODER_TOLERANCE = 1 # inch0
-        INCHES_PER_DEGREE = 24 * 3.14159265359 / 360
+        self.INCHES_PER_DEGREE = 24 * 3.14159265359 / 360
         self.CONTROL_TYPE = 0 # 0 = disable PID components
 
         self.rfmotor = CANTalon(0)
@@ -48,9 +49,6 @@ class driveTrain(Component) :
         # Invert the correct motors
         self.lfmotor.setInverted(True)
         self.lbmotor.setInverted(True)
-        self.rbmotor.setInverted(False)
-        self.rfmotor.setInverted(True)
-
 
         # Initializing the encoders
         self.lfencoder = Encoder(0, 1, False)#, Encoder.EncodingType.k4X) #Creates an object of type Encoder, called lencoder. It counts
@@ -59,10 +57,10 @@ class driveTrain(Component) :
         self.rbencoder = Encoder(6, 7, False)#, Encoder.EncodingType.k4x)
 
         # Set the distance per encoder tick
-        self.lfencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT)
-        self.rfencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT)
-        self.lbencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT)
-        self.rbencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT)
+        self.lfencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT_360)
+        self.rfencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT_250)
+        self.lbencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT_360)
+        self.rbencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT_360)
 
         # LiveWindow settings (Encoder)
         wpilib.LiveWindow.addSensor("Drive Train", "Left Front Encoder", self.lfencoder)
@@ -168,7 +166,7 @@ class driveTrain(Component) :
 
     # stop function
     def drive_stop(self) :
-        self.drive(0,0)
+        self.drive.tankDrive(0,0)
 
         '''
         self.lfmotor.set(0)
@@ -198,13 +196,13 @@ class driveTrain(Component) :
 
 # function to turn a certain number of degrees
     def turn_angle(self, degrees):
-        desired_inches = INCHES_PER_DEGREE * degrees
+        desired_inches = self.INCHES_PER_DEGREE * degrees
         if degrees < 0:
             while (abs(self.lfencoder.getDistance()) + abs(self.rfencoder.getDistance())) <= desired_inches:
-                self.drive.xboxTankDrive(0.2, -0.2)
+                self.drive.tankDrive(0.4, -0.4)
         elif degrees > 0:
             while (abs(self.lfencoder.getDistance()) + abs(self.rfencoder.getDistance())) <= desired_inches:
-                self.drive.xboxTankDrive(-0.2, 0.2)
+                self.drive.tankDrive(-0.4, 0.4)
         #while self.lfencoder.getDistance() + self.rfmotor.getDistance() + self.lbencoder.getDistance() + self.rbencoder.getDistance()
 
 
