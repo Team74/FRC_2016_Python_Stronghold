@@ -1,7 +1,7 @@
 """
 File Author: Will Lowry
 File Creation Date: 2/11/2016
-File Purpose: To create a skeleton autonomous
+File Purpose: To create a skeleton autonomous mode starting from the right
 """
 
 from robotpy_ext.autonomous import StatefulAutonomous, state, timed_state

@@ -49,12 +49,6 @@ class driveTrain(Component) :
         # Invert the correct motors
         self.lfmotor.setInverted(True)
         self.lbmotor.setInverted(True)
-<<<<<<< HEAD
-=======
-        self.rbmotor.setInverted(False)
->>>>>>> master
-        self.rfmotor.setInverted(True)
-
 
         # Initializing the encoders
         self.lfencoder = Encoder(0, 1, False)#, Encoder.EncodingType.k4X) #Creates an object of type Encoder, called lencoder. It counts
@@ -208,11 +202,7 @@ class driveTrain(Component) :
                 self.drive.tankDrive(0.4, -0.4)
         elif degrees > 0:
             while (abs(self.lfencoder.getDistance()) + abs(self.rfencoder.getDistance())) <= desired_inches:
-<<<<<<< HEAD
                 self.drive.tankDrive(-0.4, 0.4)
-=======
-                self.drive.xboxTankDrive(-0.2, 0.2)
->>>>>>> master
         #while self.lfencoder.getDistance() + self.rfmotor.getDistance() + self.lbencoder.getDistance() + self.rbencoder.getDistance()
 
 
