@@ -49,6 +49,7 @@ class driveTrain(Component) :
         # Invert the correct motors
         self.lfmotor.setInverted(True)
         self.lbmotor.setInverted(True)
+        self.rfmotor.setInverted(True)
 
         # Initializing the encoders
         self.lfencoder = Encoder(0, 1, False)#, Encoder.EncodingType.k4X) #Creates an object of type Encoder, called lencoder. It counts
