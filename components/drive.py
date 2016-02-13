@@ -48,7 +48,8 @@ class driveTrain(Component) :
         # Invert the correct motors
         self.lfmotor.setInverted(True)
         self.lbmotor.setInverted(True)
-        self.rbmotor.setInverted(True)
+        self.rbmotor.setInverted(False)
+        self.rfmotor.setInverted(True)
 
 
         # Initializing the encoders
@@ -142,13 +143,20 @@ class driveTrain(Component) :
 
     # manual drive function for Tank Drive
     def xboxTankDrive(self, leftSpeed, rightSpeed):
-
         if (self.controller.getLeftBumper() == True): #Straight Button
             rightSpeed = leftSpeed
-        if (self.controller.getRightBumper() == True): #Slow Button
-            rightSpeed = rightSpeed/2
-            leftSpeed = leftSpeed/2
-
+            if (self.controller.getRightBumper() == True): #Slow Button
+                if(leftSpeed < 0 and rightSpeed> 0 or leftSpeed > 0 and rightSpeed < 0):
+                    leftSpeed.set(controller.getLeftY)
+                    rightSpeed.set(controller.getRightY)
+                else:
+                    rightSpeed = rightSpeed/2
+                    leftSpeed = leftSpeed/2
+        leftSpeed = leftSpeed*(0.75)
+        rightSpeed = rightSpeed*(0.75)
+        if(self.controller.getRightTrigger()): # fast mode
+            leftSpeed = leftSpeed*(1.33)
+            rightSpeed = rightSpeed*(1.33)
         '''
         self.lfmotor.set(leftSpeed)
         self.rfmotor.set(rightSpeed)
@@ -196,7 +204,7 @@ class driveTrain(Component) :
                 self.drive.xboxTankDrive(0.2, -0.2)
         elif degrees > 0:
             while (abs(self.lfencoder.getDistance()) + abs(self.rfencoder.getDistance())) <= desired_inches:
-            self.drive.xboxTankDrive(-0.2, 0.2)
+                self.drive.xboxTankDrive(-0.2, 0.2)
         #while self.lfencoder.getDistance() + self.rfmotor.getDistance() + self.lbencoder.getDistance() + self.rbencoder.getDistance()
 
 
