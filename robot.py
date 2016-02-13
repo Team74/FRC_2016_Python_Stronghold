@@ -47,7 +47,7 @@ class MyRobot(wpilib.SampleRobot):
         self.dash.putNumber('Left Encoder Distance', 0)
         self.dash.putNumber('Right Encoder Distance', 0)
         self.autonomous_modes = AutonomousModeSelector('autonomous', self.components)
-
+        self.potentiometer = ('Arm Potentiometer', 0)
 
         # Reset all the things
 #        self.drive.reset()
@@ -91,7 +91,7 @@ class MyRobot(wpilib.SampleRobot):
 #            self.dash.putNumber('Right Encoder Rate', self.rencoder.getRate())
 #            self.dash.putNumber('Left Encoder Distance', self.lencoder.getDistance())
 #            self.dash.putNumber('Right Encoder Distance', self.rencoder.getDistance())
-
+            self.dash.putNumber('Arm Potentiometer', self.robotArm.getPOT())
     def test(self):
         wpilib.LiveWindow.run()
 

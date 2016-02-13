@@ -22,6 +22,7 @@ class autonomousModeFromTheRight(StatefulAutonomous):
         pass
 
 # initially stopping the bot using a timed state
+<<<<<<< HEAD
     @timed_state(first=True, duration=0.5, next_state='drive_forward_towards_ball')
     def drive_stop(self) :
         self.drive.xboxTankDrive(0, 0)
@@ -34,6 +35,14 @@ class autonomousModeFromTheRight(StatefulAutonomous):
 
     @state()
     def swerve_away_from_ball(self):
+=======
+    @timed_state(first=True, duration=0.5, next_state='turn_angle')
+    def drive_stop(self):
+        self.drive.xboxTankDrive(0,0)
+
+    @state()
+    def swerve(self):
+>>>>>>> master
         self.drive.turn_angle(180)
         self.next_state(self.drive_forward_away_from_ball)
 
