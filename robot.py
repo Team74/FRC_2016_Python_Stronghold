@@ -6,6 +6,7 @@ from components.drive import driveTrain
 from components.armControl import arm
 from components.climberControl import lift
 from robotpy_ext.autonomous.selector import AutonomousModeSelector
+from wpilib import USBCamera, CameraServer
 #from pyfrc.sim.pygame_joysticks import UsbJoysticks
 #import pygame
 
@@ -53,6 +54,19 @@ class MyRobot(wpilib.SampleRobot):
 #        self.drive.reset()
 #        self.pid.reset()
 #        self.pid.enable()
+
+    # Setting up our USB Camera
+        vision = USBCamera()
+        #vision.setFPS(15)
+        #vision.setSize(640, 360)
+        #vision.setExposureAuto()
+        #vision.setWhiteBalanceAuto()
+        #vision.startCapture()
+        visionServer = CameraServer()
+        visionServer.camera = vision
+        visionServer.setSize(visionServer.kSize160x120)
+        visionServer.setQuality(20)
+        visionServer.startAutomaticCapture(vision)
 
     def disabled(self):
         while self.isDisabled():
