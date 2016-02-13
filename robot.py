@@ -91,7 +91,7 @@ class MyRobot(wpilib.SampleRobot):
 #            self.dash.putNumber('Right Encoder Rate', self.rencoder.getRate())
 #            self.dash.putNumber('Left Encoder Distance', self.lencoder.getDistance())
 #            self.dash.putNumber('Right Encoder Distance', self.rencoder.getDistance())
-            self.dash.putNumber(self.robotArm.getPOT())
+            self.dash.putNumber('Arm Potentiometer', self.robotArm.getPOT())
     def test(self):
         wpilib.LiveWindow.run()
 

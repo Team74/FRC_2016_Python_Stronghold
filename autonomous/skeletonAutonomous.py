@@ -28,7 +28,7 @@ class skeletonAutonomous(StatefulAutonomous):
         self.drive.xboxTankDrive(0,0)
 
     @state()
-    def swerve():
+    def swerve(self):
         self.drive.turn_angle(180)
         self.next_state(self.done)
 
