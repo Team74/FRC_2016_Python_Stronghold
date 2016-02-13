@@ -24,8 +24,8 @@ class skeletonAutonomous(StatefulAutonomous):
 
 # initially stopping the bot using a timed state
     @timed_state(first=True, duration=0.5, next_state='turn_angle')
-    def drive_stop(self) :
-        self.drive.xboxTankDrive()
+    def drive_stop(self):
+        self.drive.xboxTankDrive(0,0)
 
     @state()
     def swerve():

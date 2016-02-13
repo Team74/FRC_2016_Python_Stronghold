@@ -196,7 +196,7 @@ class driveTrain(Component) :
                 self.drive.xboxTankDrive(0.2, -0.2)
         elif degrees > 0:
             while (abs(self.lfencoder.getDistance()) + abs(self.rfencoder.getDistance())) <= desired_inches:
-            self.drive.xboxTankDrive(-0.2, 0.2)
+                self.drive.xboxTankDrive(-0.2, 0.2)
         #while self.lfencoder.getDistance() + self.rfmotor.getDistance() + self.lbencoder.getDistance() + self.rbencoder.getDistance()
 
 
