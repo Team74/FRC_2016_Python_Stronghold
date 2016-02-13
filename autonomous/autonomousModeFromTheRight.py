@@ -10,7 +10,7 @@ from wpilib import SendableChooser
 
 class autonomousModeFromTheRight(StatefulAutonomous):
 
-    MODE_NAME = 'skeletonAutonomous'
+    MODE_NAME = 'autonomousModeFromTheRight'
     DEFAULT = False
 
     chooser = SendableChooser()

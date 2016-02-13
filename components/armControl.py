@@ -4,7 +4,7 @@ File Creation Date: 1/28/2015
 File Purpose: To control an arm
 """
 import wpilib
-from wpilib import CANTalon, Timer, DigitalInput, analogPotentiometer
+from wpilib import CANTalon, Timer, DigitalInput, AnalogPotentiometer
 from . import Component
 
 class arm(Component):

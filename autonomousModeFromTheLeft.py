@@ -1,16 +1,16 @@
 """
 File Author: Will Lowry
 File Creation Date: 2/11/2016
-File Purpose: To create a skeleton autonomous
+File Purpose: To create a skeleton autonomous mode starting from the left
 """
 
 from robotpy_ext.autonomous import StatefulAutonomous, state, timed_state
 from robotpy_ext.autonomous.selector import AutonomousModeSelector
 from wpilib import SendableChooser
 
-class autonomousModeFromTheRight(StatefulAutonomous):
+class autonomousModeFromTheLeft(StatefulAutonomous):
 
-    MODE_NAME = 'skeletonAutonomous'
+    MODE_NAME = 'autonomousModeFromTheLeft'
     DEFAULT = False
 
     chooser = SendableChooser()
@@ -39,24 +39,24 @@ class autonomousModeFromTheRight(StatefulAutonomous):
 
     @state()
     def drive_forward_away_from_ball(self) :
-        while (self.drive.lfencoder.getDistance() + self.drive.rfencoder.getDistance()) <= 19 :
+        while (self.drive.lfencoder.getDistance() + self.drive.rfencoder.getDistance()) <= 20 :
             self.drive.xboxTankDrive(0.4, 0.4)
         self.next_state(self.swerve_to_the_left)
 
     @state()
     def swerve_to_the_left(self):
-        self.drive.turn_angle(37)
+        self.drive.turn_angle(63)
         self.next_state(self.drive_forward_towards_defense)
 
     @state()
     def drive_forward_towards_defense(self) :
-        while (self.drive.lfencoder.getDistance() + self.drive.rfencoder.getDistance()) <= 34 :
+        while (self.drive.lfencoder.getDistance() + self.drive.rfencoder.getDistance()) <= 75 :
             self.drive.xboxTankDrive(0.4, 0.4)
         self.next_state(self.swerve_towards_defense)
 
     @state()
     def swerve_towards_defense(self):
-        self.drive.turn_angle(-37)
+        self.drive.turn_angle(-114)
         self.next_state(self.drive_forward_towards_crossing_defense)
 
     @state()
