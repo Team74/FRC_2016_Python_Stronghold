@@ -5,12 +5,10 @@ from wpilib.smartdashboard import SmartDashboard
 from components.drive import driveTrain
 from components.armControl import arm
 from components.climberControl import lift
+from components.pixy import Pixy
 from robotpy_ext.autonomous.selector import AutonomousModeSelector
 from wpilib import USBCamera, CameraServer
-#from pyfrc.sim.pygame_joysticks import UsbJoysticks
-#import pygame
 
-# to stay in sync with our driver station
 CONTROL_LOOP_WAIT_TIME = 0.025
 
 class MyRobot(wpilib.SampleRobot):
@@ -30,6 +28,7 @@ class MyRobot(wpilib.SampleRobot):
         self.drive = driveTrain(self)
         self.robotArm = arm(self)
         self.climber = lift(self)
+        self.pixy = Pixy()
 
         self.dashTimer = wpilib.Timer()     # Timer for SmartDashboard updating
         self.dashTimer.start()
@@ -38,7 +37,8 @@ class MyRobot(wpilib.SampleRobot):
         self.components = {
                             'drive' : self.drive,
                             'arm' : self.robotArm,
-                            'lift' : self.climber
+                            'lift' : self.climber,
+                            'pixy' : self.pixy
                             }
 
         # Initialize Smart Dashboard
@@ -69,7 +69,7 @@ class MyRobot(wpilib.SampleRobot):
         visionServer.setQuality(20)
         visionServer.startAutomaticCapture(vision)
         '''
-        
+
     def disabled(self):
         while self.isDisabled():
             wpilib.Timer.delay(0.01)              # Wait for 0.01 seconds
