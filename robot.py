@@ -55,7 +55,8 @@ class MyRobot(wpilib.SampleRobot):
 #        self.pid.reset()
 #        self.pid.enable()
 
-    # Setting up our USB Camera
+        '''
+        # Setting up our USB Camera
         vision = USBCamera()
         #vision.setFPS(15)
         #vision.setSize(640, 360)
@@ -67,7 +68,8 @@ class MyRobot(wpilib.SampleRobot):
         visionServer.setSize(visionServer.kSize160x120)
         visionServer.setQuality(20)
         visionServer.startAutomaticCapture(vision)
-
+        '''
+        
     def disabled(self):
         while self.isDisabled():
             wpilib.Timer.delay(0.01)              # Wait for 0.01 seconds
@@ -95,11 +97,12 @@ class MyRobot(wpilib.SampleRobot):
         while self.isOperatorControl() and self.isEnabled():
             self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY())
 
-            self.robotArm.armUpDown2(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw())
+            self.robotArm.armUpDown(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw())
             self.robotArm.wheelSpin(self.controller2.getLeftY())
 
             self.climber.climbUpDown(self.controller2.getLeftBumper(), self.controller2.getRightBumper())
             wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
+
             # Send encoder data to the smart dashboard
 #            self.dash.putNumber('Left Encoder Rate', self.lencoder.getRate())
 #            self.dash.putNumber('Right Encoder Rate', self.rencoder.getRate())
