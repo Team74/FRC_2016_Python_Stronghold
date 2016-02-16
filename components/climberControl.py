@@ -18,16 +18,6 @@ class lift(Component):
         self.BOTH_HELD = False
 
     def climbUpDown(self, leftButtonPressed, rightButtonPressed):
-        '''
-        if(rightButtonPressed == True):
-            self.solenoid1.set(True)
-            self.solenoid2.set(False)
-        elif(leftButtonPressed == True):
-            self.solenoid1.set(False)
-            self.solenoid2.set(True)
-        '''
-
-
         if(rightButtonPressed == True and leftButtonPressed == True and self.BOTH_HELD == False):
             self.BOTH_HELD = True
             if(self.ARM_STATUS == False):

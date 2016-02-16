@@ -4,7 +4,7 @@ File Creation Date: 1/28/2015
 File Purpose: To control an arm
 """
 import wpilib
-from wpilib import CANTalon, Timer, DigitalInput, AnalogPotentiometer
+from wpilib import CANTalon, Timer, DigitalInput, AnalogPotentiometer, PIDController
 from . import Component
 
 class arm(Component):
@@ -17,18 +17,9 @@ class arm(Component):
         self.frontSwitch = DigitalInput(8)
         self.backSwitch = DigitalInput(9)
         self.potentiometer = AnalogPotentiometer(0, 270, 0)
-        self.pidArm = wpilib.PIDController(0.0, 0.0, 0.0, 0.0, self.potentiometer, self.armMotor, 0.02)
+        self.pidArm = PIDController(0.0, 0.0, 0.0, 0.0, self.potentiometer, self.armMotor, 0.02)
 
-    def armUpDown(self, zval, rate=0.3):
-        self.armMotor.set(zval)
-        '''
-        if(abs(zval) >= 0.5):       #Activate only on sufficiently pressed-down trigger
-            self.armMotor.set(abs(zval)/zval*rate)  #sign(zval)*rate
-        else:
-            self.armMotor.set(0)
-        '''
-
-    def armUpDown2(self, left, right, rate=0.3):
+    def armUpDown(self, left, right, rate=0.3):
         armValue = (left - right)
         if(self.backSwitch == True and armValue < 0):
             self.armMotor.set(armValue)
