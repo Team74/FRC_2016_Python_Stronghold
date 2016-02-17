@@ -5,12 +5,10 @@ from wpilib.smartdashboard import SmartDashboard
 from components.drive import driveTrain
 from components.armControl import arm
 from components.climberControl import lift
+from components.pixy import Pixy
 from robotpy_ext.autonomous.selector import AutonomousModeSelector
 from wpilib import USBCamera, CameraServer
-#from pyfrc.sim.pygame_joysticks import UsbJoysticks
-#import pygame
 
-# to stay in sync with our driver station
 CONTROL_LOOP_WAIT_TIME = 0.025
 
 class MyRobot(wpilib.SampleRobot):
@@ -30,6 +28,7 @@ class MyRobot(wpilib.SampleRobot):
         self.drive = driveTrain(self)
         self.robotArm = arm(self)
         self.climber = lift(self)
+        self.pixy = Pixy()
 
         self.dashTimer = wpilib.Timer()     # Timer for SmartDashboard updating
         self.dashTimer.start()
@@ -38,7 +37,8 @@ class MyRobot(wpilib.SampleRobot):
         self.components = {
                             'drive' : self.drive,
                             'arm' : self.robotArm,
-                            'lift' : self.climber
+                            'lift' : self.climber,
+                            'pixy' : self.pixy
                             }
 
         # Initialize Smart Dashboard
@@ -55,7 +55,8 @@ class MyRobot(wpilib.SampleRobot):
 #        self.pid.reset()
 #        self.pid.enable()
 
-    # Setting up our USB Camera
+        '''
+        # Setting up our USB Camera
         vision = USBCamera()
         #vision.setFPS(15)
         #vision.setSize(640, 360)
@@ -67,6 +68,7 @@ class MyRobot(wpilib.SampleRobot):
         visionServer.setSize(visionServer.kSize160x120)
         visionServer.setQuality(20)
         visionServer.startAutomaticCapture(vision)
+        '''
 
     def disabled(self):
         while self.isDisabled():
@@ -95,11 +97,12 @@ class MyRobot(wpilib.SampleRobot):
         while self.isOperatorControl() and self.isEnabled():
             self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY())
 
-            self.robotArm.armUpDown2(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw())
+            self.robotArm.armUpDown(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw())
             self.robotArm.wheelSpin(self.controller2.getLeftY())
 
             self.climber.climbUpDown(self.controller2.getLeftBumper(), self.controller2.getRightBumper())
             wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
+
             # Send encoder data to the smart dashboard
 #            self.dash.putNumber('Left Encoder Rate', self.lencoder.getRate())
 #            self.dash.putNumber('Right Encoder Rate', self.rencoder.getRate())
