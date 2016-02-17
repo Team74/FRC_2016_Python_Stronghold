@@ -23,7 +23,7 @@ class driveTrain(Component) :
         ENCODER_GOAL = 0 # default
         ENCODER_TOLERANCE = 1 # inch0
         self.INCHES_PER_DEGREE = 24 * 3.14159265359 / 360
-        self.CONTROL_TYPE = 0 # 0 = disable PID components
+        self.CONTROL_TYPE = 1 # 0 = disable PID components
 
         self.rfmotor = CANTalon(0)
         self.rbmotor = CANTalon(1)
