@@ -49,12 +49,14 @@ class MyRobot(wpilib.SampleRobot):
         self.dash.putNumber('Right Encoder Distance', 0)
         self.autonomous_modes = AutonomousModeSelector('autonomous', self.components)
         self.potentiometer = ('Arm Potentiometer', 0)
-
+        self.dash.putNumber('ControlType', 0)
+        self.dash.putBoolean('Front Switch', 0)
+        self.dash.putBoolean('Back Switch', 0)
         # Reset all the things
 #        self.drive.reset()
 #        self.pid.reset()
 #        self.pid.enable()
-
+        self.drive.log()
         '''
         # Setting up our USB Camera
         vision = USBCamera()
@@ -101,6 +103,9 @@ class MyRobot(wpilib.SampleRobot):
             self.robotArm.wheelSpin(self.controller2.getLeftY())
 
             self.climber.climbUpDown(self.controller2.getLeftBumper(), self.controller2.getRightBumper())
+
+            self.drive.log()
+
             wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
 
             # Send encoder data to the smart dashboard
@@ -109,6 +114,11 @@ class MyRobot(wpilib.SampleRobot):
 #            self.dash.putNumber('Left Encoder Distance', self.lencoder.getDistance())
 #            self.dash.putNumber('Right Encoder Distance', self.rencoder.getDistance())
             self.dash.putNumber('Arm Potentiometer', self.robotArm.getPOT())
+            #self.dash.putNumber('Control Type', self.drive.get())
+            self.dash.putBoolean('Back Switch', self.robotArm.getFrontSwitch())
+            self.dash.putBoolean('Front Switch', self.robotArm.getBackSwitch())
+
+
     def test(self):
         wpilib.LiveWindow.run()
 
