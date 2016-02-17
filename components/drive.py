@@ -1,5 +1,5 @@
 """
-File Author: Will Lowry
+File Author: Will Lowry, Will Hescott
 File Creation Date: 1/28/2015
 File Purpose: To create our drive functions
 """
@@ -23,7 +23,7 @@ class driveTrain(Component) :
         ENCODER_GOAL = 0 # default
         ENCODER_TOLERANCE = 1 # inch0
         self.INCHES_PER_DEGREE = 24 * 3.14159265359 / 360
-        self.CONTROL_TYPE = 0 # 0 = disable PID components
+        self.CONTROL_TYPE = 1 # 0 = disable PID components
 
         self.rfmotor = CANTalon(0)
         self.rbmotor = CANTalon(1)
@@ -52,10 +52,10 @@ class driveTrain(Component) :
         self.rfmotor.setInverted(True)
 
         # Initializing the encoders
-        self.lfencoder = Encoder(0, 1, False)#, Encoder.EncodingType.k4X) #Creates an object of type Encoder, called lencoder. It counts
-        self.rfencoder = Encoder(2, 3, True)#, Encoder.EncodingType.k4X) #the amount that a motor has rotated, and returns it in Direction and Distance variables
-        self.lbencoder = Encoder(4, 5, False)#, Encoder.EncodingType.k4x)
-        self.rbencoder = Encoder(6, 7, False)#, Encoder.EncodingType.k4x)
+        self.rfencoder = Encoder(0, 1, False)#, Encoder.EncodingType.k4X) #Creates an object of type Encoder, called lencoder. It counts
+        self.rbencoder = Encoder(2, 3, True)#, Encoder.EncodingType.k4X) #the amount that a motor has rotated, and returns it in Direction and Distance variables
+        self.lfencoder = Encoder(4, 5, False)#, Encoder.EncodingType.k4x)
+        self.lbencoder = Encoder(6, 7, False)#, Encoder.EncodingType.k4x)
 
         # Set the distance per encoder tick
         self.lfencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT_360)
