@@ -1,14 +1,56 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Right Back Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="1369" y="331"/>
+	</widget>
+	<widget field="Left Back Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="939" y="336"/>
+	</widget>
+	<widget field="Right Front Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="1367" y="11"/>
+	</widget>
+	<widget field="Left Front Speed" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="943" y="10"/>
+	</widget>
+	<widget field="Left Front Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="8" y="2"/>
+	</widget>
+	<widget field="Arm Potentiometer" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="184"/>
+	</widget>
+	<widget field="Right Back Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="69"/>
+	</widget>
+	<widget field="Left Back Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="46"/>
+	</widget>
+	<widget field="Right Front Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="23"/>
+	</widget>
+	<widget field="Back Switch" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="92" y="685"/>
+	</widget>
+	<widget field="Front Switch" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="89" y="653"/>
+	</widget>
+	<widget field="ControlType" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="504" y="493"/>
+	</widget>
+	<widget field="autonomousModeFromTheRight\drive_stop_duration" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="272" y="466"/>
+	</widget>
+	<widget field="autonomousModeFromTheLeft\drive_stop_duration" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="282" y="438"/>
+	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
-		<location x="461" y="398"/>
+		<location x="5" y="934"/>
 	</static-widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
 		<location x="425" y="223"/>
 		<property name="Text" value="Encoder Outputs"/>
 	</static-widget>
 	<widget field="Cross the low bar and score in the high goal\drive_stop_duration" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="102" y="126"/>
+		<location x="202" y="412"/>
 		<property name="Background" value="51.255.255.255"/>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
@@ -16,33 +58,15 @@
 		<property name="Text" value="Autonomous"/>
 	</static-widget>
 	<widget field="Spin in a circle\drive_stop_duration" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="272" y="100"/>
+		<location x="372" y="385"/>
 		<property name="Background" value="102.255.255.255"/>
 	</widget>
 	<widget field="Drive forward\drive_stop_duration" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="277" y="73"/>
+		<location x="378" y="361"/>
 		<property name="Background" value="102.255.255.255"/>
 	</widget>
 	<widget field="Autonomous Mode" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="0" y="303"/>
-	</widget>
-	<widget field="Left Encoder Rate" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="706" y="307"/>
-		<width>639</width>
-		<property name="Buffer Size (samples)" value="150"/>
-	</widget>
-	<widget field="Right Encoder Rate" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="707" y="3"/>
-		<width>624</width>
-		<property name="Buffer Size (samples)" value="150"/>
-	</widget>
-	<widget field="Right Encoder Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="337" y="271"/>
-		<property name="Background" value="204.204.204.255"/>
-	</widget>
-	<widget field="Left Encoder Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="346" y="298"/>
-		<property name="Background" value="204.204.204.255"/>
+		<location x="20" y="755"/>
 	</widget>
 	<widget field="Spin Incessantly\drive_stop_duration" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="263" y="152"/>
@@ -51,4 +75,8 @@
 </dashboard>
 <live-window>
 </live-window>
+	<hidden field="Left Encoder Rate"/>
+	<hidden field="Left Encoder Distance"/>
+	<hidden field="Right Encoder Distance"/>
+	<hidden field="Right Encoder Rate"/>
 </xml>
