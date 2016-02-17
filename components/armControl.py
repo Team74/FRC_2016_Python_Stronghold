@@ -8,7 +8,7 @@ from wpilib import CANTalon, Timer, DigitalInput, AnalogPotentiometer, PIDContro
 from . import Component
 
 class arm(Component):
-
+    #set up variables
     def __init__(self, robot):
         super().__init__()
         self.robot = robot
@@ -21,26 +21,27 @@ class arm(Component):
         self.position = 0
 
     def armUpDown(self, left, right, rate=0.3):
-        armValue = (left - right)
+        #if(left > 0.75= or right >= 0.75):
+        #    armValue = (left - right)
 
-        if(self.backSwitch == False or self.frontSwitch == False):
+        if(self.backSwitch.get() == False or self.frontSwitch.get() == False): #Checking limit switches
             self.armMotor.set(0)
 
-        if(self.backSwitch == True and armValue < 0):
-            self.armMotor.set(armValue)
-        elif(self.frontSwitch == True and armValue > 0):
-            self.armMotor.set(armValue)
+        if(self.backSwitch.get() == True and left > 0.75):#if tripped, disallow further movement
+            self.armMotor.set(rate)
+        elif(self.frontSwitch.get() == True and right > 0.75):#if tripped, disallow further movement
+            self.armMotor.set(rate)
 
     # Arm movement function with using PID control
     def armUpDownPID(self, left, right, rate=0.3):
-        if(self.backSwitch == False or self.frontSwitch == False):
+        if(self.backSwitch.get() == False or self.frontSwitch.get() == False):
             self.pidArm.SetSetpoint(position)
             self.armMotor.set(0)
-
-        if(self.backSwitch == True and armValue < 0):
+                #moves the arm up and down, as well as outputting potentiometer info to dashboard
+        if(self.backSwitch.get() == True and armValue < 0):
             self.position += rate
             self.pidArm.SetSetpoint(position)
-        elif(self.frontSwitch == True and armValue > 0):
+        elif(self.frontSwitch.get() == True and armValue > 0):
             self.position -= rate
             self.pidArm.SetSetpoint(position)
 
@@ -49,3 +50,9 @@ class arm(Component):
 
     def getPOT(self):
         return self.potentiometer.get()
+
+    def getBackSwitch(self):
+        return self.backSwitch.get()
+
+    def getFrontSwitch(self):
+        return self.frontSwitch.get()
