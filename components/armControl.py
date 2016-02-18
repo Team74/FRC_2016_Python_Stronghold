@@ -28,7 +28,7 @@ class arm(Component):
             self.armMotor.set(0)
 
         if(self.backSwitch.get() == True and left > 0.75):#if tripped, disallow further movement
-            self.armMotor.set(rate)
+            self.armMotor.set(rate * -1)
         elif(self.frontSwitch.get() == True and right > 0.75):#if tripped, disallow further movement
             self.armMotor.set(rate)
 
