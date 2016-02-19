@@ -53,9 +53,10 @@ class driveTrain(Component) :
 
         # Initializing the encoders
         self.rfencoder = Encoder(0, 1, False)#, Encoder.EncodingType.k4X) #Creates an object of type Encoder, called lencoder. It counts
-        self.rbencoder = Encoder(2, 3, True)#, Encoder.EncodingType.k4X) #the amount that a motor has rotated, and returns it in Direction and Distance variables
-        self.lfencoder = Encoder(4, 5, False)#, Encoder.EncodingType.k4x)
-        self.lbencoder = Encoder(6, 7, False)#, Encoder.EncodingType.k4x)
+        self.rbencoder = Encoder(2, 3, False)#, Encoder.EncodingType.k4X) #the amount that a motor has rotated, and returns it in Direction and Distance variables
+        self.lfencoder = Encoder(4, 5, True)#, Encoder.EncodingType.k4x)
+        self.lbencoder = Encoder(6, 7, True)#, Encoder.EncodingType.k4x)
+
 
         # Set the distance per encoder tick
         self.lfencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT_360)
