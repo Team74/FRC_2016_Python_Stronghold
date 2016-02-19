@@ -27,10 +27,17 @@ class arm(Component):
         if(self.backSwitch.get() == False or self.frontSwitch.get() == False): #Checking limit switches
             self.armMotor.set(0)
 
+<<<<<<< HEAD
+        if(self.backSwitch.get() == True and left >= 0.75):#if tripped, disallow further movement
+            self.armMotor.set(rate)
+        elif(self.frontSwitch.get() == True and right >= 0.75):#if tripped, disallow further movement
+            self.armMotor.set(rate * -1)
+=======
         if(self.backSwitch.get() == True and left > 0.75):#if tripped, disallow further movement
             self.armMotor.set(rate * -1)
         elif(self.frontSwitch.get() == True and right > 0.75):#if tripped, disallow further movement
             self.armMotor.set(-rate)
+>>>>>>> master
         elif(left < 0.75 and right < 0.75):
             self.armMotor.set(0)
 

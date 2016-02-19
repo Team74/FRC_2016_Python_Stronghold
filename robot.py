@@ -30,6 +30,8 @@ class MyRobot(wpilib.SampleRobot):
         self.climber = lift(self)
         self.pixy = Pixy()
 
+        self.drive.reset()
+
         self.dashTimer = wpilib.Timer()     # Timer for SmartDashboard updating
         self.dashTimer.start()
 
