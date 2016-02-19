@@ -6,7 +6,6 @@ File Purpose: To create our drive functions
 import wpilib
 from wpilib import CANTalon, Encoder, Timer, RobotDrive
 from wpilib.interfaces import Gyro
-from xbox import XboxController
 from . import Component
 
 class driveTrain(Component) :
@@ -36,15 +35,6 @@ class driveTrain(Component) :
         #self.lbmotor.setExpiration(1)
         #self.rbmotor.setExpiration(1)
 
-        # disabling the "watchdog" functionality
-        while self.lfmotor.isSafetyEnabled():
-            self.lfmotor.setSafetyEnabled(False)
-        while self.rfmotor.isSafetyEnabled():
-            self.rfmotor.setSafetyEnabled(False)
-        while self.lbmotor.isSafetyEnabled():
-            self.lbmotor.setSafetyEnabled(False)
-        while self.rbmotor.isSafetyEnabled():
-            self.rbmotor.setSafetyEnabled(False)
 
         # Invert the correct motors
         self.lfmotor.setInverted(True)
@@ -64,40 +54,55 @@ class driveTrain(Component) :
         self.lbencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT_360)
         self.rbencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT_360)
 
+        # changing the encoder output from DISTANCE to RATE (we're dumb)
+        self.lfencoder.setPIDSourceType(wpilib.PIDController.PIDSourceType.kRate)
+        self.lbencoder.setPIDSourceType(wpilib.PIDController.PIDSourceType.kRate)
+        self.rfencoder.setPIDSourceType(wpilib.PIDController.PIDSourceType.kRate)
+        self.rbencoder.setPIDSourceType(wpilib.PIDController.PIDSourceType.kRate)
+
         # LiveWindow settings (Encoder)
         wpilib.LiveWindow.addSensor("Drive Train", "Left Front Encoder", self.lfencoder)
         wpilib.LiveWindow.addSensor("Drive Train", "Right Front Encoder", self.rfencoder)
         wpilib.LiveWindow.addSensor("Drive Train", "Left Back Encoder", self.lbencoder)
         wpilib.LiveWindow.addSensor("Drive Train", "Right Back Encoder", self.rbencoder)
 
-
-        self.drive = RobotDrive(self.lfmotor, self.lbmotor, self.rfmotor, self.rbmotor)
+        #self.drive = RobotDrive(self.lfmotor, self.lbmotor, self.rfmotor, self.rbmotor)
 
         if self.CONTROL_TYPE:
 
             # Initializing PID Controls
-            self.pidRightFront = wpilib.PIDController(0.0, 0.0, 0.0, 0.0, self.rfencoder, self.rfmotor, 0.02)
+            self.pidRightFront = wpilib.PIDController(0.001, 1.0, 0.005, 0, self.rfencoder, self.rfmotor, 0.02)
             self.pidLeftFront = wpilib.PIDController(0.0, 0.0, 0.0, 0.0, self.lfencoder, self.lfmotor, 0.02)
-            self.pidRightBack = wpilib.PIDController(0.0, 0.0, 0.0, 0.0, self.rbencoder, self.rbmotor, 0.02)
+            self.pidRightBack = wpilib.PIDController(0.001, 1.0, 0.005, 0, self.rbencoder, self.rbmotor, 0.02)
             self.pidLeftBack = wpilib.PIDController(0.0, 0.0, 0.0, 0.0, self.lbencoder, self.lbmotor, 0.02)
 
+            '''
             # PID Continuous Settings
-            self.pidRightFront.setContinuous(False)
-            self.pidLeftFront.setContinuous(False)
-            self.pidRightBack.setContinuous(False)
-            self.pidLeftBack.setContinuous(False)
+            self.pidRightFront.setContinuous(True)
+            self.pidLeftFront.setContinuous(True)
+            self.pidRightBack.setContinuous(True)
+            self.pidLeftBack.setContinuous(True)
+            '''
 
             # PID Absolute Tolerance Settings
-            self.pidRightFront.setAbsoluteTolerance(0.05)
+            self.pidRightFront.setAbsoluteTolerance(0.015)
             self.pidLeftFront.setAbsoluteTolerance(0.05)
             self.pidRightBack.setAbsoluteTolerance(0.05)
             self.pidLeftBack.setAbsoluteTolerance(0.05)
 
-            # PID OutputRange Settings
+
+            # PID Output Range Settings
             self.pidRightFront.setOutputRange(-1, 1)
             self.pidLeftFront.setOutputRange(-1, 1)
             self.pidRightBack.setOutputRange(-1, 1)
             self.pidLeftBack.setOutputRange(-1, 1)
+
+
+            # Enable PID
+            self.pidRightFront.enable()
+            self.pidLeftFront.enable()
+            self.pidRightBack.enable()
+            self.pidLeftBack.enable()
 
             # LiveWindow settings (PID)
             wpilib.LiveWindow.addActuator("Drive Trian", "Right Front PID", self.pidRightFront)
@@ -105,7 +110,6 @@ class driveTrain(Component) :
             wpilib.LiveWindow.addActuator("Drive Trian", "Right Back PID", self.pidRightBack)
             wpilib.LiveWindow.addActuator("Drive Trian", "Left Back PID", self.pidLeftBack)
 
-        self.controller = XboxController(0)
 
         self.autonomousSpeed = 0.2
 
@@ -143,6 +147,7 @@ class driveTrain(Component) :
 
     # manual drive function for Tank Drive
     def xboxTankDrive(self, leftSpeed, rightSpeed):
+        '''
         if (self.controller.getLeftBumper() == True): #Straight Button
             rightSpeed = leftSpeed
             if (self.controller.getRightBumper() == True): #Slow Button
@@ -158,13 +163,18 @@ class driveTrain(Component) :
             leftSpeed = leftSpeed*(1.33)
             rightSpeed = rightSpeed*(1.33)
         '''
+        '''
         self.lfmotor.set(leftSpeed)
         self.rfmotor.set(rightSpeed)
         self.lbmotor.set(leftSpeed)
         self.rbmotor.set(rightSpeed)
         '''
 
-        self.drive.tankDrive(leftSpeed, rightSpeed, True)
+        #self.drive.tankDrive(leftSpeed, rightSpeed, True)
+        self.pidRightFront.setSetpoint(rightSpeed*(-100))
+        self.pidRightBack.setSetpoint(rightSpeed*(-100))
+        self.pidLeftFront.setSetpoint(leftSpeed*100)
+        self.pidLeftBack.setSetpoint(leftSpeed*100)
 
     # stop function
     def drive_stop(self) :
@@ -193,8 +203,10 @@ class driveTrain(Component) :
 # fucntion to reset the gyro
     def reset(self):
         if self.CONTROL_TYPE:
-            self.lencoder.reset()
-            self.rencoder.reset()
+            self.lfencoder.reset()
+            self.rfencoder.reset()
+            self.lbencoder.reset()
+            self.rbencoder.reset()
 
 # function to turn a certain number of degrees
     def turn_angle(self, degrees):
