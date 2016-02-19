@@ -30,7 +30,9 @@ class arm(Component):
         if(self.backSwitch.get() == True and left > 0.75):#if tripped, disallow further movement
             self.armMotor.set(rate * -1)
         elif(self.frontSwitch.get() == True and right > 0.75):#if tripped, disallow further movement
-            self.armMotor.set(rate)
+            self.armMotor.set(-rate)
+        elif(left < 0.75 and right < 0.75):
+            self.armMotor.set(0)
 
     # Arm movement function with using PID control
     def armUpDownPID(self, left, right, rate=0.3):
