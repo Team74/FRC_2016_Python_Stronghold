@@ -44,8 +44,8 @@ class driveTrain(Component) :
         # Initializing the encoders
         self.rfencoder = Encoder(0, 1, False)#, Encoder.EncodingType.k4X) #Creates an object of type Encoder, called lencoder. It counts
         self.rbencoder = Encoder(2, 3, False)#, Encoder.EncodingType.k4X) #the amount that a motor has rotated, and returns it in Direction and Distance variables
-        self.lfencoder = Encoder(4, 5, True)#, Encoder.EncodingType.k4x)
-        self.lbencoder = Encoder(6, 7, True)#, Encoder.EncodingType.k4x)
+        self.lfencoder = Encoder(4, 5, False)#, Encoder.EncodingType.k4x)
+        self.lbencoder = Encoder(6, 7, False)#, Encoder.EncodingType.k4x)
 
 
         # Set the distance per encoder tick
@@ -72,9 +72,9 @@ class driveTrain(Component) :
 
             # Initializing PID Controls
             self.pidRightFront = wpilib.PIDController(0.001, 1.0, 0.005, 0, self.rfencoder, self.rfmotor, 0.02)
-            self.pidLeftFront = wpilib.PIDController(0.0, 0.0, 0.0, 0.0, self.lfencoder, self.lfmotor, 0.02)
+            self.pidLeftFront = wpilib.PIDController(0.001, 1.0, 0.005, 0, self.lfencoder, self.lfmotor, 0.02)
             self.pidRightBack = wpilib.PIDController(0.001, 1.0, 0.005, 0, self.rbencoder, self.rbmotor, 0.02)
-            self.pidLeftBack = wpilib.PIDController(0.0, 0.0, 0.0, 0.0, self.lbencoder, self.lbmotor, 0.02)
+            self.pidLeftBack = wpilib.PIDController(0.001, 1.0, 0.005, 0, self.lbencoder, self.lbmotor, 0.02)
 
             '''
             # PID Continuous Settings
@@ -170,6 +170,12 @@ class driveTrain(Component) :
         self.rbmotor.set(rightSpeed)
         '''
 
+        #getting rid of the lower outputs of the joysticks (because they're trash)
+        if abs(rightSpeed) < 0.07 :
+            rightSpeed = 0
+        if abs(leftSpeed) < 0.07 :
+            leftSpeed = 0
+
         #self.drive.tankDrive(leftSpeed, rightSpeed, True)
         self.pidRightFront.setSetpoint(rightSpeed*(-100))
         self.pidRightBack.setSetpoint(rightSpeed*(-100))
@@ -221,4 +227,4 @@ class driveTrain(Component) :
 
 
     def getDistance(self):
-        return (self.lencoder.getDistance() + self.rencoder.getDistance())/2.0
+        return (self.lfencoder.getDistance() + self.lbencoder.getDistance() + self.rfencoder.getDistance + self.rbencoder.getDistance())/4.0
