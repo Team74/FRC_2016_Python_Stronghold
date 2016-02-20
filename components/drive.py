@@ -85,7 +85,7 @@ class driveTrain(Component) :
             '''
 
             # PID Absolute Tolerance Settings
-            self.pidRightFront.setAbsoluteTolerance(0.015)
+            self.pidRightFront.setAbsoluteTolerance(0.05)
             self.pidLeftFront.setAbsoluteTolerance(0.05)
             self.pidRightBack.setAbsoluteTolerance(0.05)
             self.pidLeftBack.setAbsoluteTolerance(0.05)
@@ -161,6 +161,21 @@ class driveTrain(Component) :
         if(rightT == True): # fast mode
             leftSpeed = leftSpeed*(1.75)
             rightSpeed = rightSpeed*(1.75)
+
+        #getting rid of the lower outputs of the joysticks (because they're trash)
+        if abs(rightSpeed) < 0.07 :
+            rightSpeed = 0
+        if abs(leftSpeed) < 0.07 :
+            leftSpeed = 0
+
+        #self.drive.tankDrive(leftSpeed, rightSpeed, True)
+        self.pidRightFront.setSetpoint(rightSpeed*(-100))
+        self.pidRightBack.setSetpoint(rightSpeed*(-100))
+        self.pidLeftFront.setSetpoint(leftSpeed*100)
+        self.pidLeftBack.setSetpoint(leftSpeed*100)
+
+    #autononmous tank drive (to remove a need for a slow, striaght, or fast button)
+    def autonTankDrive(self, leftSpeed, rightSpeed):
 
         #getting rid of the lower outputs of the joysticks (because they're trash)
         if abs(rightSpeed) < 0.07 :

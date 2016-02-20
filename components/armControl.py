@@ -47,7 +47,7 @@ class arm(Component):
             self.position -= rate
             self.pidArm.SetSetpoint(position)
 
-    def wheelSpin(self, speed):
+    def wheelSpin(self, speed = 1):
         self.wheelMotor.set(speed)
 
     def getPOT(self):
