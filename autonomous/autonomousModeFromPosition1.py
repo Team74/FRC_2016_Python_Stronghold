@@ -12,7 +12,7 @@ from components.armControl import arm
 class autonomousModeFromFirstPosition(StatefulAutonomous):
 
     MODE_NAME = 'First Position Auto'
-    DEFAULT = False
+    DEFAULT = True
 
     chooser = SendableChooser()
     default_modes = []
