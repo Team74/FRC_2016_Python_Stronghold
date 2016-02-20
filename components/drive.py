@@ -205,6 +205,10 @@ class driveTrain(Component) :
             self.rfencoder.reset()
             self.lbencoder.reset()
             self.rbencoder.reset()
+            self.pidLeftBack.setSetpoint(0)
+            self.pidLeftFront.setSetpoint(0)
+            self.pidRightBack.setSetpoint(0)
+            self.pidRightFront.setSetpoint(0)
 
 # function to turn a certain number of degrees
     def turn_angle(self, degrees):
