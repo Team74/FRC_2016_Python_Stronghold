@@ -146,29 +146,21 @@ class driveTrain(Component) :
         self.drive.tankDrive(speed, speed, True)
 
     # manual drive function for Tank Drive
-    def xboxTankDrive(self, leftSpeed, rightSpeed):
-        '''
-        if (self.controller.getLeftBumper() == True): #Straight Button
+    def xboxTankDrive(self, leftSpeed, rightSpeed, leftB, rightB, rightT):
+
+        if (leftB == True): #Straight Button
             rightSpeed = leftSpeed
-            if (self.controller.getRightBumper() == True): #Slow Button
-                if(leftSpeed < 0 and rightSpeed> 0 or leftSpeed > 0 and rightSpeed < 0):
-                    leftSpeed.set(controller.getLeftY)
-                    rightSpeed.set(controller.getRightY)
-                else:
-                    rightSpeed = rightSpeed/2
-                    leftSpeed = leftSpeed/2
-        leftSpeed = leftSpeed*(0.75)
-        rightSpeed = rightSpeed*(0.75)
-        if(self.controller.getRightTrigger()): # fast mode
-            leftSpeed = leftSpeed*(1.33)
-            rightSpeed = rightSpeed*(1.33)
-        '''
-        '''
-        self.lfmotor.set(leftSpeed)
-        self.rfmotor.set(rightSpeed)
-        self.lbmotor.set(leftSpeed)
-        self.rbmotor.set(rightSpeed)
-        '''
+
+        if (rightB == True): #Slow Button
+            leftSpeed = leftSpeed/1.75
+            rightSpeed = rightSpeed/1.75
+            if(leftSpeed < -0.5 and rightSpeed > 0.5 or leftSpeed > -0.5 and rightSpeed < 0.5):
+                leftSpeed = leftSpeed
+                rightSpeed = rightSpeed
+
+        if(rightT == True): # fast mode
+            leftSpeed = leftSpeed*(1.75)
+            rightSpeed = rightSpeed*(1.75)
 
         #getting rid of the lower outputs of the joysticks (because they're trash)
         if abs(rightSpeed) < 0.07 :
