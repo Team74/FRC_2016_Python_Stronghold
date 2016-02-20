@@ -99,7 +99,7 @@ class MyRobot(wpilib.SampleRobot):
         # Resetting encoders
 
         while self.isOperatorControl() and self.isEnabled():
-            self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY())
+            self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY(), self.controller.getLeftBumper(), self.controller.getRightBumper(), self.controller.getRightTrigger())
 
             self.robotArm.armUpDown(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw())
             self.robotArm.wheelSpin(self.controller2.getLeftY())
