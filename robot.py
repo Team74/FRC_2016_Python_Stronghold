@@ -45,10 +45,6 @@ class MyRobot(wpilib.SampleRobot):
 
         # Initialize Smart Dashboard
         self.dash = SmartDashboard()
-        self.dash.putNumber('Left Encoder Rate', 0)
-        self.dash.putNumber('Right Encoder Rate', 0)
-        self.dash.putNumber('Left Encoder Distance', 0)
-        self.dash.putNumber('Right Encoder Distance', 0)
         self.autonomous_modes = AutonomousModeSelector('autonomous', self.components)
         self.potentiometer = ('Arm Potentiometer', 0)
         self.dash.putNumber('ControlType', 0)
@@ -90,6 +86,7 @@ class MyRobot(wpilib.SampleRobot):
         while self.isAutonomous() and self.isEnabled(): #Here just in case I have put the While loop in the wrong place(Hescott)             # remove the need to multiply by -1
 
             # Run the actual autonomous mode
+            self.potentiometer = ('Arm Potentiometer', self.robotArm.getPOT())
             self.autonomous_modes.run()
 
             #self.lmotor.set(currentSpeed)           #it is multiplied by -1 because of the motor polarity, switiching the wires would
