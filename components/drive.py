@@ -76,14 +76,6 @@ class driveTrain(Component) :
             self.pidRightBack = wpilib.PIDController(0.001, 1.0, 0.005, 0, self.rbencoder, self.rbmotor, 0.02)
             self.pidLeftBack = wpilib.PIDController(0.001, 1.0, 0.005, 0, self.lbencoder, self.lbmotor, 0.02)
 
-            '''
-            # PID Continuous Settings
-            self.pidRightFront.setContinuous(True)
-            self.pidLeftFront.setContinuous(True)
-            self.pidRightBack.setContinuous(True)
-            self.pidLeftBack.setContinuous(True)
-            '''
-
             # PID Absolute Tolerance Settings
             self.pidRightFront.setAbsoluteTolerance(0.015)
             self.pidLeftFront.setAbsoluteTolerance(0.05)

@@ -125,7 +125,29 @@ class MyRobot(wpilib.SampleRobot):
         wpilib.LiveWindow.run()
 
         while self.isTest() and self.isEnabled():
-            self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY())
 
+            self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY(), self.controller.getLeftBumper(), self.controller.getRightBumper(), self.controller.getRightTrigger())
+            self.robotArm.armUpDownPID(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw())
+
+    '''
+    def checkPixy():
+        distanceFromCenter = 0
+        closestBallArea = 0 #meaningless number that any result returned by the function can always beat
+        biggestBallID = None
+        blocks = self.pixy.getBlocks()
+
+        for i in range(0, len(blocks)):
+            area = blocks[i].getArea()
+            if(area > closestBallArea):
+                closestBallArea = area
+                biggestBallID = i
+       if(controller.getLeftTriggerRaw() > 0.75):
+            distanceFromCenter = blocks[BiggestballID] - 180
+
+            if(distanceFromCenter < 0):#turn right
+                self.drive.turnAngle(-2)
+            elif(distanceFromCenter > 0):#turn left
+                self.drive.turnAngle(2)
+    '''
 if __name__ == "__main__":
     wpilib.run(MyRobot)
