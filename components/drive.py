@@ -15,7 +15,7 @@ class driveTrain(Component) :
         self.robot = robot
 
         # Constants
-        WHEEL_DIAMETER = 8
+        WHEEL_DIAMETER = 7.5
         PI = 3.1415
         ENCODER_TICK_COUNT_250 = 250
         ENCODER_TICK_COUNT_360 = 360
@@ -177,17 +177,11 @@ class driveTrain(Component) :
     #autononmous tank drive (to remove a need for a slow, striaght, or fast button)
     def autonTankDrive(self, leftSpeed, rightSpeed):
 
-        #getting rid of the lower outputs of the joysticks (because they're trash)
-        if abs(rightSpeed) < 0.07 :
-            rightSpeed = 0
-        if abs(leftSpeed) < 0.07 :
-            leftSpeed = 0
-
         #self.drive.tankDrive(leftSpeed, rightSpeed, True)
-        self.pidRightFront.setSetpoint(rightSpeed*(-100))
-        self.pidRightBack.setSetpoint(rightSpeed*(-100))
-        self.pidLeftFront.setSetpoint(leftSpeed*100)
-        self.pidLeftBack.setSetpoint(leftSpeed*100)
+        self.pidRightFront.setSetpoint(rightSpeed*(100))
+        self.pidRightBack.setSetpoint(rightSpeed*(100))
+        self.pidLeftFront.setSetpoint(leftSpeed*-100)
+        self.pidLeftBack.setSetpoint(leftSpeed*-100)
 
     # stop function
     def drive_stop(self) :
@@ -230,10 +224,10 @@ class driveTrain(Component) :
         desired_inches = self.INCHES_PER_DEGREE * degrees
         if degrees < 0:
             while (abs(self.lfencoder.getDistance()) + abs(self.rfencoder.getDistance())) <= desired_inches:
-                self.drive.tankDrive(0.4, -0.4)
+                self.autonTankDrive(0.4, -0.4)
         elif degrees > 0:
             while (abs(self.lfencoder.getDistance()) + abs(self.rfencoder.getDistance())) <= desired_inches:
-                self.drive.tankDrive(-0.4, 0.4)
+                self.autonTankDrive(-0.4, 0.4)
         #while self.lfencoder.getDistance() + self.rfmotor.getDistance() + self.lbencoder.getDistance() + self.rbencoder.getDistance()
 
 

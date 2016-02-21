@@ -16,9 +16,18 @@ class arm(Component):
         self.wheelMotor = CANTalon(5)
         self.frontSwitch = DigitalInput(8)
         self.backSwitch = DigitalInput(9)
-        self.potentiometer = AnalogPotentiometer(0, 270, 0)
+        self.potentiometer = AnalogPotentiometer(0, 270, -11)
         self.pidArm = PIDController(0.0, 0.0, 0.0, 0.0, self.potentiometer, self.armMotor, 0.02)
         self.position = 0
+
+    def armAuto(self, upValue=None , downValue=None, rate=0.3):
+        if self.getPOT() <= 0 or self.getPOT() >= 90:
+            self.armMotor.set(0)
+
+        if upValue == 1:
+            self.armMotor.set(rate * -1)
+        if downValue == 1:
+            self.armMotor.set(rate)
 
     def armUpDown(self, left, right, rate=0.3):
         #if(left > 0.75= or right >= 0.75):
