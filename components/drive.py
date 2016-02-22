@@ -15,7 +15,7 @@ class driveTrain(Component) :
         self.robot = robot
 
         # Constants
-        WHEEL_DIAMETER = 8
+        WHEEL_DIAMETER = 7.5
         PI = 3.1415
         ENCODER_TICK_COUNT_250 = 250
         ENCODER_TICK_COUNT_360 = 360
@@ -77,7 +77,7 @@ class driveTrain(Component) :
             self.pidLeftBack = wpilib.PIDController(0.001, 1.0, 0.005, 0, self.lbencoder, self.lbmotor, 0.02)
 
             # PID Absolute Tolerance Settings
-            self.pidRightFront.setAbsoluteTolerance(0.015)
+            self.pidRightFront.setAbsoluteTolerance(0.05)
             self.pidLeftFront.setAbsoluteTolerance(0.05)
             self.pidRightBack.setAbsoluteTolerance(0.05)
             self.pidLeftBack.setAbsoluteTolerance(0.05)
@@ -166,6 +166,15 @@ class driveTrain(Component) :
         self.pidLeftFront.setSetpoint(leftSpeed*100)
         self.pidLeftBack.setSetpoint(leftSpeed*100)
 
+    #autononmous tank drive (to remove a need for a slow, striaght, or fast button)
+    def autonTankDrive(self, leftSpeed, rightSpeed):
+
+        #self.drive.tankDrive(leftSpeed, rightSpeed, True)
+        self.pidRightFront.setSetpoint(rightSpeed*(100))
+        self.pidRightBack.setSetpoint(rightSpeed*(100))
+        self.pidLeftFront.setSetpoint(leftSpeed*-100)
+        self.pidLeftBack.setSetpoint(leftSpeed*-100)
+
     # stop function
     def drive_stop(self) :
         self.drive.tankDrive(0,0)
@@ -207,10 +216,10 @@ class driveTrain(Component) :
         desired_inches = self.INCHES_PER_DEGREE * degrees
         if degrees < 0:
             while (abs(self.lfencoder.getDistance()) + abs(self.rfencoder.getDistance())) <= desired_inches:
-                self.drive.tankDrive(0.4, -0.4)
+                self.autonTankDrive(0.4, -0.4)
         elif degrees > 0:
             while (abs(self.lfencoder.getDistance()) + abs(self.rfencoder.getDistance())) <= desired_inches:
-                self.drive.tankDrive(-0.4, 0.4)
+                self.autonTankDrive(-0.4, 0.4)
         #while self.lfencoder.getDistance() + self.rfmotor.getDistance() + self.lbencoder.getDistance() + self.rbencoder.getDistance()
 
 
