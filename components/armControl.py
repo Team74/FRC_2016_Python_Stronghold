@@ -16,8 +16,10 @@ class arm(Component):
         self.wheelMotor = CANTalon(5)
         self.frontSwitch = DigitalInput(8)
         self.backSwitch = DigitalInput(9)
+
         self.potentiometer = AnalogPotentiometer(0, 270, -11)
         self.pidArm = PIDController(0.0, 0.0, 0.0, 0.0, self.potentiometer, self.armMotor, 0.02)
+
         self.position = 0
 
     def armAuto(self, upValue=None , downValue=None, rate=0.3):
@@ -30,9 +32,6 @@ class arm(Component):
             self.armMotor.set(rate)
 
     def armUpDown(self, left, right, rate=0.3):
-        #if(left > 0.75= or right >= 0.75):
-        #    armValue = (left - right)
-
         if(self.backSwitch.get() == False or self.frontSwitch.get() == False): #Checking limit switches
             self.armMotor.set(0)
 
@@ -43,19 +42,20 @@ class arm(Component):
         elif(left < 0.75 and right < 0.75):
             self.armMotor.set(0)
 
+    '''
     # Arm movement function with using PID control
-    def armUpDownPID(self, left, right, rate=0.3):
+    def armUpDownPID(self, left, right, rate=0.03):
         if(self.backSwitch.get() == False or self.frontSwitch.get() == False):
-            self.pidArm.SetSetpoint(position)
             self.armMotor.set(0)
-                #moves the arm up and down, as well as outputting potentiometer info to dashboard
-        if(self.backSwitch.get() == True and armValue < 0):
-            self.position += rate
-            self.pidArm.SetSetpoint(position)
-        elif(self.frontSwitch.get() == True and armValue > 0):
-            self.position -= rate
-            self.pidArm.SetSetpoint(position)
 
+        #moves the arm up and down, as well as outputting potentiometer info to dashboard
+        if(self.backSwitch.get() == True and left >= 0.75):
+            self.position += rate
+        elif(self.frontSwitch.get() == True and right >= 0.75):
+            self.position -= rate
+
+    '''
+    
     def wheelSpin(self, speed = 1):
         self.wheelMotor.set(speed)
 
