@@ -16,20 +16,10 @@ class arm(Component):
         self.wheelMotor = CANTalon(5)
         self.frontSwitch = DigitalInput(8)
         self.backSwitch = DigitalInput(9)
-<<<<<<< HEAD
-        self.potentiometer = AnalogPotentiometer(0, 270, -9.5)
 
-        #self.pidArm = PIDController(0.0, 0.0, 0.0, 0.0, self.potentiometer, self.armMotor, 0.02)
-        #self.pidArm.setAbsoluteTolerance(0.05)
-        #self.pidArm.setPIDSourceType(wpilib.AnalogPotentiometer.PIDSourceType.kDisplacement)
-        #self.pidArm.setOutputRange(-1, 1)
-        #self.pidArm.setContinuous(False)
-        #self.pidArm.enable()
-        #wpilib.LiveWindow.addActuator("Arm", "Arm PID", self.pidArm)
-=======
         self.potentiometer = AnalogPotentiometer(0, 270, -11)
         self.pidArm = PIDController(0.0, 0.0, 0.0, 0.0, self.potentiometer, self.armMotor, 0.02)
->>>>>>> master
+
         self.position = 0
 
     def armAuto(self, upValue=None , downValue=None, rate=0.3):
@@ -64,14 +54,9 @@ class arm(Component):
         elif(self.frontSwitch.get() == True and right >= 0.75):
             self.position -= rate
 
-<<<<<<< HEAD
-        self.pidArm.setSetpoint(self.position)
     '''
     
-    def wheelSpin(self, speed):
-=======
     def wheelSpin(self, speed = 1):
->>>>>>> master
         self.wheelMotor.set(speed)
 
     def getPOT(self):
