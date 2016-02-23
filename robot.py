@@ -13,11 +13,6 @@ CONTROL_LOOP_WAIT_TIME = 0.025
 
 class MyRobot(wpilib.SampleRobot):
 
-    # Constants
-    WHEEL_DIAMETER = 6
-    PI = 3.1415
-    ENCODER_TICK_COUNT = 250
-
     def robotInit(self):
         self.controller = XboxController(0)
         self.controller2 = XboxController(1)
@@ -72,6 +67,7 @@ class MyRobot(wpilib.SampleRobot):
 
     def disabled(self):
         self.drive.reset()
+        self.drive.disablePIDs()
 
         while self.isDisabled():
             wpilib.Timer.delay(0.01)              # Wait for 0.01 seconds
@@ -80,6 +76,7 @@ class MyRobot(wpilib.SampleRobot):
         #self.autonomous_modes.run()
         #wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
         self.drive.reset()
+        self.drive.enablePIDs()
         #self.lencoder.reset() #sets the encoder values to 0 at the start of each call
         #self.rencoder.reset()
         ###############################################################################
@@ -99,6 +96,7 @@ class MyRobot(wpilib.SampleRobot):
         # Resetting encoders
 
         self.drive.reset()
+        self.drive.disablePIDs()
 
         while self.isOperatorControl() and self.isEnabled():
             self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY(), self.controller.getLeftBumper(), self.controller.getRightBumper(), self.controller.getRightTrigger())
@@ -127,6 +125,8 @@ class MyRobot(wpilib.SampleRobot):
         wpilib.LiveWindow.run()
 
         self.drive.reset()
+        self.drive.enablePIDs()
+        
         while self.isTest() and self.isEnabled():
 
             self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY(), self.controller.getLeftBumper(), self.controller.getRightBumper(), self.controller.getRightTrigger())

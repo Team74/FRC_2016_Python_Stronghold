@@ -71,10 +71,10 @@ class driveTrain(Component) :
         if self.CONTROL_TYPE:
 
             # Initializing PID Controls
-            self.pidRightFront = wpilib.PIDController(0.001, 1.0, 0.005, 0, self.rfencoder, self.rfmotor, 0.02)
-            self.pidLeftFront = wpilib.PIDController(0.001, 1.0, 0.005, 0, self.lfencoder, self.lfmotor, 0.02)
-            self.pidRightBack = wpilib.PIDController(0.001, 1.0, 0.005, 0, self.rbencoder, self.rbmotor, 0.02)
-            self.pidLeftBack = wpilib.PIDController(0.001, 1.0, 0.005, 0, self.lbencoder, self.lbmotor, 0.02)
+            self.pidRightFront = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.rfencoder, self.rfmotor, 0.02)
+            self.pidLeftFront = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.lfencoder, self.lfmotor, 0.02)
+            self.pidRightBack = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.rbencoder, self.rbmotor, 0.02)
+            self.pidLeftBack = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.lbencoder, self.lbmotor, 0.02)
 
             # PID Absolute Tolerance Settings
             self.pidRightFront.setAbsoluteTolerance(0.05)
@@ -91,10 +91,7 @@ class driveTrain(Component) :
 
 
             # Enable PID
-            self.pidRightFront.enable()
-            self.pidLeftFront.enable()
-            self.pidRightBack.enable()
-            self.pidLeftBack.enable()
+            self.enablePIDs()
 
             # LiveWindow settings (PID)
             wpilib.LiveWindow.addActuator("Drive Trian", "Right Front PID", self.pidRightFront)
@@ -179,26 +176,6 @@ class driveTrain(Component) :
     def drive_stop(self) :
         self.drive.tankDrive(0,0)
 
-        '''
-        self.lfmotor.set(0)
-        self.rfmotor.set(0)
-        self.lbmotor.set(0)
-        self.rbmotor.set(0)
-        '''
-        '''
-# function to tell us whether or not the goal distance has been reached
-    def at_distance_goal(self):
-        l_error = self.encoder_goal - self.l_encoder.getDistance()
-        r_error = self.encoder_goal - self.r_encoder.getDistance()
-        return abs(l_error) < self.encoder_tolerance and abs(r_error) < self.encoder_tolerance
-
-# function to continue driving if not at goal distance
-    def drive_distance(self) :
-        while not at_drive_goal() :
-            self.drive_forward(self.autonomousSpeed)
-
-        self.drive_stop()
-        '''
 # fucntion to reset the gyro
     def reset(self):
         if self.CONTROL_TYPE:
@@ -225,3 +202,17 @@ class driveTrain(Component) :
 
     def getDistance(self):
         return (self.lfencoder.getDistance() + self.lbencoder.getDistance() + self.rfencoder.getDistance + self.rbencoder.getDistance())/4.0
+
+    # Enable PID Controllers
+    def enablePIDs(self):
+        self.pidLeftFront.enable()
+        self.pidLeftBack.enable()
+        self.pidRightFront.enable()
+        self.pidRightBack.enable()
+
+    # Disable PID Controllers
+    def disablePIDs(self):
+        self.pidLeftFront.disable()
+        self.pidLeftBack.disable()
+        self.pidRightFront.disable()
+        self.pidRightBack.disable()
