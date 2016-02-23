@@ -50,20 +50,19 @@ class MyRobot(wpilib.SampleRobot):
 #        self.pid.reset()
 #        self.pid.enable()
         self.drive.log()
-        '''
+
+
         # Setting up our USB Camera
         vision = USBCamera()
-        #vision.setFPS(15)
-        #vision.setSize(640, 360)
-        #vision.setExposureAuto()
-        #vision.setWhiteBalanceAuto()
-        #vision.startCapture()
-        visionServer = CameraServer()
-        visionServer.camera = vision
-        visionServer.setSize(visionServer.kSize160x120)
-        visionServer.setQuality(20)
-        visionServer.startAutomaticCapture(vision)
-        '''
+        vision.setFPS(10)
+        vision.setSize(160, 120)
+        vision.startCapture()
+        #visionServer = CameraServer()
+        #visionServer.camera = vision
+        #visionServer.setSize(visionServer.kSize160x120)
+        #visionServer.setQuality(20)
+        #visionServer.startAutomaticCapture(vision)
+
 
     def disabled(self):
         self.drive.reset()
@@ -126,7 +125,7 @@ class MyRobot(wpilib.SampleRobot):
 
         self.drive.reset()
         self.drive.enablePIDs()
-        
+
         while self.isTest() and self.isEnabled():
 
             self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY(), self.controller.getLeftBumper(), self.controller.getRightBumper(), self.controller.getRightTrigger())
