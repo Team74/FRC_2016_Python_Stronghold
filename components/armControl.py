@@ -1,8 +1,9 @@
 """
-File Author: Will Hescott
+File Author: Will Hescott, Will Lowry
 File Creation Date: 1/28/2015
 File Purpose: To control an arm
 """
+
 import wpilib
 from wpilib import CANTalon, Timer, DigitalInput, AnalogPotentiometer, PIDController
 from . import Component
@@ -17,8 +18,8 @@ class arm(Component):
         self.frontSwitch = DigitalInput(8)
         self.backSwitch = DigitalInput(9)
 
-        self.potentiometer = AnalogPotentiometer(0, 270, -11)
-        self.pidArm = PIDController(0.0, 0.0, 0.0, 0.0, self.potentiometer, self.armMotor, 0.02)
+        self.potentiometer = AnalogPotentiometer(0, 270, -30)
+        #self.pidArm = PIDController(0.0, 0.0, 0.0, 0.0, self.potentiometer, self.armMotor, 0.02)
 
         self.position = 0
 
@@ -42,20 +43,6 @@ class arm(Component):
         elif(left < 0.75 and right < 0.75):
             self.armMotor.set(0)
 
-    '''
-    # Arm movement function with using PID control
-    def armUpDownPID(self, left, right, rate=0.03):
-        if(self.backSwitch.get() == False or self.frontSwitch.get() == False):
-            self.armMotor.set(0)
-
-        #moves the arm up and down, as well as outputting potentiometer info to dashboard
-        if(self.backSwitch.get() == True and left >= 0.75):
-            self.position += rate
-        elif(self.frontSwitch.get() == True and right >= 0.75):
-            self.position -= rate
-
-    '''
-    
     def wheelSpin(self, speed = 1):
         self.wheelMotor.set(speed)
 
