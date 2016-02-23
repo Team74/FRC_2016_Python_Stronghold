@@ -51,18 +51,18 @@ class MyRobot(wpilib.SampleRobot):
 #        self.pid.enable()
         self.drive.log()
 
-
+        '''
         # Setting up our USB Camera
         vision = USBCamera()
-        vision.setFPS(10)
-        vision.setSize(160, 120)
-        vision.startCapture()
-        #visionServer = CameraServer()
-        #visionServer.camera = vision
-        #visionServer.setSize(visionServer.kSize160x120)
-        #visionServer.setQuality(20)
-        #visionServer.startAutomaticCapture(vision)
-
+        #vision.setFPS(10)
+        #vision.setSize(160, 120)
+        #vision.startCapture()
+        visionServer = CameraServer()
+        visionServer.camera = vision
+        visionServer.setSize(visionServer.kSize160x120)
+        visionServer.setQuality(20)
+        visionServer.startAutomaticCapture(vision)
+        '''
 
     def disabled(self):
         self.drive.reset()
@@ -95,12 +95,12 @@ class MyRobot(wpilib.SampleRobot):
         # Resetting encoders
 
         self.drive.reset()
-        self.drive.disablePIDs()
+        self.drive.enablePIDs()
 
         while self.isOperatorControl() and self.isEnabled():
             self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY(), self.controller.getLeftBumper(), self.controller.getRightBumper(), self.controller.getRightTrigger())
 
-            self.robotArm.armUpDown(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw())
+            self.robotArm.armUpDown(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw(), rate=0.5)
             self.robotArm.wheelSpin(self.controller2.getLeftY())
 
             self.climber.climbUpDown(self.controller2.getLeftBumper(), self.controller2.getRightBumper())
