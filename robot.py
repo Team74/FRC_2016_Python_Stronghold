@@ -45,24 +45,9 @@ class MyRobot(wpilib.SampleRobot):
         self.dash.putNumber('ControlType', 0)
         self.dash.putBoolean('Front Switch', 0)
         self.dash.putBoolean('Back Switch', 0)
-        # Reset all the things
-#        self.drive.reset()
-#        self.pid.reset()
-#        self.pid.enable()
+
         self.drive.log()
 
-        '''
-        # Setting up our USB Camera
-        vision = USBCamera()
-        #vision.setFPS(10)
-        #vision.setSize(160, 120)
-        #vision.startCapture()
-        visionServer = CameraServer()
-        visionServer.camera = vision
-        visionServer.setSize(visionServer.kSize160x120)
-        visionServer.setQuality(20)
-        visionServer.startAutomaticCapture(vision)
-        '''
 
     def disabled(self):
         self.drive.reset()
@@ -72,24 +57,14 @@ class MyRobot(wpilib.SampleRobot):
             wpilib.Timer.delay(0.01)              # Wait for 0.01 seconds
 
     def autonomous(self):
-        #self.autonomous_modes.run()
-        #wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
         self.drive.reset()
         self.drive.enablePIDs()
-        #self.lencoder.reset() #sets the encoder values to 0 at the start of each call
-        #self.rencoder.reset()
-        ###############################################################################
-        currentSpeed = 0.1 #Set this to the desired speed
-        ###############################################################################
 
-        while self.isAutonomous() and self.isEnabled(): #Here just in case I have put the While loop in the wrong place(Hescott)             # remove the need to multiply by -1
+        while self.isAutonomous() and self.isEnabled():
 
             # Run the actual autonomous mode
             self.potentiometer = ('Arm Potentiometer', self.robotArm.getPOT())
             self.autonomous_modes.run()
-
-            #self.lmotor.set(currentSpeed)           #it is multiplied by -1 because of the motor polarity, switiching the wires would
-            #self.rmotor.set(currentSpeed*(-1))
 
     def operatorControl(self):
         # Resetting encoders
@@ -110,14 +85,10 @@ class MyRobot(wpilib.SampleRobot):
             wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
 
             # Send encoder data to the smart dashboard
-#            self.dash.putNumber('Left Encoder Rate', self.lencoder.getRate())
-#            self.dash.putNumber('Right Encoder Rate', self.rencoder.getRate())
-#            self.dash.putNumber('Left Encoder Distance', self.lencoder.getDistance())
-#            self.dash.putNumber('Right Encoder Distance', self.rencoder.getDistance())
             self.dash.putNumber('Arm Potentiometer', self.robotArm.getPOT())
-            #self.dash.putNumber('Control Type', self.drive.get())
-            self.dash.putBoolean('Back Switch', self.robotArm.getFrontSwitch())
-            self.dash.putBoolean('Front Switch', self.robotArm.getBackSwitch())
+
+            self.dash.putBoolean('Back Arm Switch', self.robotArm.getFrontSwitch())
+            self.dash.putBoolean('Front Arm Switch', self.robotArm.getBackSwitch())
 
 
     def test(self):
@@ -151,5 +122,6 @@ class MyRobot(wpilib.SampleRobot):
             elif(distanceFromCenter > 0):#turn left
                 self.drive.turnAngle(2)
     '''
+    
 if __name__ == "__main__":
     wpilib.run(MyRobot)
