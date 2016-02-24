@@ -51,17 +51,34 @@ class Pixy(Component):
 
     class Block:
         def __init__(self, sig, xPos, yPos, widthSize, heightSize):
-            signature = sig
-            x = xPos
-            y = yPos
-            width = widthSize
-            height = heightSize
+            self.signature = sig
+            self.x = xPos
+            self.y = yPos
+            self.width = widthSize
+            self.height = heightSize
 
+        def getX(self):
+            return self.x
+
+        def getY(self):
+            return self.y
+
+        def getSignature(self):
+            return self.signature
+
+        def getWidth(self):
+            return self.width
+
+        def getHeight(self):
+            return self.height
+
+        def getArea(self):
+            return self.height*self.width
 
     def __init__(self, address = PIXY_I2C_ADDR, port = 0, simPort = None):
         self.addr = address
         self.conn = I2C(I2C.Port.kOnboard, self.addr)   # Create the i2c connection
-        
+
 
     def setAddr(self, address):
         '''Set a new i2c address and create a connection to the new address'''
@@ -160,11 +177,11 @@ class Pixy(Component):
 
             if checksum == self.PIXY_START_WORD:       # New frame started
                 blockType = NORMAL_BLOCK
-                return blockCount
+                return blocks
             elif checksum == self.PIXY_START_WORD_CC:
                 blockType = CC_BLOCK
-                return blockCount
+                return blocks
             elif checksum == 0:
-                return blockCount
+                return blocks
 
             blocks.append(self.getNextBlock())
