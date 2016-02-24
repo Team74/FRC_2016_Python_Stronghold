@@ -64,6 +64,7 @@ class MyRobot(wpilib.SampleRobot):
 
             # Run the actual autonomous mode
             self.potentiometer = ('Arm Potentiometer', self.robotArm.getPOT())
+            self.drive.log()
             self.autonomous_modes.run()
 
     def operatorControl(self):
@@ -122,6 +123,6 @@ class MyRobot(wpilib.SampleRobot):
             elif(distanceFromCenter > 0):#turn left
                 self.drive.turnAngle(2)
     '''
-    
+
 if __name__ == "__main__":
     wpilib.run(MyRobot)

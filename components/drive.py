@@ -15,13 +15,13 @@ class driveTrain(Component) :
         self.robot = robot
 
         # Constants
-        WHEEL_DIAMETER = 7.5
+        WHEEL_DIAMETER = 8
         PI = 3.1415
         ENCODER_TICK_COUNT_250 = 250
         ENCODER_TICK_COUNT_360 = 360
         ENCODER_GOAL = 0 # default
         ENCODER_TOLERANCE = 1 # inch0
-        self.INCHES_PER_DEGREE = 24 * 3.14159265359 / 360
+        self.INCHES_PER_DEGREE = 8 * 3.1415 / 360
         self.CONTROL_TYPE = 1 # 0 = disable PID components
 
         self.rfmotor = CANTalon(0)
@@ -40,8 +40,6 @@ class driveTrain(Component) :
         self.lfencoder = Encoder(4, 5, False)
         self.lbencoder = Encoder(6, 7, False)
 
-
-        # Set the distance per encoder tick
         self.lfencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT_360)
         self.rfencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT_250)
         self.lbencoder.setDistancePerPulse(WHEEL_DIAMETER*PI/ENCODER_TICK_COUNT_360)
@@ -83,13 +81,13 @@ class driveTrain(Component) :
 
 
             # Enable PID
-            self.enablePIDs()
+            #self.enablePIDs()
 
             # LiveWindow settings (PID)
-            wpilib.LiveWindow.addActuator("Drive Trian Right", "Right Front PID", self.pidRightFront)
-            wpilib.LiveWindow.addActuator("Drive Trian Left", "Left Front PID", self.pidLeftFront)
-            wpilib.LiveWindow.addActuator("Drive Trian Right", "Right Back PID", self.pidRightBack)
-            wpilib.LiveWindow.addActuator("Drive Trian Left", "Left Back PID", self.pidLeftBack)
+            wpilib.LiveWindow.addActuator("Drive Train Right", "Right Front PID", self.pidRightFront)
+            wpilib.LiveWindow.addActuator("Drive Train Left", "Left Front PID", self.pidLeftFront)
+            wpilib.LiveWindow.addActuator("Drive Train Right", "Right Back PID", self.pidRightBack)
+            wpilib.LiveWindow.addActuator("Drive Train Left", "Left Back PID", self.pidLeftBack)
 
 
         self.dashTimer = Timer()     # Timer for SmartDashboard updating
@@ -104,14 +102,14 @@ class driveTrain(Component) :
 
     def log(self):
         '''The log method puts interesting information to the SmartDashboard.'''
-        #wpilib.SmartDashboard.putNumber("Left Front Distance", self.lfencoder.getDistance())
-        #wpilib.SmartDashboard.putNumber("Right Front Distance", self.rfencoder.getDistance())
-        #wpilib.SmartDashboard.putNumber("Left Back Distance", self.lbencoder.getDistance())
-        #wpilib.SmartDashboard.putNumber("Right Back Distance", self.rbencoder.getDistance())
-        #wpilib.SmartDashboard.putNumber("Left Front Speed", self.lfencoder.getRate())
-        #wpilib.SmartDashboard.putNumber("Right Front Speed", self.rfencoder.getRate())
-        #wpilib.SmartDashboard.putNumber("Left Back Speed", self.lbencoder.getRate())
-        #wpilib.SmartDashboard.putNumber("Right Back Speed", self.rbencoder.getRate())
+        wpilib.SmartDashboard.putNumber("Left Front Distance", self.lfencoder.getDistance())
+        wpilib.SmartDashboard.putNumber("Right Front Distance", self.rfencoder.getDistance())
+        wpilib.SmartDashboard.putNumber("Left Back Distance", self.lbencoder.getDistance())
+        wpilib.SmartDashboard.putNumber("Right Back Distance", self.rbencoder.getDistance())
+        wpilib.SmartDashboard.putNumber("Left Front Speed", self.lfencoder.getRate())
+        wpilib.SmartDashboard.putNumber("Right Front Speed", self.rfencoder.getRate())
+        wpilib.SmartDashboard.putNumber("Left Back Speed", self.lbencoder.getRate())
+        wpilib.SmartDashboard.putNumber("Right Back Speed", self.rbencoder.getRate())
         #wpilib.SmartDashboard.putNumber("Gyro", self.gyro.getAngle())
 
     # drive forward function
@@ -171,19 +169,19 @@ class driveTrain(Component) :
             self.pidRightBack.setSetpoint(0)
             self.pidRightFront.setSetpoint(0)
 
+    def getDistance(self):
+        return (abs(self.lfencoder.getDistance()) + abs(self.lbencoder.getDistance()) + abs(self.rfencoder.getDistance()) + abs(self.rbencoder.getDistance()))/4.0
+
+
 # function to turn a certain number of degrees
     def turn_angle(self, degrees):
         desired_inches = self.INCHES_PER_DEGREE * degrees
         if degrees < 0:
-            while (abs(self.lfencoder.getDistance()) + abs(self.rfencoder.getDistance())) <= desired_inches:
+            while (abs(self.lfencoder.getDistance()) + abs(self.rfencoder.getDistance())) <= desired_inches :
                 self.autonTankDrive(0.4, -0.4)
         elif degrees > 0:
-            while (abs(self.lfencoder.getDistance()) + abs(self.rfencoder.getDistance())) <= desired_inches:
+            while (abs(self.lfencoder.getDistance()) + abs(self.rfencoder.getDistance())) <= desired_inches :
                 self.autonTankDrive(-0.4, 0.4)
-
-
-    def getDistance(self):
-        return (self.lfencoder.getDistance() + self.lbencoder.getDistance() + self.rfencoder.getDistance + self.rbencoder.getDistance())/4.0
 
     # Enable PID Controllers
     def enablePIDs(self):

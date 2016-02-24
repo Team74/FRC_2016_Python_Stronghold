@@ -34,22 +34,24 @@ class autonomousModeFromFirstPosition(StatefulAutonomous):
 
     @state()
     def arm_up(self) :
-        if self.arm.getPOT() <= 10 :
+        if self.arm.getPOT() <= 4 :
             self.arm.armAuto(1, 0)
         else :
+            self.arm.armAuto(0,0)
             self.next_state('drive_forward_towards_ball')
 
     @state()
     def drive_forward_towards_ball(self) :
-        if (abs(self.drive.lfencoder.getDistance()) + abs(self.drive.rfencoder.getDistance()))/2 <= 10 :
+        if (abs(self.drive.lfencoder.getDistance()) + abs(self.drive.rfencoder.getDistance()))/2 <= 14 :
             self.drive.autonTankDrive(0.4, 0.4)
+            self.arm.wheelSpin()
         else :
             self.drive.reset()
-            self.next_state('arm_down_to_take_in_ball')
-
+            self.next_state('rotate_away_from_ball')
+    '''
     @state()
     def arm_down_to_take_in_ball(self) :
-        if self.arm.getPOT() >= 8:
+        if self.arm.getPOT() >= 7:
             self.arm.armAuto(0, 1)
         else :
             self.arm.armAuto(0,0)
@@ -57,17 +59,18 @@ class autonomousModeFromFirstPosition(StatefulAutonomous):
 
     @state()
     def take_in_ball(self) :
-        if self.iCount < 25:
+        if self.iCount <= 100:
             self.arm.wheelSpin()
             self.iCount += 1
         else:
             self.arm.wheelSpin(speed=0)
+            self.next_state('rotate_away_from_ball')
     '''
     @state()
     def rotate_away_from_ball(self):
         self.drive.turn_angle(180)
         self.next_state('drive_forward_away_from_ball')
-    '''
+
 
     @state()
     def drive_forward_away_from_ball(self) :

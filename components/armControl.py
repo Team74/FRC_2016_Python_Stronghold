@@ -23,14 +23,16 @@ class arm(Component):
 
         self.position = 0
 
-    def armAuto(self, upValue=None , downValue=None, rate=0.3):
+    def armAuto(self, upValue, downValue, rate=0.3):
         if self.getPOT() <= 0 or self.getPOT() >= 90:
             self.armMotor.set(0)
 
         if upValue == 1:
             self.armMotor.set(rate * -1)
-        if downValue == 1:
+        elif downValue == 1:
             self.armMotor.set(rate)
+        else:
+            self.armMotor.set(0)
 
     def armUpDown(self, left, right, rate=0.3):
         if(self.backSwitch.get() == False or self.frontSwitch.get() == False): #Checking limit switches
