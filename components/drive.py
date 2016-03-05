@@ -22,18 +22,24 @@ class driveTrain(Component) :
         ENCODER_GOAL = 0 # default
         ENCODER_TOLERANCE = 1 # inch0
         self.INCHES_PER_DEGREE = 8 * 3.1415 / 360
-        self.CONTROL_TYPE = 1 # 0 = disable PID components
+        self.CONTROL_TYPE = 0 # 0 = disable PID components
 
         self.rfmotor = CANTalon(0)
         self.rbmotor = CANTalon(1)
         self.lfmotor = CANTalon(2)
         self.lbmotor = CANTalon(3)
 
+        # set up new encoders CTRE
+        self.rfmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute)
+
+        # resetting encoders
+        #self.rfmotor.reset()
+
         # Invert the correct motors
-        self.lfmotor.setInverted(True)
+        #self.lfmotor.setInverted(True)
         self.lbmotor.setInverted(True)
         self.rfmotor.setInverted(True)
-
+        '''
         # Initializing the encoders
         self.rfencoder = Encoder(0, 1, False)
         self.rbencoder = Encoder(2, 3, False)
@@ -56,7 +62,10 @@ class driveTrain(Component) :
         wpilib.LiveWindow.addSensor("Drive Train", "Right Front Encoder", self.rfencoder)
         wpilib.LiveWindow.addSensor("Drive Train", "Left Back Encoder", self.lbencoder)
         wpilib.LiveWindow.addSensor("Drive Train", "Right Back Encoder", self.rbencoder)
-
+        '''
+        # Setting up new encoders on the Smart Dashboard
+        wpilib.SmartDashboard.putNumber("Right Front Mag Distance", self.rfmotor.getEncPosition())
+        wpilib.SmartDashboard.putBoolean("Is Right Front Encoder Enabled", self.rfmotor.isSensorPresent)
 
         if self.CONTROL_TYPE:
 
@@ -99,9 +108,9 @@ class driveTrain(Component) :
         wpilib.LiveWindow.addActuator("Drive Train Left", "Left Back Motor", self.lbmotor)
         wpilib.LiveWindow.addActuator("Drive Train Right", "Right Back Motor", self.rbmotor)
 
-
+        '''
     def log(self):
-        '''The log method puts interesting information to the SmartDashboard.'''
+        #The log method puts interesting information to the SmartDashboard.
         wpilib.SmartDashboard.putNumber("Left Front Distance", self.lfencoder.getDistance())
         wpilib.SmartDashboard.putNumber("Right Front Distance", self.rfencoder.getDistance())
         wpilib.SmartDashboard.putNumber("Left Back Distance", self.lbencoder.getDistance())
@@ -111,7 +120,7 @@ class driveTrain(Component) :
         wpilib.SmartDashboard.putNumber("Left Back Speed", self.lbencoder.getRate())
         wpilib.SmartDashboard.putNumber("Right Back Speed", self.rbencoder.getRate())
         #wpilib.SmartDashboard.putNumber("Gyro", self.gyro.getAngle())
-
+        '''
     # drive forward function
     def drive_forward(self, speed) :
         self.drive.tankDrive(speed, speed, True)
@@ -139,10 +148,17 @@ class driveTrain(Component) :
         if abs(leftSpeed) < 0.07 :
             leftSpeed = 0
 
-        self.pidRightFront.setSetpoint(rightSpeed*(-100))
-        self.pidRightBack.setSetpoint(rightSpeed*(-100))
-        self.pidLeftFront.setSetpoint(leftSpeed*100)
-        self.pidLeftBack.setSetpoint(leftSpeed*100)
+        wpilib.SmartDashboard.putNumber("Right Front Mag Distance", self.rfmotor.getEncPosition())
+        if self.CONTROL_TYPE:
+            self.pidRightFront.setSetpoint(rightSpeed*(-100))
+            self.pidRightBack.setSetpoint(rightSpeed*(-100))
+            self.pidLeftFront.setSetpoint(leftSpeed*100)
+            self.pidLeftBack.setSetpoint(leftSpeed*100)
+        else:
+            self.lfmotor.set(leftSpeed*(-.6))
+            self.rfmotor.set(rightSpeed*(-.6))
+            self.lbmotor.set(leftSpeed*(.6))
+            self.rbmotor.set(rightSpeed*(.6))
 
     #autononmous tank drive (to remove a need for a slow, striaght, or fast button)
     def autonTankDrive(self, leftSpeed, rightSpeed):

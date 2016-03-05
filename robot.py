@@ -46,12 +46,12 @@ class MyRobot(wpilib.SampleRobot):
         self.dash.putBoolean('Front Switch', 0)
         self.dash.putBoolean('Back Switch', 0)
 
-        self.drive.log()
+        #self.drive.log()
 
 
     def disabled(self):
         self.drive.reset()
-        self.drive.disablePIDs()
+        #self.drive.disablePIDs()
 
         while self.isDisabled():
             wpilib.Timer.delay(0.01)              # Wait for 0.01 seconds
@@ -71,7 +71,7 @@ class MyRobot(wpilib.SampleRobot):
         # Resetting encoders
 
         self.drive.reset()
-        self.drive.enablePIDs()
+        #self.drive.enablePIDs()
 
         while self.isOperatorControl() and self.isEnabled():
             self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY(), self.controller.getLeftBumper(), self.controller.getRightBumper(), self.controller.getRightTrigger())
@@ -81,7 +81,7 @@ class MyRobot(wpilib.SampleRobot):
 
             self.climber.climbUpDown(self.controller2.getLeftBumper(), self.controller2.getRightBumper())
 
-            self.drive.log()
+            #self.drive.log()
 
             wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
 
