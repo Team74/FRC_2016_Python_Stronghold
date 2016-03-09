@@ -22,32 +22,24 @@ class driveTrain(Component) :
         ENCODER_GOAL = 0 # default
         ENCODER_TOLERANCE = 1 # inch0
         self.INCHES_PER_DEGREE = 8 * 3.1415 / 360
-        self.CONTROL_TYPE = 0 # 0 = disable PID components
+        self.CONTROL_TYPE = False # False = disable PID components
 
         self.rfmotor = CANTalon(0)
         self.rbmotor = CANTalon(1)
         self.lfmotor = CANTalon(2)
         self.lbmotor = CANTalon(3)
 
-        # set up new encoders CTRE
-        '''
-        self.rfmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute)
-        '''
-
-        # resetting encoders
-        #self.rfmotor.reset()
-
-        # Invert the correct motors
-        self.lfmotor.setInverted(True)
         self.lbmotor.setInverted(True)
         self.rfmotor.setInverted(True)
+        self.rbmotor.setInverted(True)
 
+        '''
         #setting up the distances per rotation
         self.lfmotor.configEncoderCodesPerRev(3.2*4*3.14159)
         self.rfmotor.configEncoderCodesPerRev(1024)
         self.lbmotor.configEncoderCodesPerRev(1024)
         self.rbmotor.configEncoderCodesPerRev(1024)
-
+        '''
         #add distance tracking, USING ROLLOVER
 
         '''
