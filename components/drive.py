@@ -15,14 +15,18 @@ class driveTrain(Component) :
         self.robot = robot
 
         # Constants
-        WHEEL_DIAMETER = 8
+        WHEEL_DIAMETER = 7.5
         PI = 3.1415
         ENCODER_TICK_COUNT_250 = 250
         ENCODER_TICK_COUNT_360 = 360
         ENCODER_GOAL = 0 # default
         ENCODER_TOLERANCE = 1 # inch0
-        self.INCHES_PER_DEGREE = 8 * 3.1415 / 360
+        self.INCHES_PER_DEGREE = 7.5 * 3.1415 / 1024
         self.CONTROL_TYPE = False # False = disable PID components
+        self.leftFrontCumulative = 0
+        self.leftBackCumulative = 0
+        self.rightFrontCumulative = 0
+        self.rightBackCumulative = 0
 
         self.rfmotor = CANTalon(0)
         self.rbmotor = CANTalon(1)
@@ -76,13 +80,11 @@ class driveTrain(Component) :
             self.pidRightBack.setAbsoluteTolerance(0.05)
             self.pidLeftBack.setAbsoluteTolerance(0.05)
 
-
             # PID Output Range Settings
             self.pidRightFront.setOutputRange(-1, 1)
             self.pidLeftFront.setOutputRange(-1, 1)
             self.pidRightBack.setOutputRange(-1, 1)
             self.pidLeftBack.setOutputRange(-1, 1)
-
 
             # Enable PID
             #self.enablePIDs()
@@ -93,11 +95,10 @@ class driveTrain(Component) :
             wpilib.LiveWindow.addActuator("Drive Train Right", "Right Back PID", self.pidRightBack)
             wpilib.LiveWindow.addActuator("Drive Train Left", "Left Back PID", self.pidLeftBack)
 
-
         self.dashTimer = Timer()     # Timer for SmartDashboard updating
         self.dashTimer.start()
 
-        # Adding components to the LiveWindow (testing)
+            # Adding components to the LiveWindow (testing)
         wpilib.LiveWindow.addActuator("Drive Train Left", "Left Front Motor", self.lfmotor)
         wpilib.LiveWindow.addActuator("Drive Train Right", "Right Front Motor", self.rfmotor)
         wpilib.LiveWindow.addActuator("Drive Train Left", "Left Back Motor", self.lbmotor)
@@ -139,11 +140,16 @@ class driveTrain(Component) :
         if abs(leftSpeed) < 0.07 :
             leftSpeed = 0
 
+        leftFrontCumulative = getMotorDistance(lfmotor, leftFrontCumulative)
+        leftBackCumulative = getMotorDistance(lbmotor, leftBackCumulative)
+        rightFrontCumulative = getMotorDistance(rfmotor, rightFrontCumulative)
+        rightBackCumulative = getMototDistance(rbmotor, rightBackCumulative)
+
         # Setting up new encoders on the Smart Dashboard
-        wpilib.SmartDashboard.putNumber("Right Front Mag Distance", self.rfmotor.getEncPosition())
-        wpilib.SmartDashboard.putNumber("Right Back Mag Distance", self.rbmotor.getEncPosition())
-        wpilib.SmartDashboard.putNumber("Left Front Mag Distance", self.lfmotor.getEncPosition())
-        wpilib.SmartDashboard.putNumber("Left Back Mag Distance", self.lbmotor.getEncPosition())
+        wpilib.SmartDashboard.putNumber("Right Front Mag Distance(inches)", self.leftFrontCumulative.convertEncoderRaw(leftFrontCumulative))
+        wpilib.SmartDashboard.putNumber("Right Back Mag Distance(inches)", self.leftBackCumulative.convertEncoderRaw(leftBackCumulative))
+        wpilib.SmartDashboard.putNumber("Left Front Mag Distance(inches)", self.rightFrontCumulative.convertEncoderRaw(rightFrontCumulative))
+        wpilib.SmartDashboard.putNumber("Left Back Mag Distance(inches)", self.rightBackCumulative.convertEncoderRaw(rightBackCumulative))
 
         if self.CONTROL_TYPE:
             self.pidRightFront.setSetpoint(rightSpeed*(-100))
@@ -172,10 +178,10 @@ class driveTrain(Component) :
 # fucntion to reset the gyro
     def reset(self):
         if self.CONTROL_TYPE:
-            self.lfencoder.reset()
-            self.rfencoder.reset()
-            self.lbencoder.reset()
-            self.rbencoder.reset()
+            self.leftFrontCumulative = 0
+            self.rightFrontCumulative = 0
+            self.leftBackCumulative = 0
+            self.rightBackCumulative = 0
             self.pidLeftBack.setSetpoint(0)
             self.pidLeftFront.setSetpoint(0)
             self.pidRightBack.setSetpoint(0)
@@ -208,3 +214,14 @@ class driveTrain(Component) :
         self.pidLeftBack.disable()
         self.pidRightFront.disable()
         self.pidRightBack.disable()
+
+    def getMotorDistance(self, motor, cumulativeDistance):
+        currentRollovers = rollovers
+        previousValue = cumulativeDistance
+        currentValue = motor.getDistance
+        if(previousValue > currentValue):
+            currentRollovers += 1
+        return currentValue + (currentRollovers * 1024)
+
+    def convertEncoderRaw(self, selectedEncoder):
+        return selectedEncoder * self.INCHES_PER_DEGREE
