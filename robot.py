@@ -46,7 +46,7 @@ class MyRobot(wpilib.SampleRobot):
         self.dash.putBoolean('Front Switch', 0)
         self.dash.putBoolean('Back Switch', 0)
 
-        #self.drive.log()
+        self.drive.log()
 
 
     def disabled(self):
@@ -81,7 +81,7 @@ class MyRobot(wpilib.SampleRobot):
 
             self.climber.climbUpDown(self.controller2.getLeftBumper(), self.controller2.getRightBumper())
 
-            #self.drive.log()
+            self.drive.log()
 
             wpilib.Timer.delay(CONTROL_LOOP_WAIT_TIME)
 
