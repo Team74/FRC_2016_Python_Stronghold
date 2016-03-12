@@ -45,8 +45,13 @@ class arm(Component):
         elif(left < 0.75 and right < 0.75):
             self.armMotor.set(0)
 
-    def wheelSpin(self, speed = 1):
-        self.wheelMotor.set(speed)
+    def wheelSpin(self, speed):
+        currentSpeed = 0
+        if (speed > 0.75):
+            currentSpeed = 1
+        elif(speed < -0.75):
+            currentSpeed = -1
+        self.wheelMotor.set(currentSpeed)
 
     def getPOT(self):
         return self.potentiometer.get()
