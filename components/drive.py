@@ -37,6 +37,11 @@ class driveTrain(Component) :
         self.rfmotor.setInverted(True)
         self.rbmotor.setInverted(True)
 
+        self.rfmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute)
+        self.rbmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute)
+        self.lfmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute)
+        self.lbmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute)
+
         '''
         #setting up the distances per rotation
         self.lfmotor.configEncoderCodesPerRev(3.2*4*3.14159)
@@ -114,6 +119,12 @@ class driveTrain(Component) :
         wpilib.SmartDashboard.putNumber("Left Back Speed", self.lbmotor.getEncVelocity())
         wpilib.SmartDashboard.putNumber("Right Back Speed", self.rbmotor.getEncVelocity())
         '''
+
+        wpilib.SmartDashboard.putNumber("Mag Enc getEncPosition", self.rfmotor.getEncPosition())
+        wpilib.SmartDashboard.putNumber("Mag Enc getEncVelocity", self.rfmotor.getEncVelocity())
+        wpilib.SmartDashboard.putNumber("Mag Enc getPosition", self.rfmotor.getPosition())
+        wpilib.SmartDashboard.putNumber("Mag Enc getSpeed", self.rfmotor.getSpeed())
+
     # drive forward function
     def drive_forward(self, speed) :
         self.drive.tankDrive(speed, speed, True)
@@ -167,10 +178,10 @@ class driveTrain(Component) :
             self.pidLeftFront.setSetpoint(leftSpeed*100)
             self.pidLeftBack.setSetpoint(leftSpeed*100)
         else:
-            self.lfmotor.set(leftSpeed*(-.6))
-            self.rfmotor.set(rightSpeed*(-.6))
-            self.lbmotor.set(leftSpeed*(.6))
-            self.rbmotor.set(rightSpeed*(.6))
+            self.lfmotor.set(leftSpeed*(-0.6))
+            self.rfmotor.set(rightSpeed*(-0.6))
+            self.lbmotor.set(leftSpeed*(0.6))
+            self.rbmotor.set(rightSpeed*(0.6))
 
     #autononmous tank drive (to remove a need for a slow, striaght, or fast button)
     def autonTankDrive(self, leftSpeed, rightSpeed):
