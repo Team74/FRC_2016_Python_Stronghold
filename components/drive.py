@@ -23,10 +23,10 @@ class driveTrain(Component) :
         ENCODER_TOLERANCE = 1 # inch0
         self.INCHES_PER_DEGREE = 7.5 * 3.1415 / 1024
         self.CONTROL_TYPE = False # False = disable PID components
-        self.leftFrontCumulative = 0
-        self.leftBackCumulative = 0
-        self.rightFrontCumulative = 0
-        self.rightBackCumulative = 0
+        self.LEFTFRONTCUMULATIVE = 0
+        self.LEFTBACKCUMULATIVE = 0
+        self.RIGHTFRONTCUMULATIVE = 0
+        self.RIGHTBACKCUMULATIVE = 0
 
         self.rfmotor = CANTalon(0)
         self.rbmotor = CANTalon(1)
@@ -69,10 +69,10 @@ class driveTrain(Component) :
         if self.CONTROL_TYPE:
 
             # Initializing PID Controls
-            self.pidRightFront = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.rfencoder, self.rfmotor, 0.02)
-            self.pidLeftFront = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.lfencoder, self.lfmotor, 0.02)
-            self.pidRightBack = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.rbencoder, self.rbmotor, 0.02)
-            self.pidLeftBack = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.lbencoder, self.lbmotor, 0.02)
+            self.pidRightFront = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.RIGHTFRONTCUMULATIVE, self.rfmotor, 0.02)
+            self.pidLeftFront = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.LEFTFRONTCUMULATIVE, self.lfmotor, 0.02)
+            self.pidRightBack = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.RIGHTBACKCUMULATIVE, self.rbmotor, 0.02)
+            self.pidLeftBack = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.LEFTBACKCUMULATIVE, self.lbmotor, 0.02)
 
             # PID Absolute Tolerance Settings
             self.pidRightFront.setAbsoluteTolerance(0.05)
@@ -107,11 +107,13 @@ class driveTrain(Component) :
 
     def log(self):
         #The log method puts interesting information to the SmartDashboard. (like velocity information)
+        '''
+        #no longer implemented because of change of hardware
         wpilib.SmartDashboard.putNumber("Left Front Speed", self.lfmotor.getEncVelocity())
         wpilib.SmartDashboard.putNumber("Right Front Speed", self.rfmotor.getEncVelocity())
         wpilib.SmartDashboard.putNumber("Left Back Speed", self.lbmotor.getEncVelocity())
         wpilib.SmartDashboard.putNumber("Right Back Speed", self.rbmotor.getEncVelocity())
-
+        '''
     # drive forward function
     def drive_forward(self, speed) :
         self.drive.tankDrive(speed, speed, True)
@@ -140,16 +142,24 @@ class driveTrain(Component) :
         if abs(leftSpeed) < 0.07 :
             leftSpeed = 0
 
-        leftFrontCumulative = getMotorDistance(lfmotor, leftFrontCumulative)
-        leftBackCumulative = getMotorDistance(lbmotor, leftBackCumulative)
-        rightFrontCumulative = getMotorDistance(rfmotor, rightFrontCumulative)
-        rightBackCumulative = getMototDistance(rbmotor, rightBackCumulative)
+        #Assigning the variables to be called
+        #I have to use tempNumber here because it throws an error if I use any of the cumulative variables
+        #This is because if I attempt to assign a value, and use the target variable in a method to detirmine itself,
+        #it throws an error because I tried to use a variable that was still being assigned
+        tempNumber = self.LEFTFRONTCUMULATIVE
+        self.LEFTFRONTCUMULATIVE = self.getMotorDistance(self.lfmotor, tempNumber)
+        tempNumber = self.LEFTBACKCUMULATIVE
+        self.LEFTBACKCUMULATIVE = self.getMotorDistance(self.lbmotor, tempNumber)
+        tempNumber = self.RIGHTFRONTCUMULATIVE
+        self.RIGHTFRONTCUMULATIVE = self.getMotorDistance(self.rfmotor, tempNumber)
+        tempNumber = self.RIGHTBACKCUMULATIVE
+        self.RIGHTBACKCUMULATIVE = self.getMotorDistance(self.rbmotor, tempNumber)
 
         # Setting up new encoders on the Smart Dashboard
-        wpilib.SmartDashboard.putNumber("Right Front Mag Distance(inches)", self.leftFrontCumulative.convertEncoderRaw(leftFrontCumulative))
-        wpilib.SmartDashboard.putNumber("Right Back Mag Distance(inches)", self.leftBackCumulative.convertEncoderRaw(leftBackCumulative))
-        wpilib.SmartDashboard.putNumber("Left Front Mag Distance(inches)", self.rightFrontCumulative.convertEncoderRaw(rightFrontCumulative))
-        wpilib.SmartDashboard.putNumber("Left Back Mag Distance(inches)", self.rightBackCumulative.convertEncoderRaw(rightBackCumulative))
+        wpilib.SmartDashboard.putNumber("Right Front Mag Distance(inches)", self.convertEncoderRaw(self.LEFTFRONTCUMULATIVE))
+        wpilib.SmartDashboard.putNumber("Right Back Mag Distance(inches)", self.convertEncoderRaw(self.LEFTBACKCUMULATIVE))
+        wpilib.SmartDashboard.putNumber("Left Front Mag Distance(inches)", self.convertEncoderRaw(self.RIGHTFRONTCUMULATIVE))
+        wpilib.SmartDashboard.putNumber("Left Back Mag Distance(inches)", self.convertEncoderRaw(self.RIGHTBACKCUMULATIVE))
 
         if self.CONTROL_TYPE:
             self.pidRightFront.setSetpoint(rightSpeed*(-100))
@@ -175,23 +185,21 @@ class driveTrain(Component) :
     def drive_stop(self) :
         self.drive.tankDrive(0,0)
 
-# fucntion to reset the gyro
+# fucntion to reset the PID's and encoder values
     def reset(self):
         if self.CONTROL_TYPE:
-            self.leftFrontCumulative = 0
-            self.rightFrontCumulative = 0
-            self.leftBackCumulative = 0
-            self.rightBackCumulative = 0
+            self.LEFTFRONTCUMULATIVE = 0
+            self.RIGHTFRONTCUMULATIVE = 0
+            self.LEFTBACKCUMULATIVE= 0
+            self.RIGHTBACKCUMULATIVE = 0
             self.pidLeftBack.setSetpoint(0)
             self.pidLeftFront.setSetpoint(0)
             self.pidRightBack.setSetpoint(0)
             self.pidRightFront.setSetpoint(0)
 
-    def getDistance(self):
-        return (abs(self.lfencoder.getDistance()) + abs(self.lbencoder.getDistance()) + abs(self.rfencoder.getDistance()) + abs(self.rbencoder.getDistance()))/4.0
+    #def getDistance(self)
+    #    return (abs(self.convertEncoderRaw(LEFTFRONTCUMULATIVE) + abs(self.convertEncoderRaw(LEFTBACKCUMULATIVE)) + abs(self.convertEncoderRaw(RIGHTFRONTCUMULATIVE)) + abs(self.convertEncoderRaw(RIGHTBACKCUMULATIVE)))
 
-
-# function to turn a certain number of degrees
     def turn_angle(self, degrees):
         desired_inches = self.INCHES_PER_DEGREE * degrees
         if degrees < 0:
@@ -203,25 +211,32 @@ class driveTrain(Component) :
 
     # Enable PID Controllers
     def enablePIDs(self):
+        '''
+        #No longer required because we swapped from analog encoders to magnetic encoders
         self.pidLeftFront.enable()
         self.pidLeftBack.enable()
         self.pidRightFront.enable()
         self.pidRightBack.enable()
-
+        '''
     # Disable PID Controllers
     def disablePIDs(self):
+        '''
+        #see explaination above
         self.pidLeftFront.disable()
         self.pidLeftBack.disable()
         self.pidRightFront.disable()
         self.pidRightBack.disable()
+        '''
 
+        #detirmines how many ticks the encoder has processed
     def getMotorDistance(self, motor, cumulativeDistance):
-        currentRollovers = rollovers
-        previousValue = cumulativeDistance
-        currentValue = motor.getDistance
-        if(previousValue > currentValue):
-            currentRollovers += 1
-        return currentValue + (currentRollovers * 1024)
+        currentRollovers = 0 #number of times the encoder has gone from 1023 to 0
+        previousValue = cumulativeDistance #variable for comparison
+        currentValue = motor.getEncPosition() #variable for comparison
+        if(previousValue > currentValue): #checks to see if the encoder reset itself from 1023 to 0
+            currentRollovers += 1 #notes the rollover
+        return currentValue + (currentRollovers * 1024) #adds current value to the number of rollovers, each rollover == 1024 ticks
 
-    def convertEncoderRaw(self, selectedEncoder):
-        return selectedEncoder * self.INCHES_PER_DEGREE
+        #converts ticks from getMotorDistance into inches
+    def convertEncoderRaw(self, selectedEncoderValue):
+        return selectedEncoderValue * self.INCHES_PER_DEGREE
