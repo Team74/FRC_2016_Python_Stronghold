@@ -13,7 +13,7 @@ from wpilib import SendableChooser
 class autonomousModeFromFirstPosition(StatefulAutonomous):
 
     MODE_NAME = 'First Position Auto'
-    DEFAULT = True
+    DEFAULT = False
 
     chooser = SendableChooser()
     default_modes = []
