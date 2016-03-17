@@ -12,9 +12,9 @@ from wpilib import SendableChooser
 
 class autonomousModeTestingLowBar(StatefulAutonomous):
 
-    MODE_NAME = 'Straight'
-    DEFAULT = False
-    DRIVE_DISTANCE = 100
+    MODE_NAME = 'Low Bar'
+    DEFAULT = True
+    DRIVE_DISTANCE = 300
 
     chooser = SendableChooser()
     default_modes = []
@@ -36,7 +36,7 @@ class autonomousModeTestingLowBar(StatefulAutonomous):
     @state()
     def drive_forward(self) :
         if self.drive.getAutonDistance() <= self.DRIVE_DISTANCE :
-            self.drive.autonTankDrive(0.4, 0.4)
+            self.drive.autonTankDrive(-0.4, -0.4)
         else :
             self.drive.reset()
             self.next_state('done')
