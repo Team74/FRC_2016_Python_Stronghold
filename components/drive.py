@@ -35,19 +35,23 @@ class driveTrain(Component) :
 
         self.lbmotor.setInverted(True)
         self.rfmotor.setInverted(True)
-        self.rbmotor.setInverted(True)
 
-        self.rfmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute)
-        self.rbmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute)
-        self.lfmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute)
-        self.lbmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute)
+        self.rfmotor.enableBrakeMode(True)
+        self.rbmotor.enableBrakeMode(True)
+        self.lfmotor.enableBrakeMode(True)
+        self.lbmotor.enableBrakeMode(True)
+
+        self.rfmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative)
+        self.rbmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative)
+        self.lfmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative)
+        self.lbmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative)
 
 
         #setting up the distances per rotation
-        self.lfmotor.configEncoderCodesPerRev(1024)
-        self.rfmotor.configEncoderCodesPerRev(1024)
-        self.lbmotor.configEncoderCodesPerRev(1024)
-        self.rbmotor.configEncoderCodesPerRev(1024)
+        #self.lfmotor.configEncoderCodesPerRev(4096)
+        #self.rfmotor.configEncoderCodesPerRev(4096)
+        #self.lbmotor.configEncoderCodesPerRev(4096)
+        #self.rbmotor.configEncoderCodesPerRev(4096)
 
         self.lfmotor.setPID(0.001, 0.8, 0.005)
         self.rfmotor.setPID(0.001, 0.8, 0.005)
@@ -85,10 +89,10 @@ class driveTrain(Component) :
         if self.CONTROL_TYPE:
 
             # Initializing PID Controls
-            self.pidRightFront = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.rfmotor.feedbackDevice, self.rfmotor, 0.02)
-            self.pidLeftFront = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.lfmotor.feedbackDevice, self.lfmotor, 0.02)
-            self.pidRightBack = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.rbmotor.feedbackDevice, self.rbmotor, 0.02)
-            self.pidLeftBack = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.lbmotor.feedbackDevice, self.lbmotor, 0.02)
+            self.pidRightFront = wpilib.PIDController(0.002, 0.8, 0.005, 0, self.rfmotor.feedbackDevice, self.rfmotor, 0.02)
+            self.pidLeftFront = wpilib.PIDController(0.002, 0.8, 0.005, 0, self.lfmotor.feedbackDevice, self.lfmotor, 0.02)
+            self.pidRightBack = wpilib.PIDController(0.002, 0.8, 0.005, 0, self.rbmotor.feedbackDevice, self.rbmotor, 0.02)
+            self.pidLeftBack = wpilib.PIDController(0.002, 0.8, 0.005, 0, self.lbmotor.feedbackDevice, self.lbmotor, 0.02)
 
             # PID Absolute Tolerance Settings
             self.pidRightFront.setAbsoluteTolerance(0.05)
@@ -135,10 +139,11 @@ class driveTrain(Component) :
         wpilib.SmartDashboard.putNumber("RB Mag Enc Position", self.rbmotor.getPosition())
         wpilib.SmartDashboard.putNumber("LF Mag Enc Position", self.lfmotor.getPosition())
         wpilib.SmartDashboard.putNumber("LB Mag Enc Position", self.lbmotor.getPosition())
-        wpilib.SmartDashboard.putNumber("Right Front Mag Distance(inches)", self.convertEncoderRaw(self.rfmotor.getPosition()))
-        wpilib.SmartDashboard.putNumber("Right Back Mag Distance(inches)", self.convertEncoderRaw(self.rbmotor.getPosition()))
-        wpilib.SmartDashboard.putNumber("Left Front Mag Distance(inches)", self.convertEncoderRaw(self.lfmotor.getPosition()))
-        wpilib.SmartDashboard.putNumber("Left Back Mag Distance(inches)", self.convertEncoderRaw(self.lbmotor.getPosition()))
+        wpilib.SmartDashboard.putNumber("Right Front Mag Distance(inches)", self.convertEncoderRaw(self.rfmotor.getPosition()*0.57))
+        wpilib.SmartDashboard.putNumber("Right Back Mag Distance(inches)", self.convertEncoderRaw(self.rbmotor.getPosition()*0.57))
+        wpilib.SmartDashboard.putNumber("Left Front Mag Distance(inches)", self.convertEncoderRaw(self.lfmotor.getPosition()*0.57))
+        wpilib.SmartDashboard.putNumber("Left Back Mag Distance(inches)", self.convertEncoderRaw(self.lbmotor.getPosition()*0.57))
+
 
     # drive forward function
     def drive_forward(self, speed) :
@@ -146,6 +151,11 @@ class driveTrain(Component) :
 
     # manual drive function for Tank Drive
     def xboxTankDrive(self, leftSpeed, rightSpeed, leftB, rightB, rightT):
+        #self.lfmotor.setCloseLoopRampRate(1)
+        #self.lbmotor.setCloseLoopRampRate(1)
+        #self.rfmotor.setCloseLoopRampRate(1)
+        #self.rbmotor.setCloseLoopRampRate(1)
+
         if (leftB == True): #Straight Button
             rightSpeed = leftSpeed
 
@@ -158,6 +168,10 @@ class driveTrain(Component) :
 
         # Fast button
         if(rightT == True):
+            #self.lfmotor.setCloseLoopRampRate(24)
+            #self.lbmotor.setCloseLoopRampRate(24)
+            #self.rfmotor.setCloseLoopRampRate(24)
+            #self.rbmotor.setCloseLoopRampRate(24)
             leftSpeed = leftSpeed*(1.75)
             rightSpeed = rightSpeed*(1.75)
 
@@ -182,10 +196,10 @@ class driveTrain(Component) :
     def autonTankDrive(self, leftSpeed, rightSpeed):
         self.log()
         #self.drive.tankDrive(leftSpeed, rightSpeed, True)
-        self.rfmotor.set(rightSpeed*(-1))
-        self.rbmotor.set(rightSpeed)
-        self.lfmotor.set(leftSpeed*(-1))
-        self.lbmotor.set(leftSpeed)
+        self.rfmotor.set(rightSpeed)
+        self.rbmotor.set(rightSpeed*(-1))
+        self.lfmotor.set(leftSpeed)
+        self.lbmotor.set(leftSpeed*(-1))
 
     # stop function
     def drive_stop(self) :
@@ -240,10 +254,10 @@ class driveTrain(Component) :
         '''
 
     def getAutonDistance(self):
-        return (self.convertEncoderRaw(abs(self.rfmotor.getPosition()))
-                + self.convertEncoderRaw(abs(self.rbmotor.getPosition()))
-                + self.convertEncoderRaw(abs(self.lfmotor.getPosition()))
-                + self.convertEncoderRaw(abs(self.lbmotor.getPosition())))/4
+        return (self.convertEncoderRaw(abs(self.rfmotor.getPosition()*0.57))
+                + self.convertEncoderRaw(abs(self.rbmotor.getPosition()*0.57))
+                + self.convertEncoderRaw(abs(self.lfmotor.getPosition()*0.57))
+                + self.convertEncoderRaw(abs(self.lbmotor.getPosition()*0.57)))/4
 
         #detirmines how many ticks the encoder has processed
     def getMotorDistance(self, motor, cumulativeDistance):

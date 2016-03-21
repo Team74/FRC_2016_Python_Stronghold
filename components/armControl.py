@@ -5,7 +5,7 @@ File Purpose: To control an arm
 """
 
 import wpilib
-from wpilib import CANTalon, Timer, DigitalInput, AnalogPotentiometer, PIDController
+from wpilib import CANTalon, Timer, DigitalInput, AnalogPotentiometer, PIDController, Compressor
 from . import Component
 
 class arm(Component):
@@ -17,17 +17,21 @@ class arm(Component):
         self.wheelMotor = CANTalon(5)
         self.frontSwitch = DigitalInput(8)
         self.backSwitch = DigitalInput(9)
+        self.comp = Compressor()
+        self.comp.enabled()
 
-        self.potentiometer = AnalogPotentiometer(0, 270, -30)
+        self.armMotor.enableBrakeMode(True)
+        self.wheelMotor.enableBrakeMode(True)
+
+        self.potentiometer = AnalogPotentiometer(3, 270, -52)
         #self.pidArm = PIDController(0.0, 0.0, 0.0, 0.0, self.potentiometer, self.armMotor, 0.02)
 
         self.position = 0
 
-    def armAuto(self, upValue, downValue, rate=0.3):
-        if self.getPOT() <= 0 or self.getPOT() >= 90:
+    def armAuto(self, upValue, downValue, target, rate=0.3):
+        if self.getPOT() <= target:
             self.armMotor.set(0)
-
-        if upValue == 1:
+        elif upValue == 1:
             self.armMotor.set(rate * -1)
         elif downValue == 1:
             self.armMotor.set(rate)
@@ -48,9 +52,9 @@ class arm(Component):
     def wheelSpin(self, speed):
         currentSpeed = 0
         if (speed > 0.75):
-            currentSpeed = 1
-        elif(speed < -0.75):
             currentSpeed = -1
+        elif(speed < -0.75):
+            currentSpeed = 1
         self.wheelMotor.set(currentSpeed)
 
     def getPOT(self):

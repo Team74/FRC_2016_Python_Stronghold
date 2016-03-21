@@ -12,9 +12,9 @@ from wpilib import SendableChooser
 
 class autonomousModeTestingLowBar(StatefulAutonomous):
 
-    MODE_NAME = 'Straight'
-    DEFAULT = False
-    DRIVE_DISTANCE = 100
+    MODE_NAME = 'Low Bar'
+    DEFAULT = True
+    DRIVE_DISTANCE = 190
 
     chooser = SendableChooser()
     default_modes = []
@@ -35,10 +35,10 @@ class autonomousModeTestingLowBar(StatefulAutonomous):
 
     @state()
     def move_arm(self):
-        while(self.arm.getPOT() >= 25):
-            self.arm.armAuto(0,1,25,rate=0.5)
+        while(self.arm.getPOT() >= 3):
+            self.arm.armAuto(0,1,3,rate=0.5)
 
-        self.arm.armAuto(0,0,25)
+        self.arm.armAuto(0,0,7)
 
         self.next_state('drive_forward')
 

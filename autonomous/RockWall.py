@@ -12,9 +12,9 @@ from wpilib import SendableChooser
 
 class autonomousModeTestingLowBar(StatefulAutonomous):
 
-    MODE_NAME = 'Straight'
+    MODE_NAME = 'Rock Wall'
     DEFAULT = False
-    DRIVE_DISTANCE = 100
+    DRIVE_DISTANCE = 175
 
     chooser = SendableChooser()
     default_modes = []
