@@ -23,16 +23,15 @@ class arm(Component):
         self.armMotor.enableBrakeMode(True)
         self.wheelMotor.enableBrakeMode(True)
 
-        self.potentiometer = AnalogPotentiometer(0, 270, -120)
+        self.potentiometer = AnalogPotentiometer(3, 270, -52)
         #self.pidArm = PIDController(0.0, 0.0, 0.0, 0.0, self.potentiometer, self.armMotor, 0.02)
 
         self.position = 0
 
-    def armAuto(self, upValue, downValue, rate=0.3):
-        if self.getPOT() <= 0 or self.getPOT() >= 90:
+    def armAuto(self, upValue, downValue, target, rate=0.3):
+        if self.getPOT() <= target:
             self.armMotor.set(0)
-
-        if upValue == 1:
+        elif upValue == 1:
             self.armMotor.set(rate * -1)
         elif downValue == 1:
             self.armMotor.set(rate)

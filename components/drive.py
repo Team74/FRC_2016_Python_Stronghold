@@ -89,10 +89,10 @@ class driveTrain(Component) :
         if self.CONTROL_TYPE:
 
             # Initializing PID Controls
-            self.pidRightFront = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.rfmotor.feedbackDevice, self.rfmotor, 0.02)
-            self.pidLeftFront = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.lfmotor.feedbackDevice, self.lfmotor, 0.02)
-            self.pidRightBack = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.rbmotor.feedbackDevice, self.rbmotor, 0.02)
-            self.pidLeftBack = wpilib.PIDController(0.001, 0.8, 0.005, 0, self.lbmotor.feedbackDevice, self.lbmotor, 0.02)
+            self.pidRightFront = wpilib.PIDController(0.002, 0.8, 0.005, 0, self.rfmotor.feedbackDevice, self.rfmotor, 0.02)
+            self.pidLeftFront = wpilib.PIDController(0.002, 0.8, 0.005, 0, self.lfmotor.feedbackDevice, self.lfmotor, 0.02)
+            self.pidRightBack = wpilib.PIDController(0.002, 0.8, 0.005, 0, self.rbmotor.feedbackDevice, self.rbmotor, 0.02)
+            self.pidLeftBack = wpilib.PIDController(0.002, 0.8, 0.005, 0, self.lbmotor.feedbackDevice, self.lbmotor, 0.02)
 
             # PID Absolute Tolerance Settings
             self.pidRightFront.setAbsoluteTolerance(0.05)
@@ -144,12 +144,18 @@ class driveTrain(Component) :
         wpilib.SmartDashboard.putNumber("Left Front Mag Distance(inches)", self.convertEncoderRaw(self.lfmotor.getPosition()*0.57))
         wpilib.SmartDashboard.putNumber("Left Back Mag Distance(inches)", self.convertEncoderRaw(self.lbmotor.getPosition()*0.57))
 
+
     # drive forward function
     def drive_forward(self, speed) :
         self.drive.tankDrive(speed, speed, True)
 
     # manual drive function for Tank Drive
     def xboxTankDrive(self, leftSpeed, rightSpeed, leftB, rightB, rightT):
+        #self.lfmotor.setCloseLoopRampRate(1)
+        #self.lbmotor.setCloseLoopRampRate(1)
+        #self.rfmotor.setCloseLoopRampRate(1)
+        #self.rbmotor.setCloseLoopRampRate(1)
+
         if (leftB == True): #Straight Button
             rightSpeed = leftSpeed
 
@@ -162,6 +168,10 @@ class driveTrain(Component) :
 
         # Fast button
         if(rightT == True):
+            #self.lfmotor.setCloseLoopRampRate(24)
+            #self.lbmotor.setCloseLoopRampRate(24)
+            #self.rfmotor.setCloseLoopRampRate(24)
+            #self.rbmotor.setCloseLoopRampRate(24)
             leftSpeed = leftSpeed*(1.75)
             rightSpeed = rightSpeed*(1.75)
 

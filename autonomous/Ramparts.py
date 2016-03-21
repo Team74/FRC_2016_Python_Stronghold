@@ -14,7 +14,7 @@ class autonomousModeTestingLowBar(StatefulAutonomous):
 
     MODE_NAME = 'Ramparts'
     DEFAULT = False
-    DRIVE_DISTANCE = 350
+    DRIVE_DISTANCE = 200
 
     chooser = SendableChooser()
     default_modes = []
@@ -28,10 +28,19 @@ class autonomousModeTestingLowBar(StatefulAutonomous):
 # A positive motor value for the WHEEL makes them take in the ball
 
 # initially stopping the bot using a timed state
-    @timed_state(first=True, duration=0.5, next_state='drive_forward')
+    @timed_state(first=True, duration=0.5, next_state='move_arm')
     def drive_stop(self) :
         self.drive.reset()
         self.drive.autonTankDrive(0, 0)
+
+    @state()
+    def move_arm(self):
+        while(self.arm.getPOT() >= 25):
+            self.arm.armAuto(0,1,25,rate=0.5)
+
+        self.arm.armAuto(0,0,25)
+
+        self.next_state('drive_forward')
 
     @state()
     def drive_forward(self) :
