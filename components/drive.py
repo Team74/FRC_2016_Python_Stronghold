@@ -187,10 +187,10 @@ class driveTrain(Component) :
             self.pidLeftFront.setSetpoint(leftSpeed)
             self.pidLeftBack.setSetpoint(leftSpeed)
         else:
-            self.lfmotor.set(leftSpeed*(-0.6))
-            self.rfmotor.set(rightSpeed*(-0.6))
-            self.lbmotor.set(leftSpeed*(0.6))
-            self.rbmotor.set(rightSpeed*(0.6))
+            self.lfmotor.set(leftSpeed*(-0.7))
+            self.rfmotor.set(rightSpeed*(-0.7))
+            self.lbmotor.set(leftSpeed*(0.7))
+            self.rbmotor.set(rightSpeed*(0.7))
 
     #autononmous tank drive (to remove a need for a slow, striaght, or fast button)
     def autonTankDrive(self, leftSpeed, rightSpeed):
