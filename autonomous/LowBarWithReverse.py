@@ -33,6 +33,13 @@ class autonomousModeTestingLowBar(StatefulAutonomous):
         self.drive.reset()
         self.drive.autonTankDrive(0, 0)
 
+    @timed_state(first=False, duration = .5, next_state='drive_backward')
+    def eject_ball(self):
+        i = 0
+        while(i < 150):
+            self.armControl.wheelspin(1)
+            ticker += 1
+
     @state()
     def move_arm(self):
         while(self.arm.getPOT() >= 3):
@@ -48,7 +55,7 @@ class autonomousModeTestingLowBar(StatefulAutonomous):
             self.drive.autonTankDrive(0.4, 0.4)
         else :
             self.drive.reset()
-            self.next_state('drive_backward')
+            self.next_state('eject_ball')
 
     @state()
     def drive_backward(self) :
