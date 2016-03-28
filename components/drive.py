@@ -79,12 +79,13 @@ class driveTrain(Component) :
         wpilib.LiveWindow.addSensor("Drive Train", "Left Back Encoder", self.lbencoder)
         wpilib.LiveWindow.addSensor("Drive Train", "Right Back Encoder", self.rbencoder)
         '''
-
+        '''
         # Checking the state of the encoders on the Smart Dashboard
         wpilib.SmartDashboard.putBoolean("Right Front Encoder Enabled?", self.rfmotor.isSensorPresent)
         wpilib.SmartDashboard.putBoolean("Right Back Encoder Enabled?", self.rbmotor.isSensorPresent)
         wpilib.SmartDashboard.putBoolean("Left Front Encoder Enabled?", self.lfmotor.isSensorPresent)
         wpilib.SmartDashboard.putBoolean("Left Back Encoder Enabled?", self.lbmotor.isSensorPresent)
+        '''
 
         if self.CONTROL_TYPE:
 
@@ -109,21 +110,24 @@ class driveTrain(Component) :
             # Enable PID
             #self.enablePIDs()
 
+            '''
             # LiveWindow settings (PID)
             wpilib.LiveWindow.addActuator("Drive Train Right", "Right Front PID", self.pidRightFront)
             wpilib.LiveWindow.addActuator("Drive Train Left", "Left Front PID", self.pidLeftFront)
             wpilib.LiveWindow.addActuator("Drive Train Right", "Right Back PID", self.pidRightBack)
             wpilib.LiveWindow.addActuator("Drive Train Left", "Left Back PID", self.pidLeftBack)
+            '''
 
         self.dashTimer = Timer()     # Timer for SmartDashboard updating
         self.dashTimer.start()
 
-            # Adding components to the LiveWindow (testing)
+        '''
+        # Adding components to the LiveWindow (testing)
         wpilib.LiveWindow.addActuator("Drive Train Left", "Left Front Motor", self.lfmotor)
         wpilib.LiveWindow.addActuator("Drive Train Right", "Right Front Motor", self.rfmotor)
         wpilib.LiveWindow.addActuator("Drive Train Left", "Left Back Motor", self.lbmotor)
         wpilib.LiveWindow.addActuator("Drive Train Right", "Right Back Motor", self.rbmotor)
-
+        '''
 
     def log(self):
         #The log method puts interesting information to the SmartDashboard. (like velocity information)
@@ -134,7 +138,7 @@ class driveTrain(Component) :
         wpilib.SmartDashboard.putNumber("Left Back Speed", self.lbmotor.getEncVelocity())
         wpilib.SmartDashboard.putNumber("Right Back Speed", self.rbmotor.getEncVelocity())
         '''
-
+        '''
         wpilib.SmartDashboard.putNumber("RF Mag Enc Position", self.rfmotor.getPosition())
         wpilib.SmartDashboard.putNumber("RB Mag Enc Position", self.rbmotor.getPosition())
         wpilib.SmartDashboard.putNumber("LF Mag Enc Position", self.lfmotor.getPosition())
@@ -143,7 +147,7 @@ class driveTrain(Component) :
         wpilib.SmartDashboard.putNumber("Right Back Mag Distance(inches)", self.convertEncoderRaw(self.rbmotor.getPosition()*0.57))
         wpilib.SmartDashboard.putNumber("Left Front Mag Distance(inches)", self.convertEncoderRaw(self.lfmotor.getPosition()*0.57))
         wpilib.SmartDashboard.putNumber("Left Back Mag Distance(inches)", self.convertEncoderRaw(self.lbmotor.getPosition()*0.57))
-
+        '''
 
     # drive forward function
     def drive_forward(self, speed) :
