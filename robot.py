@@ -76,7 +76,7 @@ class MyRobot(wpilib.SampleRobot):
         while self.isOperatorControl() and self.isEnabled():
             self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY(), self.controller.getLeftBumper(), self.controller.getRightBumper(), self.controller.getRightTrigger())
 
-            self.robotArm.armUpDown(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw(), rate=0.5)
+            self.robotArm.armUpDown(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw(), self.controller2.getButtonA(), rate=0.5)
             self.robotArm.wheelSpin(self.controller2.getLeftY())
 
             self.climber.climbUpDown(self.controller2.getLeftBumper(), self.controller2.getRightBumper())
@@ -88,8 +88,8 @@ class MyRobot(wpilib.SampleRobot):
             # Send encoder data to the smart dashboard
             self.dash.putNumber('Arm Potentiometer', self.robotArm.getPOT())
 
-            self.dash.putBoolean('Back Arm Switch', self.robotArm.getFrontSwitch())
-            self.dash.putBoolean('Front Arm Switch', self.robotArm.getBackSwitch())
+            #self.dash.putBoolean('Back Arm Switch', self.robotArm.getFrontSwitch())
+            #self.dash.putBoolean('Front Arm Switch', self.robotArm.getBackSwitch())
 
 
     def test(self):

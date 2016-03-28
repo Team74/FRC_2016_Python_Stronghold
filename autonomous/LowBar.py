@@ -13,7 +13,7 @@ from wpilib import SendableChooser
 class autonomousModeTestingLowBar(StatefulAutonomous):
 
     MODE_NAME = 'Low Bar'
-    DEFAULT = True
+    DEFAULT = False
     DRIVE_DISTANCE = 190
 
     chooser = SendableChooser()

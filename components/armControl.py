@@ -23,28 +23,37 @@ class arm(Component):
         self.armMotor.enableBrakeMode(True)
         self.wheelMotor.enableBrakeMode(True)
 
-        self.potentiometer = AnalogPotentiometer(3, 270, -52)
+        self.potentiometer = AnalogPotentiometer(3, 270, -112)
         #self.pidArm = PIDController(0.0, 0.0, 0.0, 0.0, self.potentiometer, self.armMotor, 0.02)
 
         self.position = 0
 
     def armAuto(self, upValue, downValue, target, rate=0.3):
+        '''
         if self.getPOT() <= target:
             self.armMotor.set(0)
-        elif upValue == 1:
+        '''
+        if upValue == 1:
             self.armMotor.set(rate * -1)
         elif downValue == 1:
             self.armMotor.set(rate)
         else:
             self.armMotor.set(0)
 
-    def armUpDown(self, left, right, rate=0.3):
+    def armUpDown(self, left, right, controllerA, rate=0.3):
+        rate2 = rate*1.75
         if(self.backSwitch.get() == False or self.frontSwitch.get() == False): #Checking limit switches
             self.armMotor.set(0)
 
-        if(self.backSwitch.get() == True and left >= 0.75):#if tripped, disallow further movement
+        if(left >= 0.75):#if tripped, disallow further movement
+#            if(controllerA == True):
+#                self.armMotor.set(rate2)
+#            else:
             self.armMotor.set(rate)
-        elif(self.frontSwitch.get() == True and right >= 0.75):#if tripped, disallow further movement
+        elif(right >= 0.75):#if tripped, disallow further movement
+#            if(controllerA == True):
+#                self.armMotor.set(-rate2)
+#            else:
             self.armMotor.set(rate * -1)
         elif(left < 0.75 and right < 0.75):
             self.armMotor.set(0)
