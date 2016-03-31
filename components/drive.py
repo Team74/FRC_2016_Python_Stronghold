@@ -35,6 +35,7 @@ class driveTrain(Component) :
 
         self.lbmotor.setInverted(True)
         self.rfmotor.setInverted(True)
+        self.rbmotor.setInverted(True)#practice bot only
 
         self.rfmotor.enableBrakeMode(True)
         self.rbmotor.enableBrakeMode(True)
@@ -160,15 +161,17 @@ class driveTrain(Component) :
         #self.rfmotor.setCloseLoopRampRate(1)
         #self.rbmotor.setCloseLoopRampRate(1)
 
+
+
         if (leftB == True): #Straight Button
             rightSpeed = leftSpeed
 
         if (rightB == True): #Slow Button
-            leftSpeed = leftSpeed/1.75
-            rightSpeed = rightSpeed/1.75
-            if(leftSpeed < -0.5 and rightSpeed > 0.5 or leftSpeed > -0.5 and rightSpeed < 0.5):
-                leftSpeed = leftSpeed
-                rightSpeed = rightSpeed
+            #leftSpeed = leftSpeed/1.75
+            #rightSpeed = rightSpeed/1.75
+            if(not(leftSpeed < -0.5 and rightSpeed > 0.5 or leftSpeed > -0.5 and rightSpeed < 0.5)):    #only do t if not turning
+                leftSpeed = leftSpeed/1.75
+                rightSpeed = rightSpeed/1.75
 
         # Fast button
         if(rightT == True):

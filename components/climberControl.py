@@ -12,7 +12,7 @@ class lift(Component):
     def __init__(self, robot):
         super().__init__()
         self.robot = robot
-        self.cylinder1Up = Solenoid(6, 4)##NOT REAL VARIABLES, REPLACE LATER.
+        self.cylinder1Up = Solenoid(6, 4)
         self.cylinder1Down = Solenoid(6, 5)
         self.cylinder2Up = Solenoid(6, 6)
         self.cylinder2Down = Solenoid(6, 7)
