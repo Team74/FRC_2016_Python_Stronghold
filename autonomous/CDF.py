@@ -34,49 +34,56 @@ class autonomousModeTestingLowBar(StatefulAutonomous):
         self.drive.autonTankDrive(0, 0)
 
     @state()
-    def move_arm_to_0(self):
-        while(self.arm.getPOT() >= 0.5):
+    def move_arm_down(self):
+        if (self.arm.getPOT() >= 9):
             self.arm.armAuto(0,1,0,rate=0.5)
+        else:
+            self.arm.armAuto(0,0,9)
+            self.next_state('drive_forward_step_2')
 
-        self.arm.armAuto(0,0,0.5)
-
-        self.next_state('drive_forward_step_2')
-
+    '''
     @state()
     def move_arm_to_30(self):
-        while(self.arm.getPOT() <= 30):
-            self.arm.armAuto(1,0,30,rate=0.7)
-
+        if(self.arm.getPOT() <= 30):
+            self.arm.armAuto(1,0,30,rate=0.5)
+        else:
             self.arm.armAuto(0,0,30)
-
             self.next_state('drive_forward_step_3')
 
     @state()
     def drive_forward_step_3(self):
         if self.drive.getAutonDistance() <= 77 :
-            self.drive.autonTankDrive(0.5, 0.5)
-        else :
+            self.drive.autonTankDrive(0.3, 0.3)
+        else:
             self.drive.reset()
             self.drive.autonTankDrive(0,0)
             self.drive.next_state('done')
-
+    '''
 
     @state()
     def drive_forward_step_1(self):
-        if self.drive.getAutonDistance() <= 55 :
-            self.drive.autonTankDrive(0.5, 0.5)
+        if self.drive.getAutonDistance() <= 41 :
+            self.drive.autonTankDrive(0.3, 0.3)
         else :
             self.drive.reset()
             self.drive.autonTankDrive(0,0)
-            self.next_state('move_arm_to_0')
+            self.next_state('move_arm_down')
 
     @state()
     def drive_forward_step_2(self):
-        if self.drive.getAutonDistance() <= 17 :
+        if self.drive.getAutonDistance() <= 20:
+            self.drive.autonTankDrive(0.4, 0.35)
+        elif self.drive.getAutonDistance() <= 90:
             self.drive.autonTankDrive(0.4, 0.4)
-        else :
+
+            if(self.arm.getPOT() <= 30):
+                self.arm.armAuto(1,0,30,rate=0.8)
+            else:
+                self.arm.armAuto(0,0,30)
+        else:
             self.drive.reset()
             self.drive.autonTankDrive(0,0)
+            self.arm.armAuto(0,0,30)
             self.next_state('move_arm_to_30')
 
     @state()

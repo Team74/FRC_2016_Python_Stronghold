@@ -35,12 +35,12 @@ class driveTrain(Component) :
 
         self.lbmotor.setInverted(True)
         self.rfmotor.setInverted(True)
-        self.rbmotor.setInverted(True)#practice bot only
+        #self.rbmotor.setInverted(True)#practice bot only
 
-        self.rfmotor.enableBrakeMode(True)
-        self.rbmotor.enableBrakeMode(True)
-        self.lfmotor.enableBrakeMode(True)
-        self.lbmotor.enableBrakeMode(True)
+        #self.rfmotor.enableBrakeMode(True)
+        #self.rbmotor.enableBrakeMode(True)
+        #self.lfmotor.enableBrakeMode(True)
+        #self.lbmotor.enableBrakeMode(True)
 
         self.rfmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative)
         self.rbmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative)
@@ -54,16 +54,18 @@ class driveTrain(Component) :
         #self.lbmotor.configEncoderCodesPerRev(4096)
         #self.rbmotor.configEncoderCodesPerRev(4096)
 
-        self.lfmotor.setPID(0.001, 0.8, 0.005)
-        self.rfmotor.setPID(0.001, 0.8, 0.005)
-        self.lbmotor.setPID(0.001, 0.8, 0.005)
-        self.rbmotor.setPID(0.001, 0.8, 0.005)
+        self.lfmotor.setPID(0.1, 1.6, 0.05, 0.025, profile=0)
+        self.rfmotor.setPID(0.1, 1.6, 0.05, 0.025, profile=0)
+        self.lbmotor.setPID(0.1, 1.6, 0.05, 0.025, profile=0)
+        self.rbmotor.setPID(0.1, 1.6, 0.05, 0.025, profile=0)
 
         self.rfmotor.setPosition(0)
         self.rbmotor.setPosition(0)
         self.lfmotor.setPosition(0)
         self.lbmotor.setPosition(0)
 
+        self.lfmotor.reverseSensor(True)
+        self.lbmotor.reverseSensor(True)
 
         #add distance tracking, USING ROLLOVER
 
@@ -139,11 +141,13 @@ class driveTrain(Component) :
         wpilib.SmartDashboard.putNumber("Left Back Speed", self.lbmotor.getEncVelocity())
         wpilib.SmartDashboard.putNumber("Right Back Speed", self.rbmotor.getEncVelocity())
         '''
-        '''
+
         wpilib.SmartDashboard.putNumber("RF Mag Enc Position", self.rfmotor.getPosition())
         wpilib.SmartDashboard.putNumber("RB Mag Enc Position", self.rbmotor.getPosition())
         wpilib.SmartDashboard.putNumber("LF Mag Enc Position", self.lfmotor.getPosition())
         wpilib.SmartDashboard.putNumber("LB Mag Enc Position", self.lbmotor.getPosition())
+
+        '''
         wpilib.SmartDashboard.putNumber("Right Front Mag Distance(inches)", self.convertEncoderRaw(self.rfmotor.getPosition()*0.57))
         wpilib.SmartDashboard.putNumber("Right Back Mag Distance(inches)", self.convertEncoderRaw(self.rbmotor.getPosition()*0.57))
         wpilib.SmartDashboard.putNumber("Left Front Mag Distance(inches)", self.convertEncoderRaw(self.lfmotor.getPosition()*0.57))
