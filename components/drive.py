@@ -2,6 +2,9 @@
 File Author: Will Lowry, Will Hescott
 File Creation Date: 1/28/2015
 File Purpose: To create our drive functions
+
+Transmission gear ratio: 18.74/1
+
 """
 import wpilib
 from wpilib import CANTalon, Encoder, Timer, RobotDrive
@@ -21,6 +24,7 @@ class driveTrain(Component) :
         ENCODER_TICK_COUNT_360 = 360
         ENCODER_GOAL = 0 # default
         ENCODER_TOLERANCE = 1 # inch0
+        self.RPM = 4320/10.7
         self.INCHES_PER_REV = WHEEL_DIAMETER * 3.1415
         self.CONTROL_TYPE = False # False = disable PID components
         self.LEFTFRONTCUMULATIVE = 0
@@ -35,12 +39,15 @@ class driveTrain(Component) :
 
         self.lbmotor.setInverted(True)
         self.rfmotor.setInverted(True)
-        #self.rbmotor.setInverted(True)#practice bot only
+        self.rbmotor.setInverted(True)#practice bot only
 
         #self.rfmotor.enableBrakeMode(True)
         #self.rbmotor.enableBrakeMode(True)
         #self.lfmotor.enableBrakeMode(True)
         #self.lbmotor.enableBrakeMode(True)
+
+        absolutePosition = self.lbmotor.getPulseWidthPosition() & 0xFFF; # mask out the bottom12 bits, we don't care about the wrap arounds use the low level API to set the quad encoder signal
+        self.lbmotor.setEncPosition(absolutePosition)
 
         self.rfmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative)
         self.rbmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative)
@@ -54,10 +61,14 @@ class driveTrain(Component) :
         #self.lbmotor.configEncoderCodesPerRev(4096)
         #self.rbmotor.configEncoderCodesPerRev(4096)
 
-        self.lfmotor.setPID(0.1, 1.6, 0.05, 0.025, profile=0)
-        self.rfmotor.setPID(0.1, 1.6, 0.05, 0.025, profile=0)
-        self.lbmotor.setPID(0.1, 1.6, 0.05, 0.025, profile=0)
-        self.rbmotor.setPID(0.1, 1.6, 0.05, 0.025, profile=0)
+        self.lfmotor.setPID(0.01, 0.8, 0.05, 0.025, profile=0)
+        self.rfmotor.setPID(0.01, 0.8, 0.05, 0.025, profile=0)
+        self.lbmotor.setPID(0.001, 0, 0, 0.025, profile=0)
+        self.rbmotor.setPID(0.01, 0.8, 0.05, 0.025, profile=0)
+
+        self.lbmotor.configNominalOutputVoltage(+0.0, -0.0)
+        self.lbmotor.configPeakOutputVoltage(+12.0, -12.0)
+        self.lbmotor.setControlMode(CANTalon.ControlMode.Speed)
 
         self.rfmotor.setPosition(0)
         self.rbmotor.setPosition(0)
@@ -67,7 +78,6 @@ class driveTrain(Component) :
         self.lfmotor.reverseSensor(True)
         self.lbmotor.reverseSensor(True)
 
-        #add distance tracking, USING ROLLOVER
 
         '''
         # changing the encoder output from DISTANCE to RATE (we're dumb)
@@ -200,7 +210,7 @@ class driveTrain(Component) :
         else:
             self.lfmotor.set(leftSpeed*(-0.7))
             self.rfmotor.set(rightSpeed*(-0.7))
-            self.lbmotor.set(leftSpeed*(0.7))
+            self.lbmotor.set(leftSpeed*(0.7)*self.RPM/10)
             self.rbmotor.set(rightSpeed*(0.7))
 
     #autononmous tank drive (to remove a need for a slow, striaght, or fast button)
