@@ -74,7 +74,7 @@ class MyRobot(wpilib.SampleRobot):
         #self.drive.enablePIDs()
 
         while self.isOperatorControl() and self.isEnabled():
-            self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY(), self.controller.getLeftBumper(), self.controller.getRightBumper(), self.controller.getRightTrigger())
+            self.drive.xboxTankDrive(self.controller.getLeftY(), self.controller.getRightY(), self.controller.getLeftBumper(), self.controller.getRightBumper(), self.controller.getLeftTrigger(), self.controller.getRightTrigger())
 
             self.robotArm.armUpDown(self.controller2.getLeftTriggerRaw(), self.controller2.getRightTriggerRaw(), self.controller2.getButtonA(), rate=0.5)
             self.robotArm.wheelSpin(self.controller2.getLeftY())

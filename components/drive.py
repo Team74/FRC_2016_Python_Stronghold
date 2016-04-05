@@ -10,6 +10,9 @@ import wpilib
 from wpilib import CANTalon, Encoder, Timer, RobotDrive
 from wpilib.interfaces import Gyro
 from . import Component
+import hal
+
+
 
 class driveTrain(Component) :
 
@@ -37,17 +40,25 @@ class driveTrain(Component) :
         self.lfmotor = CANTalon(2)
         self.lbmotor = CANTalon(3)
 
-        self.lbmotor.setInverted(True)
-        self.rfmotor.setInverted(True)
-        self.rbmotor.setInverted(True)#practice bot only
+        self.lfmotor.reverseOutput(True)
+        self.lbmotor.reverseOutput(True)
+        self.rfmotor.reverseOutput(True)
+        self.rbmotor.reverseOutput(True)#practice bot only
 
-        #self.rfmotor.enableBrakeMode(True)
-        #self.rbmotor.enableBrakeMode(True)
-        #self.lfmotor.enableBrakeMode(True)
-        #self.lbmotor.enableBrakeMode(True)
+
+        self.rfmotor.enableBrakeMode(True)
+        self.rbmotor.enableBrakeMode(True)
+        self.lfmotor.enableBrakeMode(True)
+        self.lbmotor.enableBrakeMode(True)
 
         absolutePosition = self.lbmotor.getPulseWidthPosition() & 0xFFF; # mask out the bottom12 bits, we don't care about the wrap arounds use the low level API to set the quad encoder signal
         self.lbmotor.setEncPosition(absolutePosition)
+        absolutePosition = self.lfmotor.getPulseWidthPosition() & 0xFFF; # mask out the bottom12 bits, we don't care about the wrap arounds use the low level API to set the quad encoder signal
+        self.lfmotor.setEncPosition(absolutePosition)
+        absolutePosition = self.rbmotor.getPulseWidthPosition() & 0xFFF; # mask out the bottom12 bits, we don't care about the wrap arounds use the low level API to set the quad encoder signal
+        self.rbmotor.setEncPosition(absolutePosition)
+        absolutePosition = self.rfmotor.getPulseWidthPosition() & 0xFFF; # mask out the bottom12 bits, we don't care about the wrap arounds use the low level API to set the quad encoder signal
+        self.rfmotor.setEncPosition(absolutePosition)
 
         self.rfmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative)
         self.rbmotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative)
@@ -56,19 +67,31 @@ class driveTrain(Component) :
 
 
         #setting up the distances per rotation
-        #self.lfmotor.configEncoderCodesPerRev(4096)
-        #self.rfmotor.configEncoderCodesPerRev(4096)
-        #self.lbmotor.configEncoderCodesPerRev(4096)
-        #self.rbmotor.configEncoderCodesPerRev(4096)
+        self.lfmotor.configEncoderCodesPerRev(4096)
+        self.rfmotor.configEncoderCodesPerRev(4096)
+        self.lbmotor.configEncoderCodesPerRev(4096)
+        self.rbmotor.configEncoderCodesPerRev(4096)
 
-        self.lfmotor.setPID(0.01, 0.8, 0.05, 0.025, profile=0)
-        self.rfmotor.setPID(0.01, 0.8, 0.05, 0.025, profile=0)
-        self.lbmotor.setPID(0.001, 0, 0, 0.025, profile=0)
-        self.rbmotor.setPID(0.01, 0.8, 0.05, 0.025, profile=0)
+        self.lfmotor.setPID(0.0005, 0, 0.0, profile=0)
+        self.rfmotor.setPID(0.0005, 0, 0.0, profile=0)
+        self.lbmotor.setPID(0.0005, 0, 0.0, profile=0)
+        self.rbmotor.setPID(0.0005, 0, 0.0, profile=0)
 
         self.lbmotor.configNominalOutputVoltage(+0.0, -0.0)
         self.lbmotor.configPeakOutputVoltage(+12.0, -12.0)
         self.lbmotor.setControlMode(CANTalon.ControlMode.Speed)
+
+        self.lfmotor.configNominalOutputVoltage(+0.0, -0.0)
+        self.lfmotor.configPeakOutputVoltage(+12.0, -12.0)
+        self.lfmotor.setControlMode(CANTalon.ControlMode.Speed)
+
+        self.rbmotor.configNominalOutputVoltage(+0.0, -0.0)
+        self.rbmotor.configPeakOutputVoltage(+12.0, -12.0)
+        self.rbmotor.setControlMode(CANTalon.ControlMode.Speed)
+
+        self.rfmotor.configNominalOutputVoltage(+0.0, -0.0)
+        self.rfmotor.configPeakOutputVoltage(+12.0, -12.0)
+        self.rfmotor.setControlMode(CANTalon.ControlMode.Speed)
 
         self.rfmotor.setPosition(0)
         self.rbmotor.setPosition(0)
@@ -169,7 +192,7 @@ class driveTrain(Component) :
         self.drive.tankDrive(speed, speed, True)
 
     # manual drive function for Tank Drive
-    def xboxTankDrive(self, leftSpeed, rightSpeed, leftB, rightB, rightT):
+    def xboxTankDrive(self, leftSpeed, rightSpeed, leftB, rightB, leftT, rightT):
         #self.lfmotor.setCloseLoopRampRate(1)
         #self.lbmotor.setCloseLoopRampRate(1)
         #self.rfmotor.setCloseLoopRampRate(1)
@@ -196,10 +219,23 @@ class driveTrain(Component) :
             leftSpeed = leftSpeed*(1.75)
             rightSpeed = rightSpeed*(1.75)
 
+
+
+        if(leftT == True):
+            leftSpeed = 0.1
+            rightSpeed = 0.1
+
+        '''
+            encoderValue
+            if(lbmotor.getDistance() < encoderValue)
+                lbmotor.set(0.1)
+            if()
+        '''
+
         # Creating margin for error when using the joysticks, as they're quite sensitive
-        if abs(rightSpeed) < 0.07 :
+        if abs(rightSpeed) < 0.04 :
             rightSpeed = 0
-        if abs(leftSpeed) < 0.07 :
+        if abs(leftSpeed) < 0.04 :
             leftSpeed = 0
 
         if self.CONTROL_TYPE:
@@ -208,10 +244,10 @@ class driveTrain(Component) :
             self.pidLeftFront.setSetpoint(leftSpeed)
             self.pidLeftBack.setSetpoint(leftSpeed)
         else:
-            self.lfmotor.set(leftSpeed*(-0.7))
-            self.rfmotor.set(rightSpeed*(-0.7))
-            self.lbmotor.set(leftSpeed*(0.7)*self.RPM/10)
-            self.rbmotor.set(rightSpeed*(0.7))
+            self.lfmotor.set(leftSpeed*512)
+            self.rfmotor.set(rightSpeed*512)
+            self.lbmotor.set(leftSpeed*512)
+            self.rbmotor.set(rightSpeed*512)
 
     #autononmous tank drive (to remove a need for a slow, striaght, or fast button)
     def autonTankDrive(self, leftSpeed, rightSpeed):
