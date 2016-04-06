@@ -23,7 +23,7 @@ class arm(Component):
         self.armMotor.enableBrakeMode(True)
         self.wheelMotor.enableBrakeMode(True)
 
-        self.potentiometer = AnalogPotentiometer(3, 270, -112)
+        self.potentiometer = AnalogPotentiometer(3, 270, -193)
         #self.pidArm = PIDController(0.0, 0.0, 0.0, 0.0, self.potentiometer, self.armMotor, 0.02)
 
         self.position = 0
@@ -67,7 +67,7 @@ class arm(Component):
         self.wheelMotor.set(currentSpeed)
 
     def getPOT(self):
-        return self.potentiometer.get()
+        return (self.potentiometer.get()*-1)
 
     def getBackSwitch(self):
         return self.backSwitch.get()
