@@ -42,8 +42,8 @@ class driveTrain(Component) :
 
         self.lfmotor.reverseOutput(True)
         self.lbmotor.reverseOutput(True)
-        self.rfmotor.reverseOutput(True)
-        self.rbmotor.reverseOutput(True)#practice bot only
+        #self.rfmotor.reverseOutput(True)
+        #self.rbmotor.reverseOutput(True)#practice bot only
 
 
         self.rfmotor.enableBrakeMode(True)
@@ -225,12 +225,7 @@ class driveTrain(Component) :
             leftSpeed = 0.1
             rightSpeed = 0.1
 
-        '''
-            encoderValue
-            if(lbmotor.getDistance() < encoderValue)
-                lbmotor.set(0.1)
-            if()
-        '''
+
 
         # Creating margin for error when using the joysticks, as they're quite sensitive
         if abs(rightSpeed) < 0.04 :
